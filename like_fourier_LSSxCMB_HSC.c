@@ -45,7 +45,7 @@
 #include "../cosmolike_core/theory/covariances_3D.c"
 #include "../cosmolike_core/theory/covariances_fourier.c"
 #include "../cosmolike_core/theory/covariances_cluster.c"
-#include "init.c"
+#include "init_lsst_real.c"
 #include "../cosmolike_core/theory/init_baryon.c"
 #include "../cosmolike_core/theory/priors_mpp.c"
 #include "../cosmolike_core/theory/CMBxLSS.c"
