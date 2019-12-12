@@ -46,6 +46,13 @@
 #include "../cosmolike_core/theory/covariances_cluster.c"
 #include "init_emu.c"
 
+#include "init_LSSxCMB.c"
+typedef double (*C_tomo_pointer)(double l, int n1, int n2);
+void twopoint_via_hankel(double **xi, double *logthetamin, double *logthetamax, C_tomo_pointer C_tomo, int ni, int nj, int N_Bessel);
+
+#include "../cosmolike_core/theory/CMBxLSS.c"
+#include "../cosmolike_core/theory/covariances_CMBxLSS_fourier.c"
+
 void run_cov_N_N (char *OUTFILE, char *PATH, int nzc1, int nzc2,int start);
 void run_cov_cgl_N (char *OUTFILE, char *PATH, double *ell_Cluster, double *dell_Cluster,int N1, int nzc2, int start);
 void run_cov_cgl_cgl (char *OUTFILE, char *PATH, double *ell_Cluster, double *dell_Cluster,int N1, int N2, int start);
@@ -63,6 +70,68 @@ void run_cov_clustering_ggl(char *OUTFILE, char *PATH, double *ell, double *dell
 void run_cov_clustering(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
 void run_cov_ggl(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
 void run_cov_shear_shear(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
+
+
+/****************** hankel transformation routine *******************/
+void twopoint_via_hankel(double **xi, double *logthetamin, double *logthetamax, C_tomo_pointer C_tomo, int ni, int nj, int N_Bessel){
+  const double l_min = 0.0001;
+  const double l_max = 5.0e6;
+  double loglmax, loglmin, dlnl, lnrc, arg[2];
+  static int nc;
+  
+  double        l, kk, *lP, t;
+  fftw_plan     plan1,plan;
+  fftw_complex *f_lP,*conv;
+  fftw_complex  kernel;
+  int           i;
+  lP   = fftw_malloc(Ntable.N_thetaH*sizeof(double));
+  f_lP = fftw_malloc((Ntable.N_thetaH/2+1)*sizeof(fftw_complex));
+  conv = fftw_malloc((Ntable.N_thetaH/2+1)*sizeof(fftw_complex));
+  plan  = fftw_plan_dft_r2c_1d(Ntable.N_thetaH, lP, f_lP, FFTW_ESTIMATE);
+  plan1 = fftw_plan_dft_c2r_1d(Ntable.N_thetaH, conv, lP, FFTW_ESTIMATE);
+  loglmax  = log(l_max);
+  loglmin  = log(l_min);
+  dlnl     = (loglmax-loglmin)/(1.0*Ntable.N_thetaH-1.);
+  lnrc     = 0.5*(loglmax+loglmin);
+  nc       = Ntable.N_thetaH/2+1;
+  /* Power spectrum on logarithmic bins */
+  for(i=0; i<Ntable.N_thetaH; i++) {
+    l     = exp(lnrc+(i-nc)*dlnl);
+    lP[i] = l*C_tomo(l,ni,nj);
+    
+  }
+  
+  /* go to log-Fourier-space */
+  fftw_execute(plan);
+  arg[0] = 0;   /* bias */
+  arg[1] = N_Bessel;   /* order of Bessel function */
+  /* perform the convolution, negative sign for kernel (complex conj.!) */
+  for(i=0; i<Ntable.N_thetaH/2+1; i++) {
+    kk = 2*constants.pi*i/(dlnl*Ntable.N_thetaH);
+    hankel_kernel_FT(kk, &kernel, arg, 2);
+    conv[i][0] = f_lP[i][0]*kernel[0]-f_lP[i][1]*kernel[1];
+    conv[i][1] = f_lP[i][1]*kernel[0]+f_lP[i][0]*kernel[1];
+  }
+  /* force Nyquist- and 0-frequency-components to be double */
+  conv[0][1] = 0;
+  conv[Ntable.N_thetaH/2][1] = 0;
+  /* go back to double space, i labels log-bins in theta */
+  fftw_execute(plan1);
+  for(i=0; i<Ntable.N_thetaH; i++) {
+    t = exp((nc-i)*dlnl-lnrc);             /* theta=1/l */
+    xi[0][Ntable.N_thetaH-i-1] = lP[i]/(t*2*constants.pi*Ntable.N_thetaH);
+  }
+  
+  
+  *logthetamin = (nc-Ntable.N_thetaH+1)*dlnl-lnrc;
+  *logthetamax = nc*dlnl-lnrc;
+  /* clean up */
+  fftw_free(conv);
+  fftw_free(lP);
+  fftw_free(f_lP);
+  fftw_destroy_plan(plan);
+  fftw_destroy_plan(plan1);
+}
 
 
 void run_cov_N_N (char *OUTFILE, char *PATH, int nzc1, int nzc2,int start)
