@@ -799,15 +799,16 @@ void save_zdistr_lenses(int zl){
   init_IA("NLA_HF","GAMA"); 
   init_probes("3x2pt");
 
+  init_cmb("advact");
   //init_Pdelta("emu",0.8,0.35);
   // init_Pdelta("linear",0.8,0.35);
 
-  for (i =0; i< 10; i++){
-    save_zdistr_sources(i);
-  }
-  for (i =0; i< 10; i++){
-    save_zdistr_lenses(i);
-  }
+  // for (i =0; i< 10; i++){
+  //   save_zdistr_sources(i);
+  // }
+  // for (i =0; i< 10; i++){
+  //   save_zdistr_lenses(i);
+  // }
 //   double Omega;
 //   char filename[300];
 // for (i=0;i<200; i++){
