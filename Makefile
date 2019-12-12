@@ -11,4 +11,4 @@ cfftlog := $(cfftlog_dir)cfftlog.c $(cfftlog_dir)utils.c $(cfftlog_dir)utils_com
 
 
 home_datav:
-	gcc like_fourier_LSSxCMB.c -o ./test_like_LSSxCMB $(opt_home)
+	gcc like_fourier_full.c -o ./test_like_full $(opt_home)
