@@ -194,8 +194,7 @@ void set_data_gk(double *ell, double *data, int start)
 {
    for (int nz=0; nz<tomo.clustering_Nbin; nz++){
       for (int i=0; i<like.Ncl; i++){
-         bool compute = test_kmax(ell[i],nz) * (ell[i]<like.lmax_kappacmb);
-         if (compute){
+         if (ell[i]<like.lmax_kappacmb && test_kmax(ell[i],nz)){
             data[start+(like.Ncl*nz)+i] = C_gk_sys(ell[i],nz);
          }
          else{
