@@ -797,7 +797,7 @@ void save_zdistr_lenses(int zl){
   sprintf(arg2,"zdistris/%s",lens_zfile[sce]); 
   init_galaxies(arg1,arg2,"gaussian","gaussian",tomo_binning_source[sce],tomo_binning_lens[sce]);
   init_IA("NLA_HF","GAMA"); 
-  init_probes("3x2pt");
+  init_probes("6x2pt");
 
   init_cmb("advact");
   //init_Pdelta("emu",0.8,0.35);
