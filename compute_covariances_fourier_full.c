@@ -802,7 +802,8 @@ int main(int argc, char** argv)
     init_clusters();
     init_IA("none", "GAMA"); 
     init_probes("3x2pt");
-   
+
+    init_cmb("advact");
 
     //set l-bins for shear, ggl, clustering, clusterWL
     double logdl=(log(like.lmax)-log(like.lmin))/like.Ncl;
