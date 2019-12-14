@@ -671,7 +671,7 @@ int main(int argc, char** argv)
   Ntable.N_a=20;
   k=1;
    
-  for(t=2;t<3;t++){
+  for(t=1;t<2;t++){
    
     //RUN MODE setup
     init_cosmo_runmode("emu");
@@ -712,8 +712,8 @@ int main(int argc, char** argv)
     sprintf(survey.name,"%s_area%le_ng%le_nl%le",survey_designation[0],survey.area,survey.n_gal,survey.n_lens);
     printf("area: %le n_source: %le n_lens: %le\n",survey.area,survey.n_gal,survey.n_lens);
 
-//    sprintf(covparams.outdir,"/home/u17/timeifler/covparallel/"); 
-    sprintf(covparams.outdir,"/halo_nobackup/cosmos/teifler/covparallel/");
+    sprintf(covparams.outdir,"/home/u17/timeifler/covparallel/"); 
+    //sprintf(covparams.outdir,"/halo_nobackup/cosmos/teifler/covparallel/");
 
     printf("----------------------------------\n");  
     sprintf(OUTFILE,"%s_ssss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
