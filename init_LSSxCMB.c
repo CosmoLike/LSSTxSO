@@ -18,8 +18,6 @@ void set_lens_galaxies_LSST();
 void set_galaxies_WFIRST_SN10();
 
 void set_equal_tomo_bins();
-void set_clusters_LSST();
-void init_clusters();
 void init_IA(char *model,char *lumfct);
 
 void init_cmb(char * cmbName);
@@ -313,40 +311,12 @@ void init_probes(char *probes)
   printf("------------------------------\n");
   printf("Initializing Probes\n");
   printf("------------------------------\n"); 
-  printf("tomo.cluster_Nbin=%d\n",tomo.cluster_Nbin);
-  printf("tomo.cgl_Npowerspectra=%d\n",tomo.cgl_Npowerspectra);
-  printf("Cluster.lbin=%d\n",Cluster.lbin);
-  printf("Cluster.N200_Nbin=%d\n",Cluster.N200_Nbin);
   printf("like.Ncl=%d\n",like.Ncl);
   printf("tomo.shear_Npowerspectra=%d\n",tomo.shear_Npowerspectra);
   printf("tomo.ggl_Npowerspectra=%d\n",tomo.ggl_Npowerspectra);
   printf("tomo.clustering_Npowerspectra=%d\n",tomo.clustering_Npowerspectra);
 
   sprintf(like.probes,"%s",probes);
-  if(strcmp(probes,"clusterN")==0){
-    like.Ndata=tomo.cluster_Nbin*Cluster.N200_Nbin;
-    like.clusterN=1;
-    printf("Cluster Number Counts computation initialized\n");
-  }
-  if(strcmp(probes,"clusterN_clusterWL")==0){
-    like.Ndata=tomo.cluster_Nbin*Cluster.N200_Nbin+tomo.cgl_Npowerspectra*Cluster.N200_Nbin*Cluster.lbin;
-    like.clusterN=1;
-    like.clusterWL=1;
-    printf("Cluster Number Counts computation initialized\n");
-    printf("Cluster weak lensing computation initialized\n");
-  }
-  if(strcmp(probes,"3x2pt_clusterN")==0){
-    like.Ndata=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra)+tomo.cluster_Nbin*Cluster.N200_Nbin;
-    like.shear_shear=1;
-    like.shear_pos=1;
-    like.pos_pos=1;
-    like.clusterN=1;
-    printf("Shear-Shear computation initialized\n");
-    printf("Shear-Position computation initialized\n");
-    printf("Position-Position computation initialized\n");
-    printf("Cluster Number Counts computation initialized\n");
-  }
-
   if(strcmp(probes,"shear_shear")==0){
     like.Ndata=like.Ncl*tomo.shear_Npowerspectra;
     like.shear_shear=1;
@@ -407,24 +377,19 @@ void init_probes(char *probes)
     printf("CMBkappa-CMBkappa computation initialized\n");
   }
   if(strcmp(probes,"6x2pt_clusterN_clusterWL")==0) {
-    like.Ndata = like.Ncl * (2*tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+tomo.shear_Nbin+tomo.shear_Npowerspectra)\
-                +tomo.cluster_Nbin*Cluster.N200_Nbin +tomo.cgl_Npowerspectra*Cluster.N200_Nbin*Cluster.lbin;
+    like.Ndata = like.Ncl * (2*tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+tomo.shear_Nbin+tomo.shear_Npowerspectra);
     like.pos_pos = 1;
     like.gk = 1;
     like.shear_pos = 1;
     like.kk = 1;
     like.ks = 1;
     like.shear_shear = 1;
-    like.clusterN=1;
-    like.clusterWL=1;
     printf("Shear-Shear computation initialized\n");
     printf("Shear-Position computation initialized\n");
     printf("Position-Position computation initialized\n");
     printf("CMBkappa-Shear computation initialized\n");
     printf("CMBkappa-Position computation initialized\n");
     printf("CMBkappa-CMBkappa computation initialized\n");
-    printf("Cluster Number Counts computation initialized\n");
-    printf("Cluster weak lensing computation initialized\n");
   }
   printf("Total number of data points like.Ndata=%d\n",like.Ndata);
 }
@@ -446,9 +411,6 @@ void init_lens_sample(char *lensphotoz, char *tomo_binning_lens)
   }
   printf("Lens Sample Redshift Errors set to %s: redshift.clustering_photoz=%d\n",lensphotoz,redshift.clustering_photoz);
   
-  if(strcmp(tomo_binning_lens,"WF_SN10")==0){
-    set_galaxies_WFIRST_SN10();
-  }
   if(strcmp(tomo_binning_lens,"LSST_gold")==0){
     set_lens_galaxies_LSST();
   }
@@ -517,56 +479,6 @@ void set_galaxies_source()
 }
 
 
-void set_galaxies_WFIRST_SN10()
-{
-  int k,j,n,i;
-  double frac, zi;
-  redshift.clustering_zdistrpar_zmin = 0.25;
-  redshift.clustering_zdistrpar_zmax = 4.0;
-  tomo.clustering_Npowerspectra=tomo.clustering_Nbin;
-  tomo.clustering_zmin[0] = redshift.clustering_zdistrpar_zmin;
-  tomo.clustering_zmax[tomo.clustering_Nbin-1] = redshift.clustering_zdistrpar_zmax;
-  pf_histo(zi, NULL);
-  int zbins =2000;
-  double da = (redshift.clustering_zdistrpar_zmax-redshift.clustering_zdistrpar_zmin)/(1.0*zbins);
-  double *sum;
-  sum=create_double_vector(0, zbins);
-  
-  sum[0] = 0.0;
-  for (k = 0, zi = redshift.clustering_zdistrpar_zmin; k<zbins; k++,zi+=da){
-    sum[k+1] = sum[k]+pf_histo(zi, NULL);
-  }
-  
-  printf("\n");
-  printf("Lens Sample - Tomographic Bin limits:\n");
-  for(k=0;k<tomo.clustering_Nbin-1;k++){
-    frac=(k+1.)/(1.*tomo.clustering_Nbin)*sum[zbins-1];
-    j = 0;
-    while (sum[j]< frac){
-      j++;
-    }
-    tomo.clustering_zmax[k] = redshift.clustering_zdistrpar_zmin+j*da;
-    tomo.clustering_zmin[k+1] = redshift.clustering_zdistrpar_zmin+j*da;
-    printf("min=%le max=%le\n",tomo.clustering_zmin[k],tomo.clustering_zmax[k]);
-  }
-  printf("min=%le max=%le\n",tomo.clustering_zmin[tomo.clustering_Nbin-1],tomo.clustering_zmax[tomo.clustering_Nbin-1]);
-  printf("redshift.clustering_zdistrpar_zmin=%le max=%le\n",redshift.clustering_zdistrpar_zmin,redshift.clustering_zdistrpar_zmax);
-  free_double_vector(sum,0,zbins);
-    gbias.b1_function = &b1_per_bin;
-  for (i =0; i < tomo.clustering_Nbin; i++){
-    gbias.b[i] = 1.3+0.1*i;
-    printf("Bin %d: galaxy bias=%le\n",i,gbias.b[i]);
-  }
-  n=0;
-  for (i = 0; i < tomo.clustering_Nbin; i++){
-    for(j = 0; j<tomo.shear_Nbin;j++){
-      n += test_zoverlap(i,j);
-      printf("GGL combinations zl=%d zs=%d accept=%d\n",i,j,test_zoverlap(i,j));
-    }
-  }
-  tomo.ggl_Npowerspectra = n;
-  printf("%d GGL Powerspectra\n",tomo.ggl_Npowerspectra);
-}
 
 void set_lens_galaxies_LSST()
 {
@@ -647,72 +559,6 @@ void init_IA(char *model,char *lumfct)
   printf("SET IA MODEL=%s\n",model);
   set_ia_priors();
   log_like_f_red();
-}
-
-void init_clusters()
-{
-  printf("\n");
-  printf("-----------------------------------\n");
-  printf("Initializing clusters\n");
-  printf("-----------------------------------\n");
-  set_clusters_LSST();
-}
-
-
-void set_clusters_LSST(){
-  int i,j;
-  //N200->M relationship from Murata et al. (2018)
-  nuisance.cluster_Mobs_lgN0 = 3.207; //fiducial: 3.207, flat prior [0.5, 5.0]
-  nuisance.cluster_Mobs_alpha = 0.993; //fiducial: 0.993, flat prior [0.0, 2.0]
-  nuisance.cluster_Mobs_beta = 0.0; //fiducial: 0.0, flat prior [-1.5, 1.5]
-  nuisance.cluster_Mobs_sigma0 = 0.456; //fiducial: 0.456, flat prior [0.0, 1.5]
-  nuisance.cluster_Mobs_sigma_qm = 0.0; //fiducial: -0.169, flat prior [-1.5, 1.5]
-  nuisance.cluster_Mobs_sigma_qz = 0.0; //fiducial: 0.0, flat prior [-1.5, 1.5]
-  //Compliteness parameters are not marinilized, but just fixed to 1.
-  nuisance.cluster_completeness[0] = 1.0;
-  nuisance.cluster_completeness[1] = 1.0;
-  nuisance.cluster_completeness[2] = 1.0;
-  nuisance.cluster_completeness[3] = 1.0;
-
-  //no miscentering so far
-  nuisance.cluster_centering_f0 = 1.0;
-  nuisance.cluster_centering_alpha = 0;
-  nuisance.cluster_centering_sigma = 0;
-  nuisance.cluster_centering_M_pivot = 1.e+14;
-  printf("%e %e %e %e %e %e\n",nuisance.cluster_Mobs_lgN0, nuisance.cluster_Mobs_alpha, nuisance.cluster_Mobs_beta, nuisance.cluster_Mobs_sigma0,  nuisance.cluster_Mobs_sigma_qm, nuisance.cluster_Mobs_sigma_qz);
-  tomo.cluster_Nbin = 4; // number of cluster redshift bins
-  tomo.cluster_zmin[0] = 0.4;
-  tomo.cluster_zmax[0] = 0.6;
-  tomo.cluster_zmin[1] = 0.6;
-  tomo.cluster_zmax[1] = 0.8;
-  tomo.cluster_zmin[2] = 0.8;
-  tomo.cluster_zmax[2] = 1.0;
-  tomo.cluster_zmin[3] = 1.0;
-  tomo.cluster_zmax[3] = 1.2;
-  tomo.cgl_Npowerspectra = 0;// number of cluster-lensing tomography combinations
-  for (i = 0; i < tomo.cluster_Nbin; i++){
-    for(j = 0; j<tomo.shear_Nbin;j++){
-      tomo.cgl_Npowerspectra += test_zoverlap_c(i,j);
-    }
-  }
-  
-  Cluster.N200_min = 25.; //formerly 20
-  Cluster.N200_max = 220.;
-  Cluster.N200_Nbin = 4;
-  strcpy(Cluster.model,"Murata_etal_2018");
-  //upper bin boundaries - note that bin boundaries need to be integers!
-  int Nlist[4] = {40,80,120,Cluster.N200_max}; //formerly 40,80,120,...
-  Cluster.N_min[0] = Cluster.N200_min;
-  Cluster.N_max[0] = Nlist[0];
-  for (i = 1; i < Cluster.N200_Nbin; i++){
-    Cluster.N_min[i] = Nlist[i-1];
-    Cluster.N_max[i] = Nlist[i];
-  }
- for (i = 0; i < Cluster.N200_Nbin; i++){
-    printf ("Richness bin %d: %e - %e, N(z = 0.3) = %e, N(z = 0.7) = %e\n", i,Cluster.N_min[i],Cluster.N_max[i],N_N200(0,i),N_N200(2,i));
-  }
-  printf("Clusters set to LSST Y10\n");
-  printf("Clusters cgl_Npowerspectra=%d\n",tomo.cgl_Npowerspectra);
 }
 
 

@@ -9,9 +9,12 @@ cfftlog_dir := ../cosmolike_core/cfftlog/
 cfftlog := $(cfftlog_dir)cfftlog.c $(cfftlog_dir)utils.c $(cfftlog_dir)utils_complex.c
 
 
+home: 
+	make home_datav
+	make home_cov
 
 home_datav:
-	gcc like_fourier_full.c -o ./test_like_full $(opt_home)
+	gcc like_fourier.c -o ./test_like $(opt_home)
 
 home_cov:
-	gcc compute_covariances_fourier_full.c -o ./compute_covariances_fourier_full $(opt_home)
+	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier $(opt_home)

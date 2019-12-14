@@ -38,20 +38,18 @@
 #include "../cosmolike_core/theory/pt.c"
 #include "../cosmolike_core/theory/cosmo2D_fourier.c"
 #include "../cosmolike_core/theory/IA.c"
-#include "../cosmolike_core/theory/cluster.c"
 #include "../cosmolike_core/theory/BAO.c"
 #include "../cosmolike_core/theory/external_prior.c"
 #include "../cosmolike_core/theory/covariances_3D.c"
 #include "../cosmolike_core/theory/covariances_fourier.c"
-#include "../cosmolike_core/theory/covariances_cluster.c"
-// #include "init_emu.c"
+#include "../cosmolike_core/theory/CMBxLSS_fourier.c"
+#include "../cosmolike_core/theory/covariances_CMBxLSS_fourier.c"
 
 #include "init_LSSxCMB.c"
+
 typedef double (*C_tomo_pointer)(double l, int n1, int n2);
 void twopoint_via_hankel(double **xi, double *logthetamin, double *logthetamax, C_tomo_pointer C_tomo, int ni, int nj, int N_Bessel);
 
-#include "../cosmolike_core/theory/CMBxLSS.c"
-#include "../cosmolike_core/theory/covariances_CMBxLSS_fourier.c"
 
 void run_cov_N_N (char *OUTFILE, char *PATH, int nzc1, int nzc2,int start);
 void run_cov_cgl_N (char *OUTFILE, char *PATH, double *ell_Cluster, double *dell_Cluster,int N1, int nzc2, int start);
@@ -84,354 +82,11 @@ void run_cov_kk_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int n2,
 void run_cov_ks_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zs1, int zs2,int start);
 void run_cov_ks_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int zs1, int n2, int start);
 
-/****************** hankel transformation routine *******************/
-void twopoint_via_hankel(double **xi, double *logthetamin, double *logthetamax, C_tomo_pointer C_tomo, int ni, int nj, int N_Bessel){
-  const double l_min = 0.0001;
-  const double l_max = 5.0e6;
-  double loglmax, loglmin, dlnl, lnrc, arg[2];
-  static int nc;
-  
-  double        l, kk, *lP, t;
-  fftw_plan     plan1,plan;
-  fftw_complex *f_lP,*conv;
-  fftw_complex  kernel;
-  int           i;
-  lP   = fftw_malloc(Ntable.N_thetaH*sizeof(double));
-  f_lP = fftw_malloc((Ntable.N_thetaH/2+1)*sizeof(fftw_complex));
-  conv = fftw_malloc((Ntable.N_thetaH/2+1)*sizeof(fftw_complex));
-  plan  = fftw_plan_dft_r2c_1d(Ntable.N_thetaH, lP, f_lP, FFTW_ESTIMATE);
-  plan1 = fftw_plan_dft_c2r_1d(Ntable.N_thetaH, conv, lP, FFTW_ESTIMATE);
-  loglmax  = log(l_max);
-  loglmin  = log(l_min);
-  dlnl     = (loglmax-loglmin)/(1.0*Ntable.N_thetaH-1.);
-  lnrc     = 0.5*(loglmax+loglmin);
-  nc       = Ntable.N_thetaH/2+1;
-  /* Power spectrum on logarithmic bins */
-  for(i=0; i<Ntable.N_thetaH; i++) {
-    l     = exp(lnrc+(i-nc)*dlnl);
-    lP[i] = l*C_tomo(l,ni,nj);
-    
-  }
-  
-  /* go to log-Fourier-space */
-  fftw_execute(plan);
-  arg[0] = 0;   /* bias */
-  arg[1] = N_Bessel;   /* order of Bessel function */
-  /* perform the convolution, negative sign for kernel (complex conj.!) */
-  for(i=0; i<Ntable.N_thetaH/2+1; i++) {
-    kk = 2*constants.pi*i/(dlnl*Ntable.N_thetaH);
-    hankel_kernel_FT(kk, &kernel, arg, 2);
-    conv[i][0] = f_lP[i][0]*kernel[0]-f_lP[i][1]*kernel[1];
-    conv[i][1] = f_lP[i][1]*kernel[0]+f_lP[i][0]*kernel[1];
-  }
-  /* force Nyquist- and 0-frequency-components to be double */
-  conv[0][1] = 0;
-  conv[Ntable.N_thetaH/2][1] = 0;
-  /* go back to double space, i labels log-bins in theta */
-  fftw_execute(plan1);
-  for(i=0; i<Ntable.N_thetaH; i++) {
-    t = exp((nc-i)*dlnl-lnrc);             /* theta=1/l */
-    xi[0][Ntable.N_thetaH-i-1] = lP[i]/(t*2*constants.pi*Ntable.N_thetaH);
-  }
-  
-  
-  *logthetamin = (nc-Ntable.N_thetaH+1)*dlnl-lnrc;
-  *logthetamax = nc*dlnl-lnrc;
-  /* clean up */
-  fftw_free(conv);
-  fftw_free(lP);
-  fftw_free(f_lP);
-  fftw_destroy_plan(plan);
-  fftw_destroy_plan(plan1);
-}
 
 
-void run_cov_N_N (char *OUTFILE, char *PATH, int nzc1, int nzc2,int start)
-{
-  int nN1, nN2,i,j;
-  double cov;
-  FILE *F1;
-  char filename[300];
-  sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
-  F1 =fopen(filename,"w");
-  for (nN1 = 0; nN1 < Cluster.N200_Nbin; nN1 ++){
-    for (nN2 = 0; nN2 < Cluster.N200_Nbin; nN2 ++){
-      i = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra);
-      i += Cluster.N200_Nbin*nzc1+nN1;
-      j = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra);
-      j += Cluster.N200_Nbin*nzc2+nN2;
 
-      cov =cov_N_N(nzc1,nN1, nzc2, nN2);
-      fprintf(F1,"%d %d %e %e %d %d %d %d  %e %e\n",i,j,0.0,0.0, nzc1, nN1, nzc2, nN2,cov,0.0);
-    }
-  }
-  fclose(F1);
-}
 
-void run_cov_cgl_N (char *OUTFILE, char *PATH, double *ell_Cluster, double *dell_Cluster,int N1, int nzc2, int start)
-{
-  int nN1, nN2, nl1, nzc1, nzs1,i,j;
-  double cov;
-  FILE *F1;
-  char filename[300];
-  sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
-  F1 =fopen(filename,"w");
-  nzc1 = ZC(N1);
-  nzs1 = ZSC(N1);
-  for (nN1 = 0; nN1 < Cluster.N200_Nbin; nN1 ++){
-    for( nl1 = 0; nl1 < Cluster.lbin; nl1 ++){
-     for (nN2 = 0; nN2 < Cluster.N200_Nbin; nN2 ++){
-       i = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra)+Cluster.N200_Nbin*tomo.cluster_Nbin;
-       i += (N1*Cluster.N200_Nbin+nN1)*Cluster.lbin +nl1;
-       j = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra);
-       j += Cluster.N200_Nbin*nzc2+nN2;
 
-       cov =cov_cgl_N(ell_Cluster[nl1],nzc1,nN1, nzs1, nzc2, nN2);
-       fprintf(F1,"%d %d %e %e %d %d %d %d  %e %e\n",i,j, ell_Cluster[nl1], 0., nzc1, nzs1, nzc2, nN2,cov,0.);
-     }
-   }
- }
- fclose(F1);
-}
-
-void run_cov_cgl_cgl (char *OUTFILE, char *PATH, double *ell_Cluster, double *dell_Cluster,int N1, int N2, int start)
-{
-  int nN1, nN2, nl1, nzc1, nzs1, nl2, nzc2, nzs2,i,j;
-  double c_g, c_ng;
-  FILE *F1;
-  char filename[300];
-  sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
-  F1 =fopen(filename,"w");
-  nzc1 = ZC(N1);
-  nzs1 = ZSC(N1);
-  nzc2 = ZC(N2);
-  nzs2 = ZSC(N2);
-  for (nN1 = 0; nN1 < Cluster.N200_Nbin; nN1 ++){
-    for( nl1 = 0; nl1 < Cluster.lbin; nl1 ++){
-      for (nN2 = 0; nN2 < Cluster.N200_Nbin; nN2 ++){
-        for( nl2 = 0; nl2 < Cluster.lbin; nl2 ++){
-          i = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra)+Cluster.N200_Nbin*tomo.cluster_Nbin;
-          i += (N1*Cluster.N200_Nbin+nN1)*Cluster.lbin +nl1;
-          j = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra)+Cluster.N200_Nbin*tomo.cluster_Nbin;
-          j += (N2*Cluster.N200_Nbin+nN2)*Cluster.lbin +nl2;
-
-          c_g = 0;
-          c_ng = cov_NG_cgl_cgl(ell_Cluster[nl1],ell_Cluster[nl2],nzc1,nN1, nzs1, nzc2, nN2,nzs2);
-          if (nl2 == nl1){c_g =cov_G_cgl_cgl(ell_Cluster[nl1],dell_Cluster[nl1],nzc1,nN1, nzs1, nzc2, nN2,nzs2);}
-          fprintf(F1,"%d %d %e %e %d %d %d %d  %e %e\n",i,j,ell_Cluster[nl1],ell_Cluster[nl2], nzc1, nzs1, nzc2, nzs2,c_g, c_ng);
-        }
-      }
-    }
-  }
-  fclose(F1);
-}
-
-void run_cov_cgl_cgl_all (char *OUTFILE, char *PATH, double *ell_Cluster, double *dell_Cluster)
-{
-  int nN1, nN2, nl1, nzc1, nzs1, nl2, nzc2, nzs2,i,j, N1,N2;
-  double c_g, c_ng;
-  FILE *F1;
-  char filename[300];
-  sprintf(filename,"%s%s",PATH,OUTFILE);
-  F1 =fopen(filename,"w");
-  for (N1 = 0; N1 < tomo.cgl_Npowerspectra; N1 ++){
-    for (N2 = 0; N2 < tomo.cgl_Npowerspectra; N2 ++){
-      nzc1 = ZC(N1);
-      nzs1 = ZSC(N1);
-      nzc2 = ZC(N2);
-      nzs2 = ZSC(N2);
-      for (nN1 = 0; nN1 < Cluster.N200_Nbin; nN1 ++){
-        for( nl1 = 0; nl1 < Cluster.lbin; nl1 ++){
-          for (nN2 = 0; nN2 < Cluster.N200_Nbin; nN2 ++){
-            for( nl2 = 0; nl2 < Cluster.lbin; nl2 ++){
-              i = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra)+Cluster.N200_Nbin*tomo.cluster_Nbin;
-              i += (N1*Cluster.N200_Nbin+nN1)*Cluster.lbin +nl1;
-              j = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra)+Cluster.N200_Nbin*tomo.cluster_Nbin;
-              j += (N2*Cluster.N200_Nbin+nN2)*Cluster.lbin +nl2;         
-              c_g = 0;
-              c_ng = cov_NG_cgl_cgl(ell_Cluster[nl1],ell_Cluster[nl2],nzc1,nN1, nzs1, nzc2, nN2,nzs2);
-              if (nl2 == nl1){c_g =cov_G_cgl_cgl(ell_Cluster[nl1],dell_Cluster[nl1],nzc1,nN1, nzs1, nzc2, nN2,nzs2);}
-              fprintf(F1,"%d %d %e %e %d %d %d  %d %d %d  %e %e\n",i,j,ell_Cluster[nl1],ell_Cluster[nl2], nzc1, nN1,nzs1, nzc2, nN2,nzs2,c_g, c_ng);
-            }
-          }
-        }
-      }
-    }
-  }
-  fclose(F1);
-}
-
-void run_cov_shear_N (char *OUTFILE, char *PATH, double *ell, double *dell, int N1, int nzc2, int start)
-{
-  int nz1,nz2, nN2, nl1, nzc1, i,j;
-  double cov;
-  FILE *F1;
-  char filename[300];
-  sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
-  F1 =fopen(filename,"w");
-  nz1 = Z1(N1);
-  nz2 = Z2(N1);
-  for( nl1 = 0; nl1 < like.Ncl; nl1 ++){
-    for (nN2 = 0; nN2 < Cluster.N200_Nbin; nN2 ++){
-      cov = 0.;
-      i = like.Ncl*N1+nl1;
-      j = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra);
-      j += Cluster.N200_Nbin*nzc2+nN2;
-
-      if (ell[nl1] < like.lmax_shear){cov =cov_shear_N(ell[nl1],nz1,nz2, nzc2, nN2);}
-      fprintf(F1,"%d %d %e %e %d %d %d %d  %e %e\n",i,j, ell[nl1], 0., nz1, nz2, nzc2, nN2,cov,0.);
-    }
-  }
-  fclose(F1);
-}
-
-void run_cov_shear_cgl (char *OUTFILE, char *PATH, double *ell, double *dell, double *ell_Cluster, double *dell_Cluster,int N1, int N2, int nl1, int start)
-{
-  int nN1, nN2, nzs1, nzs2,nl2, nzc2, nzs3,i,j;
-  double c_g, c_ng;
-  FILE *F1;
-  char filename[300];
-  sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
-  F1 =fopen(filename,"w");
-  nzs1 = Z1(N1);
-  nzs2 = Z2(N1);
-  nzc2 = ZC(N2);
-  nzs3 = ZSC(N2);
-  for(nl1 = 0; nl1 < like.Ncl; nl1 ++){
-    for (nN2 = 0; nN2 < Cluster.N200_Nbin; nN2 ++){
-      for( nl2 = 0; nl2 < Cluster.lbin; nl2 ++){
-        i = like.Ncl*N1+nl1;
-        j = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra)+Cluster.N200_Nbin*tomo.cluster_Nbin;
-        j += (N2*Cluster.N200_Nbin+nN2)*Cluster.lbin +nl2;          
-        c_g = 0.;
-        c_ng = 0.;
-        if (ell[nl1] < like.lmax_shear){
-          c_ng = cov_NG_shear_cgl(ell[nl1],ell_Cluster[nl2],nzs1, nzs2, nzc2, nN2,nzs3);
-          if (fabs(ell[nl1]/ell_Cluster[nl2] -1.) < 0.001){ 
-            c_g =cov_G_shear_cgl(ell[nl1],dell_Cluster[nl2],nzs1,nzs2, nzc2, nN2,nzs3);
-          }
-        }
-        fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell_Cluster[nl2], nzs1, nzs2, nzc2, nzs3,c_g, c_ng);
-      }
-    }
-  }
-  fclose(F1);
-}
-
-void run_cov_ggl_N (char *OUTFILE, char *PATH, double *ell, double *dell, int N1, int nzc2, int start)
-{
-  int zl,zs, nN2, nl1, nzc1, i,j;
-  double cov,weight;
-  FILE *F1;
-  char filename[300];
-  sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
-  F1 =fopen(filename,"w");
-  zl = ZL(N1);
-  zs = ZS(N1);
-  for( nl1 = 0; nl1 < like.Ncl; nl1 ++){
-    for (nN2 = 0; nN2 < Cluster.N200_Nbin; nN2 ++){
-      i = like.Ncl*(tomo.shear_Npowerspectra+N1)+nl1;
-      j = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra);
-      j += Cluster.N200_Nbin*nzc2+nN2;
-      cov = 0.;
-      weight = test_kmax(ell[nl1],zl);
-      if (weight){
-        cov =cov_ggl_N(ell[nl1],zl,zs, nzc2, nN2);
-      }
-      fprintf(F1,"%d %d %e %e %d %d %d %d  %e %e\n",i,j, ell[nl1], 0., zl, zs, nzc2, nN2,cov,0.);
-    }
-  }
-  fclose(F1);
-}
-
-void run_cov_ggl_cgl (char *OUTFILE, char *PATH, double *ell, double *dell, double *ell_Cluster, double *dell_Cluster,int N1, int N2, int nl1, int start)
-{
-  int nN2, zl, zs, nzs1, nl2, nzc2, nzs3,i,j;
-  double c_g, c_ng,weight;
-  FILE *F1;
-  char filename[300];
-  sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
-  F1 =fopen(filename,"w");
-  zl = ZL(N1);
-  zs = ZS(N1);
-  nzc2 = ZC(N2);
-  nzs3 = ZSC(N2);
-  for(nl1 = 0; nl1 < like.Ncl; nl1 ++){
-    for (nN2 = 0; nN2 < Cluster.N200_Nbin; nN2 ++){
-      for( nl2 = 0; nl2 < Cluster.lbin; nl2 ++){
-        i = like.Ncl*(tomo.shear_Npowerspectra+N1)+nl1;
-        j = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra)+Cluster.N200_Nbin*tomo.cluster_Nbin;
-        j += (N2*Cluster.N200_Nbin+nN2)*Cluster.lbin +nl2;
-
-        c_g = 0; c_ng = 0.;
-        weight = test_kmax(ell[nl1],zl);
-        if (weight){
-          c_ng = cov_NG_ggl_cgl(ell[nl1],ell_Cluster[nl2],zl,zs, nzc2, nN2,nzs3);
-          if (fabs(ell[nl1]/ell_Cluster[nl2] -1.) < 0.1){c_g =cov_G_ggl_cgl(ell[nl1],dell_Cluster[nl2],zl,zs, nzc2, nN2,nzs3);}
-        }
-        fprintf(F1,"%d %d %e %e %d %d %d %d  %e %e\n",i,j,ell[nl1],ell_Cluster[nl2], zl, zs, nzc2, nzs3,c_g, c_ng);
-      }
-    }
-  }
-  fclose(F1);
-}
-
-void run_cov_cl_N (char *OUTFILE, char *PATH, double *ell, double *dell,int N1, int nzc2, int start)
-{
-  int zl,zs, nN2, nl1, nzc1, i,j;
-  double cov,weight;
-  FILE *F1;
-  char filename[300];
-  sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
-  F1 =fopen(filename,"w");
-  for( nl1 = 0; nl1 < like.Ncl; nl1 ++){
-    for (nN2 = 0; nN2 < Cluster.N200_Nbin; nN2 ++){
-      i = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+N1)+nl1;
-      j = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra);
-      j += Cluster.N200_Nbin*nzc2+nN2;
-      cov = 0.;
-      weight = test_kmax(ell[nl1],N1);
-      if (weight){
-        cov =cov_cl_N(ell[nl1],N1,N1,nzc2,nN2);
-      }
-      fprintf(F1,"%d %d %e %e %d %d %d %d  %e %e\n",i,j, ell[nl1], 0., N1, N1, nzc2, nN2,cov,0.);
-    }
-  }
-  fclose(F1);
-}
-
-void run_cov_cl_cgl (char *OUTFILE, char *PATH, double *ell, double *dell, double *ell_Cluster, double *dell_Cluster,int N1, int N2, int nl1, int start)
-{
-  int nN2,nzc2, nzs3,i,j,nl2;
-  double c_g, c_ng,weight;
-  FILE *F1;
-  char filename[300];
-  sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
-  F1 =fopen(filename,"w");
-  nzc2 = ZC(N2);
-  nzs3 = ZSC(N2);
-  for(nl1 = 0; nl1 < like.Ncl; nl1 ++){
-    for (nN2 = 0; nN2 < Cluster.N200_Nbin; nN2 ++){
-      for( nl2 = 0; nl2 < Cluster.lbin; nl2 ++){
-        i = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+N1)+nl1;
-        j = like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Npowerspectra)+Cluster.N200_Nbin*tomo.cluster_Nbin;
-        j += (N2*Cluster.N200_Nbin+nN2)*Cluster.lbin +nl2;
-
-        c_g = 0; c_ng = 0.;
-        weight = test_kmax(ell[nl1],N1);
-        if (weight){
-          c_ng = cov_NG_cl_cgl(ell[nl1],ell_Cluster[nl2],N1,N1, nzc2, nN2,nzs3);
-          if (fabs(ell[nl1]/ell_Cluster[nl2] -1.) < 0.1){
-            c_g =cov_G_cl_cgl(ell[nl1],dell_Cluster[nl2],N1,N1, nzc2, nN2,nzs3);
-          }
-        }
-        fprintf(F1,"%d %d %e %e %d %d %d %d  %e %e\n",i,j,ell[nl1],ell_Cluster[nl2], N1,N1, nzc2, nzs3,c_g, c_ng);
-        //printf("%d %d %e %e %d %d %d %d  %e %e\n",i,j,ell[nl1],ell_Cluster[nl2], N1,N1, nzc2, nzs3,c_g, c_ng);
-      }
-    }
-  }
-  fclose(F1);
-}
 
 void run_cov_ggl_shear(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start)
 {
@@ -1024,8 +679,7 @@ int main(int argc, char** argv)
     init_survey(survey_designation[t],nsource_table[t],nlens_table[t],area_table[t]);
     sprintf(arg1,"zdistris/%s",source_zfile[t]);
     sprintf(arg2,"zdistris/%s",lens_zfile[t]); 
-    init_galaxies(arg1,arg2,"none","none",survey_designation[t]);
-    init_clusters();
+    init_galaxies(arg1,arg2,"none","none","source_std","LSST_gold");
     init_IA("none", "GAMA"); 
     init_probes("3x2pt");
 
