@@ -8,3 +8,5 @@ test_like_full.dSYM/
 test_like
 
 compute_covariances_fourier
+
+cov/

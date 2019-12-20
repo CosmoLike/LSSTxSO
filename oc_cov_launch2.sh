@@ -1,9 +1,9 @@
 #!/bin/bash
 #PBS -S /bin/bash
 #PBS -V
-#PBS -W group_list=cosmo
+#PBS -W group_list=buelljannuzi
 #PBS -q standard
-#PBS -J 1-5000
+#PBS -J 5001-9381
 #PBS -l select=1:ncpus=1:mem=1GB
 #PBS -l place=pack:shared
 #PBS -l walltime=7:00:00

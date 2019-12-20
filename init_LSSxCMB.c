@@ -376,21 +376,6 @@ void init_probes(char *probes)
     printf("CMBkappa-Shear computation initialized\n");
     printf("CMBkappa-CMBkappa computation initialized\n");
   }
-  if(strcmp(probes,"6x2pt_clusterN_clusterWL")==0) {
-    like.Ndata = like.Ncl * (2*tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+tomo.shear_Nbin+tomo.shear_Npowerspectra);
-    like.pos_pos = 1;
-    like.gk = 1;
-    like.shear_pos = 1;
-    like.kk = 1;
-    like.ks = 1;
-    like.shear_shear = 1;
-    printf("Shear-Shear computation initialized\n");
-    printf("Shear-Position computation initialized\n");
-    printf("Position-Position computation initialized\n");
-    printf("CMBkappa-Shear computation initialized\n");
-    printf("CMBkappa-Position computation initialized\n");
-    printf("CMBkappa-CMBkappa computation initialized\n");
-  }
   printf("Total number of data points like.Ndata=%d\n",like.Ndata);
 }
 

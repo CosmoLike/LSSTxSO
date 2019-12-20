@@ -44,6 +44,12 @@
 #include "../cosmolike_core/theory/init_baryon.c"
 #include "init_LSSxCMB.c"
 
+// Naming convention:
+// g = galaxy positions ("g" as in "galaxy")
+// k = kappa CMB ("k" as in "kappa")
+// s = kappa from source galaxies ("s" as in "shear")
+// And alphabetical order
+
 typedef double (*C_tomo_pointer)(double l, int n1, int n2);
 void twopoint_via_hankel(double **xi, double *logthetamin, double *logthetamax, C_tomo_pointer C_tomo, int ni, int nj, int N_Bessel);
 
@@ -56,8 +62,6 @@ double C_ks_sys(double ell, int zs);
 void set_data_shear(int Ncl, double *ell, double *data, int start);
 void set_data_ggl(int Ncl, double *ell, double *data, int start);
 void set_data_clustering(int Ncl, double *ell, double *data, int start);
-void set_data_cluster_N(double *data, int start);
-void set_data_cgl(double *ell_Cluster, double *data, int start);
 void set_data_gk(double *ell, double *data, int start);
 void set_data_ks(double *ell, double *data, int start);
 void set_data_kk(double *ell, double *data, int start);
@@ -170,30 +174,6 @@ void set_data_clustering(int Ncl, double *ell, double *data, int start){
   }
 }
 
-void set_data_cluster_N(double *data, int start){
-  int nN, nz;
-  for (nz = 0; nz < tomo.cluster_Nbin; nz++){
-    for (nN = 0; nN < Cluster.N200_Nbin; nN++){
-      data[start+Cluster.N200_Nbin*nz+nN] = N_N200(nz, nN);
-    }
-  }
-}
-
-
-void set_data_cgl(double *ell_Cluster, double *data, int start)
-{
-  int zl,zs,nN,nz,i,j;
-  for(nN = 0; nN < Cluster.N200_Nbin; nN++){
-    for (nz = 0; nz < tomo.cgl_Npowerspectra; nz++){
-      zl = ZC(nz); zs = ZSC(nz);
-      for (i = 0; i < Cluster.lbin; i++){
-        j = start;
-        j += (nz*Cluster.N200_Nbin+nN)*Cluster.lbin +i;
-        data[j] = C_cgl_tomo_sys(ell_Cluster[i],zl,nN,zs);
-      }
-    }
-  }
-}
 
 void set_data_gk(double *ell, double *data, int start)
 {
@@ -495,21 +475,13 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
     set_data_clustering(like.Ncl,ell,pred, start);
     start=start+like.Ncl*tomo.clustering_Npowerspectra;
   }
-  if(like.clusterN==1){ 
-    set_data_cluster_N(pred,start);
-    start= start+tomo.cluster_Nbin*Cluster.N200_Nbin;
-  }
-  if(like.clusterWL==1){
-    set_data_cgl(ell_Cluster,pred, start);
-    start += Cluster.N200_Nbin * tomo.cgl_Npowerspectra * Cluster.lbin;
-  }
   if(like.gk==1) {
     set_data_gk(ell, pred, start);
-    start += like.Ncl * tomo.clustering_Nbin;
+    start += like.Ncl*tomo.clustering_Nbin;
   }
   if(like.ks==1) {
     set_data_ks(ell, pred, start);
-    start += like.Ncl * tomo.shear_Nbin;
+    start += like.Ncl*tomo.shear_Nbin;
   }
   if(like.kk==1) {
     set_data_kk(ell, pred, start);
@@ -586,14 +558,6 @@ void compute_data_vector(char *details, double OMM, double S8, double NS, double
     start=start+like.Ncl*tomo.clustering_Npowerspectra;
   }
 
-  if(like.clusterN==1){ 
-    set_data_cluster_N(pred,start);
-    start= start+tomo.cluster_Nbin*Cluster.N200_Nbin;
-  }
-  if(like.clusterWL==1){
-    set_data_cgl(ell_Cluster,pred, start);
-    start += Cluster.N200_Nbin * tomo.cgl_Npowerspectra * Cluster.lbin;
-  }
   if(like.gk==1) {
     printf("Computing data vector: gk\n");
     set_data_gk(ell, pred, start);
@@ -737,7 +701,7 @@ void save_zdistr_lenses(int zl){
   init_IA("NLA_HF","GAMA"); 
   init_probes("6x2pt");
 
-  init_cmb("advact");
+  init_cmb("cmbs4");
   //init_Pdelta("emu",0.8,0.35);
   // init_Pdelta("linear",0.8,0.35);
 

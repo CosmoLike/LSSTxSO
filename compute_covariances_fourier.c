@@ -47,35 +47,27 @@
 
 #include "init_LSSxCMB.c"
 
-typedef double (*C_tomo_pointer)(double l, int n1, int n2);
-void twopoint_via_hankel(double **xi, double *logthetamin, double *logthetamax, C_tomo_pointer C_tomo, int ni, int nj, int N_Bessel);
+// Naming convention:
+// l = galaxy positions ("l" as in "lens sample")
+// k = kappa CMB ("k" as in "kappa")
+// s = kappa from source galaxies ("s" as in "source sample")
+// And alphabetical order
 
 
-void run_cov_N_N (char *OUTFILE, char *PATH, int nzc1, int nzc2,int start);
-void run_cov_cgl_N (char *OUTFILE, char *PATH, double *ell_Cluster, double *dell_Cluster,int N1, int nzc2, int start);
-void run_cov_cgl_cgl (char *OUTFILE, char *PATH, double *ell_Cluster, double *dell_Cluster,int N1, int N2, int start);
-void run_cov_cgl_cgl_all (char *OUTFILE, char *PATH, double *ell_Cluster, double *dell_Cluster);
-void run_cov_shear_N (char *OUTFILE, char *PATH, double *ell, double *dell, int N1, int nzc2, int start);
-void run_cov_shear_cgl (char *OUTFILE, char *PATH, double *ell, double *dell, double *ell_Cluster, double *dell_Cluster,int N1, int N2, int nl1, int start);
-void run_cov_ggl_N (char *OUTFILE, char *PATH, double *ell, double *dell, int N1, int nzc2, int start);
-void run_cov_ggl_cgl (char *OUTFILE, char *PATH, double *ell, double *dell, double *ell_Cluster, double *dell_Cluster,int N1, int N2, int nl1, int start);
-void run_cov_cl_N (char *OUTFILE, char *PATH, double *ell, double *dell, int N1, int nzc2, int start);
-void run_cov_cl_cgl (char *OUTFILE, char *PATH, double *ell, double *dell, double *ell_Cluster, double *dell_Cluster,int N1, int N2, int nl1, int start);
+void run_cov_ls_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
+void run_cov_ll_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
+void run_cov_ll_ls(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
+void run_cov_ll_ll(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
+void run_cov_ls_ls(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
+void run_cov_ss_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
 
-void run_cov_ggl_shear(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
-void run_cov_clustering_shear(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
-void run_cov_clustering_ggl(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
-void run_cov_clustering(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
-void run_cov_ggl(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
-void run_cov_shear_shear(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start);
-
-void run_cov_gs_kk(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int start);
-void run_cov_gs_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int zs2, int start);
-void run_cov_gk_gk(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int zl2, int start);
-void run_cov_gk_gs(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int n2, int start);
-void run_cov_gk_kk(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int start);
-void run_cov_gk_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int zs2, int start);
-void run_cov_gk_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int n2,int start);
+void run_cov_ls_kk(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int start);
+void run_cov_ls_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int zs2, int start);
+void run_cov_lk_lk(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int zl2, int start);
+void run_cov_lk_ls(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int n2, int start);
+void run_cov_lk_kk(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int start);
+void run_cov_lk_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int zs2, int start);
+void run_cov_lk_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int n2,int start);
 void run_cov_kk_kk(char *OUTFILE, char *PATH, double *ell, double *dell,int start);
 void run_cov_kk_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zs2, int start);
 void run_cov_kk_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int n2, int start);
@@ -84,13 +76,9 @@ void run_cov_ks_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int zs1
 
 
 
-
-
-
-
-void run_cov_ggl_shear(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start)
+void run_cov_ls_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start)
 {
-  int zl,zs,z3,z4,nl1,nl2,weight;
+  int zl,zs,z3,z4,nl1,nl2,weight,i,j;
   double c_ng, c_g;
   FILE *F1;
   char filename[300];
@@ -112,15 +100,17 @@ void run_cov_ggl_shear(char *OUTFILE, char *PATH, double *ell, double *dell, int
           c_g =  cov_G_gl_shear_tomo(ell[nl1],dell[nl1],zl,zs,z3,z4);
         }
       }
-      fprintf(F1, "%d %d %e %e %d %d %d %d  %e %e\n", like.Ncl*(tomo.shear_Npowerspectra+n1)+nl1,like.Ncl*(n2)+nl2, ell[nl1],ell[nl2],zl,zs,z3,z4,c_g,c_ng);
+      i=like.Ncl*(tomo.shear_Npowerspectra+n1)+nl1;
+      j=like.Ncl*n2+nl2;
+      fprintf(F1, "%d %d %e %e %d %d %d %d  %e %e\n",i,j,ell[nl1],ell[nl2],zl,zs,z3,z4,c_g,c_ng);
     }
   }
   fclose(F1);
 }
 
-void run_cov_clustering_shear(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start)
+void run_cov_ll_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start)
 {
-  int z1,z2,z3,z4,nl1,nl2,weight;
+  int z1,z2,z3,z4,nl1,nl2,i,j,weight;
   double c_ng, c_g;
   FILE *F1;
   char filename[300];
@@ -142,15 +132,17 @@ void run_cov_clustering_shear(char *OUTFILE, char *PATH, double *ell, double *de
           c_g =  cov_G_cl_shear_tomo(ell[nl1],dell[nl1],z1,z2,z3,z4);
         }
       }
-      fprintf(F1,"%d %d %e %e %d %d %d %d  %e %e\n", like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+n1)+nl1,like.Ncl*(n2)+nl2, ell[nl1],ell[nl2],z1,z2,z3,z4,c_g,c_ng);
+      i=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+n1)+nl1;
+      j=like.Ncl*n2+nl2;
+      fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],z1,z2,z3,z4,c_g,c_ng);
     }
   }
   fclose(F1);
 }
 
-void run_cov_clustering_ggl(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start)
+void run_cov_ll_ls(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start)
 {
-  int z1,z2,zl,zs,nl1,nl2,weight;
+  int z1,z2,zl,zs,nl1,nl2,i,j,weight;
   double c_ng, c_g;
   FILE *F1;
   char filename[300];
@@ -172,15 +164,17 @@ void run_cov_clustering_ggl(char *OUTFILE, char *PATH, double *ell, double *dell
           }
         }
       }
-      fprintf(F1, "%d %d %e %e %d %d %d %d  %e %e\n", like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+n1)+nl1,like.Ncl*(tomo.shear_Npowerspectra+n2)+nl2, ell[nl1],ell[nl2],z1,z2,zl,zs,c_g,c_ng);
+      i=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+n1)+nl1;
+      j=like.Ncl*(tomo.shear_Npowerspectra+n2)+nl2;
+      fprintf(F1, "%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],z1,z2,zl,zs,c_g,c_ng);
     }
   }
   fclose(F1);
 }
 
-void run_cov_clustering(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start)
+void run_cov_ll_ll(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start)
 {
-  int z1,z2,z3,z4,nl1,nl2,weight;
+  int z1,z2,z3,z4,nl1,nl2,i,j,weight;
   double c_ng, c_g;
   FILE *F1;
   char filename[300];
@@ -202,15 +196,17 @@ void run_cov_clustering(char *OUTFILE, char *PATH, double *ell, double *dell, in
           c_g =  cov_G_cl_cl_tomo(ell[nl1],dell[nl1],z1,z2,z3,z4);
         }
       }
-      fprintf(F1, "%d %d %e %e %d %d %d %d  %e %e\n", like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+n1)+nl1,like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra + n2)+nl2, ell[nl1],ell[nl2],z1,z2,z3,z4,c_g,c_ng);
+      i=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+n1)+nl1;
+      j=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+n2)+nl2;
+      fprintf(F1, "%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],z1,z2,z3,z4,c_g,c_ng);
     }
   }
   fclose(F1);
 }
 
-void run_cov_ggl(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start)
+void run_cov_ls_ls(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int n2,int start)
 {
-  int zl1,zl2,zs1,zs2,nl1,nl2, weight;
+  int zl1,zl2,zs1,zs2,nl1,nl2,i,j,weight;
   double c_ng, c_g;
   double fsky = survey.area/41253.0;
   FILE *F1;
@@ -235,16 +231,18 @@ void run_cov_ggl(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, i
       if (weight ==0 && n2 != n1){
         c_g = 0;
       }
-      fprintf(F1,"%d %d %e %e %d %d %d %d  %e %e\n", like.Ncl*(tomo.shear_Npowerspectra+n1)+nl1,like.Ncl*(tomo.shear_Npowerspectra+n2)+nl2, ell[nl1],ell[nl2],zl1,zs1,zl2,zs2,c_g,c_ng);   
+      i=like.Ncl*(tomo.shear_Npowerspectra+n1)+nl1;
+      j=like.Ncl*(tomo.shear_Npowerspectra+n2)+nl2;
+      fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],zl1,zs1,zl2,zs2,c_g,c_ng);   
     }
   }
   fclose(F1);
 }
 
 
-void run_cov_shear_shear(char *OUTFILE, char *PATH, double *ell, double *dell,int n1, int n2,int start)
+void run_cov_ss_ss(char *OUTFILE, char *PATH, double *ell, double *dell,int n1, int n2,int start)
 {
-  int z1,z2,z3,z4,nl1,nl2,weight;
+  int z1,z2,z3,z4,nl1,nl2,i,j,weight;
   double c_ng, c_g;
   FILE *F1;
   char filename[300];
@@ -263,8 +261,10 @@ void run_cov_shear_shear(char *OUTFILE, char *PATH, double *ell, double *dell,in
       if (nl1 == nl2){
         c_g =  cov_G_shear_shear_tomo(ell[nl1],dell[nl1],z1,z2,z3,z4);
         if (ell[nl1] > like.lmax_shear && n1!=n2){c_g = 0.;} 
-      }         
-      fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",like.Ncl*n1+nl1,like.Ncl*(n2)+nl2,ell[nl1],ell[nl2],z1,z2,z3,z4,c_g,c_ng);
+      } 
+      i=like.Ncl*n1+nl1;
+      j=like.Ncl*n2+nl2;     
+      fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],z1,z2,z3,z4,c_g,c_ng);
       //printf("%d %d %e %e %d %d %d %d %e %e\n", like.Ncl*n1+nl1,like.Ncl*(n2)+nl2, ell[nl1],ell[nl2],z1,z2,z3,z4,c_g,c_ng);
     }
   }
@@ -272,19 +272,17 @@ void run_cov_shear_shear(char *OUTFILE, char *PATH, double *ell, double *dell,in
 }
 
 /*** CMBkappa part ****/
-// gs_kk
-void run_cov_gs_kk(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int start)
+// ls_kk
+void run_cov_ls_kk(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int start)
 {
-   int zl1, zs1, weight;
+   int zl1, zs1,i,j, weight;
    double c_ng, c_g;
    FILE *F1;
    char filename[300];
-   // sprintf(filename,"%scov/%s_%s_cov_gskk_Nell%d_Ns%d_Ng%d_%d", PATH, survey.name, cmb.name, like.Ncl, tomo.shear_Nbin, tomo.clustering_Nbin, start);
-   // printf("Saving to: %s\n",filename);
    sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
    F1 =fopen(filename,"w");
    zl1 = ZL(n1); zs1 = ZS(n1);
-   printf("Bin for gs: %d (%d, %d)\n", n1, zl1, zs1);
+   printf("Bin for ls: %d (%d, %d)\n", n1, zl1, zs1);
    for (int nl1 = 0; nl1 < like.Ncl; nl1 ++){
       for (int nl2 = 0; nl2 < like.Ncl; nl2 ++){
          c_ng = 0.; c_g = 0.;
@@ -295,26 +293,25 @@ void run_cov_gs_kk(char *OUTFILE, char *PATH, double *ell, double *dell, int n1,
                c_g = cov_G_gs_kk(ell[nl1], dell[nl1], zl1, zs1);
             }
          }
-//         fprintf(F1,"%d %d %e %e %d %d %e %e\n", like.Ncl*(tomo.clustering_Nbin+n1)+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra)+nl2, ell[nl1],ell[nl2],zl1,zs1,c_g,c_ng);
-         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n", like.Ncl*(tomo.clustering_Nbin+n1)+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra)+nl2, ell[nl1],ell[nl2],zl1,zs1,0,0,c_g,c_ng);
+         i=like.Ncl*(tomo.clustering_Nbin+n1)+nl1;
+         j=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+tomo.clustering_Nbin+tomo.shear_Nbin)+nl2;
+         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],zl1,zs1,0,0,c_g,c_ng);
       }
    }
    fclose(F1);
 }
 
-// gs_ks
-void run_cov_gs_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int zs2, int start)
+// ls_ks
+void run_cov_ls_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int n1, int zs2, int start)
 {
-   int zl1, zs1, weight;
+   int zl1, zs1,i,j,weight;
    double c_ng, c_g;
    FILE *F1;
    char filename[300];
-   // sprintf(filename,"%scov/%s_%s_cov_gsks_Nell%d_Ns%d_Ng%d_%d", PATH, survey.name, cmb.name, like.Ncl, tomo.shear_Nbin, tomo.clustering_Nbin, start);
-   // printf("Saving to: %s\n",filename);
    sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
    F1 =fopen(filename,"w");
    zl1 = ZL(n1); zs1 = ZS(n1);
-   printf("Bin for gs: %d (%d, %d)\n", n1, zl1, zs1);
+   printf("Bin for ls: %d (%d, %d)\n", n1, zl1, zs1);
    printf("Bin for ks: %d\n", zs2);
    for (int nl1 = 0; nl1 < like.Ncl; nl1 ++){
       for (int nl2 = 0; nl2 < like.Ncl; nl2 ++){
@@ -328,21 +325,20 @@ void run_cov_gs_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int n1,
                c_g = cov_G_gs_ks(ell[nl1], dell[nl1], zl1, zs1, zs2);
             }
          }
-//         fprintf(F1,"%d %d %e %e %d %d %d %e %e\n", like.Ncl*(tomo.clustering_Nbin+n1)+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+zs2)+nl2, ell[nl1],ell[nl2],zl1,zs1,zs2,c_g,c_ng);
-         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n", like.Ncl*(tomo.clustering_Nbin+n1)+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+zs2)+nl2, ell[nl1],ell[nl2],zl1,zs1,0,zs2,c_g,c_ng);
+         i=like.Ncl*(tomo.shear_Npowerspectra+n1)+nl1;
+         j=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+tomo.clustering_Nbin)+nl2;
+         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],zl1,zs1,0,zs2,c_g,c_ng);
       }
    }
    fclose(F1);
 }
-// gk_gk
-void run_cov_gk_gk(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int zl2, int start)
+// lk_lk
+void run_cov_lk_lk(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int zl2, int start)
 {
-   int weight;
+   int weight,i,j;
    double c_ng, c_g;
    FILE *F1;
    char filename[300];
-   // sprintf(filename,"%scov/%s_%s_cov_gkgk_Nell%d_Ns%d_Ng%d_%d", PATH, survey.name, cmb.name, like.Ncl, tomo.shear_Nbin, tomo.clustering_Nbin, start);
-   // printf("Saving to: %s\n",filename);
    sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
    F1 =fopen(filename,"w");
    printf("Lens bins: %d, %d\n", zl1, zl2);
@@ -361,17 +357,18 @@ void run_cov_gk_gk(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1
          if (!compute && (zl2!=zl1)) {
             c_g = 0;
          }
-//         fprintf(F1,"%d %d %e %e %d %d %e %e\n", like.Ncl*zl1+nl1, like.Ncl*zl2+nl2, ell[nl1],ell[nl2],zl1,zl2,c_g,c_ng);
-         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n", like.Ncl*zl1+nl1, like.Ncl*zl2+nl2,ell[nl1],ell[nl2],zl1,0,zl2,0,c_g,c_ng);
+         i=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+zl1)+nl1;
+         j=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+zl2)+nl2;
+         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],zl1,0,zl2,0,c_g,c_ng);
       }
    }
    fclose(F1);
 }
 
-// gk_gs
-void run_cov_gk_gs(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int n2, int start)
+// lk_ls
+void run_cov_lk_ls(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int n2, int start)
 {
-   int zl2,zs2,nl1,nl2, weight;
+   int zl2,zs2,nl1,nl2,i,j, weight;
    double c_ng, c_g;
    FILE *F1;
    char filename[300];
@@ -379,9 +376,9 @@ void run_cov_gk_gs(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1
    // printf("Saving to: %s\n",filename);
    sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
    F1 =fopen(filename,"w");
-   printf("Lens bin for gk: %d\n", zl1);
+   printf("Lens bin for lk: %d\n", zl1);
    zl2 = ZL(n2); zs2 = ZS(n2);
-   printf("N_tomo for gs = %d (%d, %d)\n", n2,zl2,zs2);
+   printf("N_tomo for ls = %d (%d, %d)\n", n2,zl2,zs2);
    
    for (nl1 = 0; nl1 < like.Ncl; nl1 ++){
       for (nl2 = 0; nl2 < like.Ncl; nl2 ++){
@@ -395,17 +392,18 @@ void run_cov_gk_gs(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1
                c_g = cov_G_gk_gs(ell[nl1], dell[nl1], zl1,zl2,zs2);
             }
          }
-//         fprintf(F1,"%d %d %e %e %d %d %d %e %e\n", like.Ncl*zl1+nl1, like.Ncl*(tomo.clustering_Nbin+n2)+nl2, ell[nl1],ell[nl2],zl1,zl2,zs2,c_g,c_ng);
-         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n", like.Ncl*zl1+nl1, like.Ncl*(tomo.clustering_Nbin+n2)+nl2, ell[nl1],ell[nl2],zl1,0,zl2,zs2,c_g,c_ng);
+         i=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+zl1)+nl1;
+         j=like.Ncl*(tomo.shear_Npowerspectra+n2)+nl2;
+         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],zl1,0,zl2,zs2,c_g,c_ng);
       }
    }
    fclose(F1);
 }
 
-// gk_kk
-void run_cov_gk_kk(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int start)
+// lk_kk
+void run_cov_lk_kk(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int start)
 {
-   int weight;
+   int weight,i,j;
    double c_ng, c_g;
    FILE *F1;
    char filename[300];
@@ -413,29 +411,30 @@ void run_cov_gk_kk(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1
    // printf("Saving to: %s\n",filename);
    sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
    F1 =fopen(filename,"w");
-   printf("Bin for gk: %d\n", zl1);
+   printf("Bin for lk: %d\n", zl1);
    
    for (int nl1 = 0; nl1 < like.Ncl; nl1 ++){
       for (int nl2 = 0; nl2 < like.Ncl; nl2 ++){
          c_ng = 0.; c_g = 0.;
          weight = test_kmax(ell[nl1],zl1);
          if (weight && ell[nl1]<like.lmax_kappacmb && ell[nl2]<like.lmax_kappacmb) {
-            c_ng = cov_NG_gk_kk(ell[nl1],ell[nl2], zl1);
+            c_ng = cov_NG_gk_kk(ell[nl1],ell[nl2],zl1);
             if (nl1==nl2){
-               c_g = cov_G_gk_kk(ell[nl1], dell[nl1], zl1);
+               c_g = cov_G_gk_kk(ell[nl1],dell[nl1],zl1);
             }
          }
-//         fprintf(F1,"%d %d %e %e %d %e %e\n", like.Ncl*zl1+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra)+nl2, ell[nl1],ell[nl2],zl1,c_g,c_ng);
-         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n", like.Ncl*zl1+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra)+nl2, ell[nl1],ell[nl2],zl1,0,0,0,c_g,c_ng);
+         i=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+zl1)+nl1;
+         j=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+tomo.clustering_Nbin+tomo.shear_Nbin)+nl2;
+         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],zl1,0,0,0,c_g,c_ng);
       }
    }
    fclose(F1);
 }
 
-// gk_ks
-void run_cov_gk_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int zs2, int start)
+// lk_ks
+void run_cov_lk_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int zs2, int start)
 {
-   int weight;
+   int weight,i,j;
    double c_ng, c_g;
    FILE *F1;
    char filename[300];
@@ -443,7 +442,7 @@ void run_cov_gk_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1
    // printf("Saving to: %s\n",filename);
    sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
    F1 =fopen(filename,"w");
-   printf("Bin for gk: %d\n", zl1);
+   printf("Bin for lk: %d\n", zl1);
    printf("Bin for ks: %d\n", zs2);
    
    for (int nl1 = 0; nl1 < like.Ncl; nl1 ++){
@@ -458,17 +457,18 @@ void run_cov_gk_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1
                c_g =  cov_G_gk_ks(ell[nl1], dell[nl1], zl1, zs2);
             }
          }
-//         fprintf(F1,"%d %d %e %e %d %d %e %e\n", like.Ncl*zl1+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+zs2)+nl2, ell[nl1],ell[nl2],zl1,zs2,c_g,c_ng);
-         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n", like.Ncl*zl1+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+zs2)+nl2, ell[nl1],ell[nl2],zl1,0,0,zs2,c_g,c_ng);
+         i=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+zl1)+nl1;
+         j=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+zs2)+nl2;
+         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],zl1,0,0,zs2,c_g,c_ng);
       }
    }
    fclose(F1);
 }
 
-// gk_ss
-void run_cov_gk_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int n2,int start)
+// lk_ss
+void run_cov_lk_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1, int n2,int start)
 {
-   int zs2,zs3,nl1,nl2,weight;
+   int zs2,zs3,nl1,nl2,weight,i,j;
    double c_ng, c_g;
    FILE *F1;
    char filename[300];
@@ -476,7 +476,7 @@ void run_cov_gk_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1
    // printf("Saving to: %s\n",filename);
    sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
    F1 =fopen(filename,"w");
-   printf("Bin for gk: %d\n", zl1);
+   printf("Bin for lk: %d\n", zl1);
    zs2 = Z1(n2); zs3 = Z2(n2);
    printf("Bin for ss: %d (%d, %d)\n", n2, zs2, zs3);
    for (nl1 = 0; nl1 < like.Ncl; nl1 ++){
@@ -491,8 +491,9 @@ void run_cov_gk_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1
                c_g = cov_G_gk_ss(ell[nl1],dell[nl1],zl1,zs2, zs3);
             }
          }
-//         fprintf(F1, "%d %d %e %e %d %d %d %e %e\n", like.Ncl*zl1+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+tomo.shear_Nbin+n2)+nl2, ell[nl1],ell[nl2],zl1,zs2,zs3,c_g,c_ng);
-         fprintf(F1, "%d %d %e %e %d %d %d %d %e %e\n", like.Ncl*zl1+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+tomo.shear_Nbin+n2)+nl2, ell[nl1],ell[nl2],zl1,0,zs2,zs3,c_g,c_ng);
+         i=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+zl1)+nl1;
+         j=like.Ncl*n2+nl2;
+         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],zl1,0,zs2,zs3,c_g,c_ng);
       }
    }
    fclose(F1);
@@ -501,7 +502,7 @@ void run_cov_gk_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1
 // kk_kk
 void run_cov_kk_kk(char *OUTFILE, char *PATH, double *ell, double *dell,int start)
 {
-   int nl1,nl2,weight;
+   int nl1,nl2,i,j,weight;
    double c_ng, c_g;
    FILE *F1;
    char filename[300];
@@ -518,7 +519,9 @@ void run_cov_kk_kk(char *OUTFILE, char *PATH, double *ell, double *dell,int star
          if (nl1==nl2){
             c_g = cov_G_kk_kk(ell[nl1], dell[nl1]);
          }
-         fprintf(F1, "%d %d %e %e %d %d %d %d %e %e\n", like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra)+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra)+nl2, ell[nl1],ell[nl2],0,0,0,0,c_g,c_ng);
+         i=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+tomo.clustering_Nbin+tomo.shear_Nbin)+nl1;
+         j=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+tomo.clustering_Nbin+tomo.shear_Nbin)+nl2;
+         fprintf(F1, "%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],0,0,0,0,c_g,c_ng);
 //         printf("l1, l2, Cg, Cng = %le, %le, %le, %le\n", ell[nl1], ell[nl2], c_g, c_ng);
       }
    }
@@ -528,7 +531,7 @@ void run_cov_kk_kk(char *OUTFILE, char *PATH, double *ell, double *dell,int star
 // kk_ks
 void run_cov_kk_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zs2, int start)
 {
-   int nl1,nl2, weight;
+   int nl1,nl2,i,j, weight;
    double c_ng, c_g;
    FILE *F1;
    char filename[300];
@@ -546,8 +549,9 @@ void run_cov_kk_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zs2
                c_g = cov_G_kk_ks(ell[nl1],dell[nl1], zs2);
             }
          }
-//         fprintf(F1,"%d %d %e %e %d %e %e\n", like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra)+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+zs2)+nl2, ell[nl1],ell[nl2],zs2,c_g,c_ng);
-         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n", like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra)+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+zs2)+nl2, ell[nl1],ell[nl2],0,0,0,zs2,c_g,c_ng);
+         i=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+tomo.clustering_Nbin+tomo.shear_Nbin)+nl1;
+         j=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+tomo.clustering_Nbin+zs2)+nl2;
+         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],0,0,0,zs2,c_g,c_ng);
       }
    }
    fclose(F1);
@@ -556,7 +560,7 @@ void run_cov_kk_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zs2
 // kk_ss
 void run_cov_kk_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int n2, int start)
 {
-   int z2,z3,nl1,nl2,weight;
+   int z2,z3,nl1,nl2,i,j,weight;
    double c_ng, c_g;
    FILE *F1;
    char filename[300];
@@ -575,8 +579,9 @@ void run_cov_kk_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int n2,
                c_g = cov_G_kk_ss(ell[nl1],dell[nl1],z2,z3);
             }
          }
-//         fprintf(F1, "%d %d %e %e %d %d %e %e\n", like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra)+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+tomo.shear_Nbin+n2)+nl2, ell[nl1],ell[nl2],z2,z3,c_g,c_ng);
-         fprintf(F1, "%d %d %e %e %d %d %d %d %e %e\n", like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra)+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+tomo.shear_Nbin+n2)+nl2, ell[nl1],ell[nl2],0,0,z2,z3,c_g,c_ng);
+         i=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+tomo.clustering_Nbin+tomo.shear_Nbin)+nl1;
+         j=like.Ncl*n2+nl2;
+         fprintf(F1, "%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],0,0,z2,z3,c_g,c_ng);
       }
    }
    fclose(F1);
@@ -585,7 +590,7 @@ void run_cov_kk_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int n2,
 // ks_ks
 void run_cov_ks_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zs1, int zs2,int start)
 {
-   int nl1,nl2, weight;
+   int nl1,nl2,i,j, weight;
    double c_ng, c_g;
    FILE *F1;
    char filename[300];
@@ -606,8 +611,9 @@ void run_cov_ks_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zs1
          if ((ell[nl1]>like.lmax_kappacmb || ell[nl2]>like.lmax_kappacmb) && zs2!=zs1){
             c_g = 0;
          }
-//         fprintf(F1,"%d %d %e %e %d %d %e %e\n", like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+zs1)+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+zs2)+nl2, ell[nl1],ell[nl2],zs1,zs2,c_g,c_ng);
-         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n", like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+zs1)+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+zs2)+nl2, ell[nl1],ell[nl2],0,zs1,0,zs2,c_g,c_ng);
+         i=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+tomo.clustering_Nbin+zs1)+nl1;
+         j=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+tomo.clustering_Nbin+zs2)+nl2;
+         fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],0,zs1,0,zs2,c_g,c_ng);
       }
    }
    fclose(F1);
@@ -616,15 +622,14 @@ void run_cov_ks_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zs1
 // ks_ss
 void run_cov_ks_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int zs1, int n2, int start)
 {
-   int z2,z3,nl1,nl2,weight;
+   int z2,z3,nl1,nl2,i,j,weight;
    double c_ng, c_g;
    FILE *F1;
    char filename[300];
    z2 = Z1(n2); z3 = Z2(n2);
    printf("Source bin for ks: %d\n", zs1);
    printf("Bin for ss: %d (%d, %d)\n", n2, z2, z3);
-   // sprintf(filename,"%scov/%s_%s_cov_ksss_Nell%d_Ns%d_Ng%d_%d",PATH,survey.name, cmb.name,like.Ncl, tomo.shear_Nbin, tomo.clustering_Nbin, start);
-   // printf("Saving to: %s\n",filename);
+ 
    sprintf(filename,"%s%s_%d",PATH,OUTFILE,start);
    F1 =fopen(filename,"w");
    for (nl1 = 0; nl1 < like.Ncl; nl1 ++){
@@ -636,8 +641,9 @@ void run_cov_ks_ss(char *OUTFILE, char *PATH, double *ell, double *dell, int zs1
                c_g = cov_G_ks_ss(ell[nl1],dell[nl1],zs1,z2,z3);
             }
          }
-//         fprintf(F1, "%d %d %e %e %d %d %d %e %e\n", like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+zs1)+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+tomo.shear_Nbin+n2)+nl2, ell[nl1],ell[nl2],zs1,z2,z3,c_g,c_ng);
-         fprintf(F1, "%d %d %e %e %d %d %d %d %e %e\n", like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+zs1)+nl1, like.Ncl*(tomo.clustering_Nbin+tomo.ggl_Npowerspectra+1+tomo.shear_Nbin+n2)+nl2, ell[nl1],ell[nl2],0,zs1,z2,z3,c_g,c_ng);
+         i=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+tomo.clustering_Nbin+zs1)+nl1;
+         j=like.Ncl*n2+nl2;
+         fprintf(F1, "%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],0,zs1,z2,z3,c_g,c_ng);
       }
    }
    fclose(F1);
@@ -649,23 +655,17 @@ int main(int argc, char** argv)
   int i,l,m,n,o,s,p,nl1,t,k;
   char OUTFILE[400],filename[400],arg1[400],arg2[400];
   
-  int N_scenarios=3;
-  double area_table[3]={2000.0,18000.0,18000.0};
-  double nsource_table[3]={51.0,27.0,43.0};
+  int N_scenarios=2;
+  double area_table[2]={12300.0,14200.0};
+  double nsource_table[2]={11.0,27.0};
   
-  double nlens_table[3]={66.0,48.0,50.0};
+  double nlens_table[2]={18.0,48.0};
   
-  char survey_designation[3][200]={"WFIRST","LSST_Y10","WFIRST"};
-  char source_zfile[3][400]={"zdistri_WFIRST_LSST_lensing_fine_bin","SRD_zdistri_model_z0=1.100000e-01_beta=6.800000e-01_Y10_source.txt","zdistri_WFIRST_LSST_lensing_fine_bin"};
+  char survey_designation[2][200]={"LSST_Y1","LSST_Y10"};
+  char source_zfile[2][400]={"zdistri_model_z0=1.300000e-01_beta=7.800000e-01_Y1_source","zdistri_model_z0=1.100000e-01_beta=6.800000e-01_Y10_source"};
 
-  char lens_zfile[3][400]={"zdistri_WFIRST_LSST_clustering_fine_bin","SRD_zdistri_model_z0=2.800000e-01_beta=9.000000e-01_Y10_lens.txt","zdistri_WFIRST_LSST_clustering_fine_bin"};
+  char lens_zfile[2][400]={"zdistri_model_z0=2.600000e-01_beta=9.400000e-01_Y1_lens","zdistri_model_z0=2.800000e-01_beta=9.000000e-01_Y10_lens"};
 
-// WFIRST when using SNR=5 clustering sample:
-// double scenario_table[1][3]={{2000.0,51.0,107.0}};
-// when using SNR=10 clustering sample
-// double scenario_table[1][3]={{2000.0,51.0,66.0}};
-// when using SNR=10 clustering sample LSST area and f_LSST of 73% in the clustering SN>5 sample, 79% 
-  
    
   int hit=atoi(argv[1]);
   Ntable.N_a=20;
@@ -681,9 +681,9 @@ int main(int argc, char** argv)
     sprintf(arg2,"zdistris/%s",lens_zfile[t]); 
     init_galaxies(arg1,arg2,"none","none","source_std","LSST_gold");
     init_IA("none", "GAMA"); 
-    init_probes("3x2pt");
+    init_probes("6x2pt");
 
-    init_cmb("advact");
+    init_cmb("cmbs4");
 
     //set l-bins for shear, ggl, clustering, clusterWL
     double logdl=(log(like.lmax)-log(like.lmin))/like.Ncl;
@@ -709,7 +709,7 @@ int main(int argc, char** argv)
     printf("----------------------------------\n");  
     
     
-    sprintf(survey.name,"%s_area%le_ng%le_nl%le",survey_designation[0],survey.area,survey.n_gal,survey.n_lens);
+    sprintf(survey.name,"%s_area%le_ng%le_nl%le",survey_designation[t],survey.area,survey.n_gal,survey.n_lens);
     printf("area: %le n_source: %le n_lens: %le\n",survey.area,survey.n_gal,survey.n_lens);
 
     sprintf(covparams.outdir,"/home/u17/timeifler/covparallel/"); 
@@ -723,7 +723,7 @@ int main(int argc, char** argv)
           sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
           if (fopen(filename, "r") != NULL){exit(1);}
           else {
-            run_cov_shear_shear(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+            run_cov_ss_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
         }
         k=k+1;
@@ -738,7 +738,7 @@ int main(int argc, char** argv)
           sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
           if (fopen(filename, "r") != NULL){exit(1);}
           else {
-            run_cov_ggl(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+            run_cov_ls_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
         }
        //printf("%d\n",k);
@@ -752,7 +752,7 @@ int main(int argc, char** argv)
           sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
           if (fopen(filename, "r") != NULL){exit(1);}
           else {
-            run_cov_clustering(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+            run_cov_ll_ll(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
         }
         k=k+1;
@@ -766,7 +766,7 @@ int main(int argc, char** argv)
           sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
           if (fopen(filename, "r") != NULL){exit(1);}
           else {
-            run_cov_clustering_shear(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+            run_cov_ll_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
         }
         k=k+1;
@@ -780,7 +780,7 @@ int main(int argc, char** argv)
           sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
           if (fopen(filename, "r") != NULL){exit(1);}
           else {
-            run_cov_clustering_ggl(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+            run_cov_ll_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
         }
         k=k+1;
@@ -794,7 +794,7 @@ int main(int argc, char** argv)
           sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
           if (fopen(filename, "r") != NULL){exit(1);}
           else {
-            run_cov_ggl_shear(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+            run_cov_ls_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
         }
         k=k+1;
@@ -802,13 +802,13 @@ int main(int argc, char** argv)
       }
     }
 
-   // gk_gk
+   // lk_lk
     sprintf(OUTFILE,"%s_lklk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
     for (l=0;l<tomo.clustering_Nbin; l++){
        for (m=l;m<tomo.clustering_Nbin; m++){
           if (k==hit){
             sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_gk_gk(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+            run_cov_lk_lk(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
           //printf("%d\n",k);
           k=k+1;
@@ -821,67 +821,67 @@ int main(int argc, char** argv)
        for (m=0;m<tomo.ggl_Npowerspectra; m++){
           if (k==hit){
             sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_gk_gs(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+            run_cov_lk_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
           //printf("%d\n",k);
           k=k+1;
        }
     }
   
-    // gk_kk
+    // lk_kk
     sprintf(OUTFILE,"%s_lkkk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
     for (l=0;l<tomo.clustering_Nbin; l++){
        if (k==hit){
           sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-          run_cov_gk_kk(OUTFILE,covparams.outdir,ell,dell,l,k);
+          run_cov_lk_kk(OUTFILE,covparams.outdir,ell,dell,l,k);
        }
        //printf("%d\n",k);
        k=k+1;
     }
     
-    // gk_ks
+    // lk_ks
     for (l=0;l<tomo.clustering_Nbin; l++){
        for (m=0;m<tomo.shear_Nbin;m++) {
           if (k==hit){
             sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_gk_ks(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+            run_cov_lk_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
           //printf("%d\n",k);
           k=k+1;
        }
     }
 
-    // gk_ss
+    // lk_ss
     sprintf(OUTFILE,"%s_lkss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
     for (l=0;l<tomo.clustering_Nbin; l++){
        for (m=0;m<tomo.shear_Npowerspectra; m++){
           if (k==hit){
             sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_gk_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+            run_cov_lk_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
           k=k+1;
           //printf("%d\n",k);
        }
     }
     
-    // gs_kk
+    // ls_kk
     sprintf(OUTFILE,"%s_lskk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
     for (l=0;l<tomo.ggl_Npowerspectra; l++){
        if (k==hit){
             sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_gs_kk(OUTFILE,covparams.outdir,ell,dell,l,k);
+            run_cov_ls_kk(OUTFILE,covparams.outdir,ell,dell,l,k);
           }
 //       printf("%d\n",k);
        k=k+1;
     }
     
-    // gs_ks
+    // ls_ks
     sprintf(OUTFILE,"%s_lsks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
     for (l=0;l<tomo.ggl_Npowerspectra; l++){
        for (m=0;m<tomo.shear_Nbin;m++) {
           if (k==hit){
             sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_gs_ks(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+            run_cov_ls_ks(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
           //printf("%d\n",k);
           k=k+1;
@@ -942,141 +942,8 @@ int main(int argc, char** argv)
        }
        k=k+1;
        //printf("%d\n",k);
-     }
-   }
-
-    //****************************** 
-    //******cluster covariance****** 
-    //******************************
-    
-   //  sprintf(OUTFILE,"%s_nn_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-   //  for (l=0;l<tomo.cluster_Nbin; l++){
-   //    for (m=0;m<tomo.cluster_Nbin; m++){
-   //      if(k==hit){
-   //        sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-   //        if (fopen(filename, "r") != NULL){exit(1);}
-   //        else {
-   //          run_cov_N_N (OUTFILE,covparams.outdir,l,m,k);
-   //        }
-   //      }
-   //      k=k+1;
-   //      //printf("%d\n",k);
-   //    }
-   //  }
-   //  sprintf(OUTFILE,"%s_cscs_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-   //  for (l=0;l<tomo.cgl_Npowerspectra; l++){
-   //    for (m=0;m<tomo.cgl_Npowerspectra; m++){
-   //      if(k==hit){
-   //        sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-   //        if (fopen(filename, "r") != NULL){exit(1);}
-   //        else {
-   //          run_cov_cgl_cgl (OUTFILE,covparams.outdir,ell_Cluster,dell_Cluster,l,m,k);
-   //        }
-   //      }
-   //      k=k+1;
-   //    } 
-   //  }
-   //  sprintf(OUTFILE,"%s_csn_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-   //  for (l=0;l<tomo.cgl_Npowerspectra; l++){
-   //    for (m=0;m<tomo.cluster_Nbin; m++){
-   //      if(k==hit){
-   //        sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-   //        if (fopen(filename, "r") != NULL){exit(1);}
-   //        else {
-   //          run_cov_cgl_N (OUTFILE,covparams.outdir,ell_Cluster,dell_Cluster,l,m,k);
-   //        }
-   //      }
-   //      k=k+1;
-   //    }
-   //  }
-   //  //shear X cluster
-   //  sprintf(OUTFILE,"%s_ssn_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-   //  for (l=0;l<tomo.shear_Npowerspectra; l++){
-   //    for (m=0;m<tomo.cluster_Nbin; m++){
-   //      if(k==hit){
-   //        sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-   //        if (fopen(filename, "r") != NULL){exit(1);}
-   //        else {
-   //         run_cov_shear_N (OUTFILE,covparams.outdir,ell,dell,l,m,k);
-   //       }
-   //     }
-   //     k=k+1;
-   //   }
-   // } 
-   // sprintf(OUTFILE,"%s_sscs_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-   // for (l=0;l<tomo.shear_Npowerspectra; l++){
-   //    for (m=0;m<tomo.cgl_Npowerspectra; m++){
-   //      //for(nl1 = 0; nl1 < like.Ncl; nl1 ++){
-   //        if(k==hit){
-   //          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-   //          if (fopen(filename, "r") != NULL){exit(1);}
-   //          else {
-   //            run_cov_shear_cgl (OUTFILE,covparams.outdir,ell,dell,ell_Cluster,dell_Cluster,l,m,nl1,k);
-   //          }
-   //        }
-   //        k=k+1;
-   //      //}
-   //    }
-   //  }
-   //  // ggl X cluster
-   //  sprintf(OUTFILE,"%s_lsn_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-   //  for (l=0;l<tomo.ggl_Npowerspectra; l++){
-   //    for (m=0;m<tomo.cluster_Nbin; m++){
-   //      if(k==hit){
-   //        sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-   //        if (fopen(filename, "r") != NULL){exit(1);}
-   //        else {
-   //         run_cov_ggl_N (OUTFILE,covparams.outdir,ell,dell,l,m,k);
-   //        }
-   //      }
-   //      k=k+1;
-   //    }
-   //  }
-   //  sprintf(OUTFILE,"%s_lscs_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-   //  for (l=0;l<tomo.ggl_Npowerspectra; l++){
-   //    for (m=0;m<tomo.cgl_Npowerspectra; m++){
-   //      //for(nl1 = 0; nl1 < like.Ncl; nl1 ++){
-   //        if(k==hit){
-   //          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-   //          if (fopen(filename, "r") != NULL){exit(1);}
-   //          else {
-   //            run_cov_ggl_cgl (OUTFILE,covparams.outdir,ell,dell,ell_Cluster,dell_Cluster,l,m,nl1,k);
-   //          }
-   //        }       
-   //        k=k+1;
-   //      //}
-   //    }
-   //  }
-   //  // clustering X cluster
-   //  sprintf(OUTFILE,"%s_lln_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-   //  for (l=0;l<tomo.clustering_Npowerspectra; l++){
-   //    for (m=0;m<tomo.cluster_Nbin; m++){
-   //      if(k==hit){
-   //        sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-   //        if (fopen(filename, "r") != NULL){exit(1);}
-   //        else {
-   //         run_cov_cl_N (OUTFILE,covparams.outdir,ell,dell,l,m,k);          
-   //        }
-   //      } 
-   //      //printf("%d\n",k);
-   //      k=k+1;
-   //    }
-   //  }
-   //  sprintf(OUTFILE,"%s_llcs_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-   //  for (l=0;l<tomo.clustering_Npowerspectra; l++){
-   //    for (m=0;m<tomo.cgl_Npowerspectra; m++){
-   //      //for(nl1 = 0; nl1 < like.Ncl; nl1 ++){
-   //        if(k==hit){
-   //          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-   //          if (fopen(filename, "r") != NULL){exit(1);}
-   //          else {
-   //            run_cov_cl_cgl (OUTFILE,covparams.outdir,ell,dell,ell_Cluster,dell_Cluster,l,m,nl1,k);
-   //          }
-   //        }
-   //        k=k+1;
-   //      //}
-   //    }
-   //  }
+      }
+    }
   }
   printf("number of cov blocks for parallelization: %d\n",k-1); 
   printf("-----------------\n");
