@@ -561,8 +561,10 @@ void init_cmb(char * cmbName) {
       set_cmb_advact();
    if (strcmp(cmbName, "cmbs4")==0)
       set_cmb_cmbs4();
-   if (strcmp(cmbName, "so")==0)
-      set_cmb_so();
+   if (strcmp(cmbName, "so_baseline")==0)
+      set_cmb_so_baseline();
+   if (strcmp(cmbName, "so_gold")==0)
+      set_cmb_so_gold();
 }
 
 void set_cmb_actpol() {
@@ -592,12 +594,20 @@ void set_cmb_cmbs4() {
    printf("path for CMB lens noise: %s\n", cmb.pathLensRecNoise);
 }
 
-void set_cmb_so() {
-   sprintf(cmb.name, "so");
-   printf("Simons Obs settings TBD!\n"); exit(1);
-   cmb.fwhm = 1.4 * (constants.pi/180.) / 60.;
-   cmb.sensitivity = 18.*(constants.pi/180.)/60.;
-   cmb.pathLensRecNoise = "./cmblensrec/actpol/cmblensrecnoise_lmax3000.txt";
+void set_cmb_so_baseline() {
+   sprintf(cmb.name, "so_baseline");
+   // cmb.fwhm = 1.4 * (constants.pi/180.) / 60.;
+   // cmb.sensitivity = 18.*(constants.pi/180.)/60.;
+   cmb.pathLensRecNoise = "./cmblensrec/so/so_baseline_nlkk_lmax3000.txt";
+   like.lmax_kappacmb = 2999.;
+   printf("path for CMB lens noise: %s\n", cmb.pathLensRecNoise);
+}
+
+void set_cmb_so_gold() {
+   sprintf(cmb.name, "so_gold");
+   // cmb.fwhm = 1.4 * (constants.pi/180.) / 60.;
+   // cmb.sensitivity = 18.*(constants.pi/180.)/60.;
+   cmb.pathLensRecNoise = "./cmblensrec/so/so_gold_nlkk_lmax3000.txt";
    like.lmax_kappacmb = 2999.;
    printf("path for CMB lens noise: %s\n", cmb.pathLensRecNoise);
 }
