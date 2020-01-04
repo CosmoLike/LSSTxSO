@@ -1,2 +1,2 @@
 # LSSTxSO
-Forecasting joint analyses of LSST and SO
+Forecasting joint analyses of LSST and SO and CMB-S4
