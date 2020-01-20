@@ -129,8 +129,8 @@ for k in range(0,1):
 	
 
 	labels = (r'$C^{\gamma \gamma}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$',r'$C^{\kappa \kappa}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$',r'$C^{\kappa \kappa}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$',r'$C^{\kappa \kappa}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$',r'$C^{\kappa \kappa}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$')
-	ticks = np.zeros(6)
-	tickx = np.zeros(5)
+	ticks = np.zeros(7)
+	tickx = np.zeros(6)
 	ticks[1] = nshear*ncl
 	ticks[2] = (nshear+nggl)*ncl
 	ticks[3] = n2pt

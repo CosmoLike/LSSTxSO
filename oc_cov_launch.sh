@@ -2,7 +2,7 @@
 #PBS -S /bin/bash
 #PBS -V
 #PBS -W group_list=cosmo
-#PBS -q standard
+#PBS -q high_pri
 #PBS -J 1-5000
 #PBS -l select=1:ncpus=1:mem=1GB
 #PBS -l place=pack:shared

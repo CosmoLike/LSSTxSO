@@ -24,7 +24,8 @@ void init_cmb(char * cmbName);
 void set_cmb_actpol();
 void set_cmb_advact();
 void set_cmb_cmbs4();
-void set_cmb_so();
+void set_cmb_so_baseline();
+void set_cmb_so_gold();
 
 int count_rows(char* filename,const char delimiter){
   FILE *file = fopen (filename, "r" );

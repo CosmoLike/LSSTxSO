@@ -293,7 +293,7 @@ void run_cov_ls_kk(char *OUTFILE, char *PATH, double *ell, double *dell, int n1,
                c_g = cov_G_gs_kk(ell[nl1], dell[nl1], zl1, zs1);
             }
          }
-         i=like.Ncl*(tomo.shear_Npowerspectra+n1)+nl1;
+         i=like.Ncl*(tomo.clustering_Nbin+n1)+nl1;
          j=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+tomo.clustering_Nbin+tomo.shear_Nbin)+nl2;
          fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],zl1,zs1,0,0,c_g,c_ng);
       }
@@ -458,7 +458,7 @@ void run_cov_lk_ks(char *OUTFILE, char *PATH, double *ell, double *dell, int zl1
             }
          }
          i=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+zl1)+nl1;
-         j=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+tomo.clustering_Nbin+zs2)+nl2;
+         j=like.Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra+tomo.clustering_Nbin+zs2)+nl2;
          fprintf(F1,"%d %d %e %e %d %d %d %d %e %e\n",i,j,ell[nl1],ell[nl2],zl1,0,0,zs2,c_g,c_ng);
       }
    }
