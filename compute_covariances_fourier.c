@@ -713,6 +713,7 @@ int main(int argc, char** argv)
     printf("area: %le n_source: %le n_lens: %le\n",survey.area,survey.n_gal,survey.n_lens);
 
     sprintf(covparams.outdir,"/home/u17/timeifler/covparallel/"); 
+    // sprintf(covparams.outdir,"out_cov_lsstxso/");
     //sprintf(covparams.outdir,"/halo_nobackup/cosmos/teifler/covparallel/");
 
     printf("----------------------------------\n");  
