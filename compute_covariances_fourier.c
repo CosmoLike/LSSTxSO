@@ -810,12 +810,13 @@ int main(int argc, char** argv)
             sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
             run_cov_lk_lk(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
-          //printf("%d\n",k);
           k=k+1;
        }
     }
    
-    // gk_gs
+    printf("%d\n",k);
+
+    // lk_ls
     sprintf(OUTFILE,"%s_lkls_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
     for (l=0;l<tomo.clustering_Nbin; l++){
        for (m=0;m<tomo.ggl_Npowerspectra; m++){
@@ -823,10 +824,10 @@ int main(int argc, char** argv)
             sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
             run_cov_lk_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
-          //printf("%d\n",k);
           k=k+1;
        }
     }
+    printf("%d\n",k);
   
     // lk_kk
     sprintf(OUTFILE,"%s_lkkk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -835,21 +836,24 @@ int main(int argc, char** argv)
           sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
           run_cov_lk_kk(OUTFILE,covparams.outdir,ell,dell,l,k);
        }
-       //printf("%d\n",k);
+       // printf("%d\n",k);
        k=k+1;
     }
-    
+    printf("%d\n",k);
+
     // lk_ks
+    sprintf(OUTFILE,"%s_lkks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
     for (l=0;l<tomo.clustering_Nbin; l++){
        for (m=0;m<tomo.shear_Nbin;m++) {
           if (k==hit){
             sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_lk_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+            run_cov_lk_ks(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
-          //printf("%d\n",k);
+          // printf("%d\n",k);
           k=k+1;
        }
     }
+    printf("%d\n",k);
 
     // lk_ss
     sprintf(OUTFILE,"%s_lkss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -860,10 +864,11 @@ int main(int argc, char** argv)
             run_cov_lk_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
           k=k+1;
-          //printf("%d\n",k);
+          // printf("%d\n",k);
        }
     }
-    
+    printf("%d\n",k);
+
     // ls_kk
     sprintf(OUTFILE,"%s_lskk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
     for (l=0;l<tomo.ggl_Npowerspectra; l++){
@@ -871,9 +876,10 @@ int main(int argc, char** argv)
             sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
             run_cov_ls_kk(OUTFILE,covparams.outdir,ell,dell,l,k);
           }
-//       printf("%d\n",k);
+      // printf("%d\n",k);
        k=k+1;
     }
+    printf("%d\n",k);
     
     // ls_ks
     sprintf(OUTFILE,"%s_lsks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -883,10 +889,11 @@ int main(int argc, char** argv)
             sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
             run_cov_ls_ks(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
-          //printf("%d\n",k);
+          // printf("%d\n",k);
           k=k+1;
        }
     }
+    printf("%d\n",k);
     
     // kk_kk
     sprintf(OUTFILE,"%s_kkkk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -894,9 +901,10 @@ int main(int argc, char** argv)
       sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
       run_cov_kk_kk(OUTFILE,covparams.outdir,ell,dell,k);
     }
-    //printf("%d\n",k);
+    // printf("%d\n",k);
     k=k+1;
-    
+    printf("%d\n",k);
+
     // kk_ks
     sprintf(OUTFILE,"%s_kkks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
     for (l=0;l<tomo.shear_Nbin; l++){
@@ -904,9 +912,10 @@ int main(int argc, char** argv)
           sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
           run_cov_kk_ks(OUTFILE,covparams.outdir,ell,dell,l,k);
        }
-       //printf("%d\n",k);
+       // printf("%d\n",k);
        k=k+1;
     }
+    printf("%d\n",k);
 
     // kk_ss
     sprintf(OUTFILE,"%s_kkss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -916,8 +925,9 @@ int main(int argc, char** argv)
         run_cov_kk_ss(OUTFILE,covparams.outdir,ell,dell,l,k);
        }
        k=k+1;
-       //printf("%d\n",k);
+       // printf("%d\n",k);
     }
+    printf("%d\n",k);
     
     // ks_ks
     sprintf(OUTFILE,"%s_ksks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -927,10 +937,11 @@ int main(int argc, char** argv)
             sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
             run_cov_ks_ks(OUTFILE,covparams.outdir,ell,dell,l,m,k);
           }
-          //printf("%d\n",k);
+          // printf("%d\n",k);
           k=k+1;
        }
     }
+    printf("%d\n",k);
     
    // ks_ss
    sprintf(OUTFILE,"%s_ksss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -941,7 +952,7 @@ int main(int argc, char** argv)
           run_cov_ks_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
        }
        k=k+1;
-       //printf("%d\n",k);
+       // printf("%d\n",k);
       }
     }
   }
