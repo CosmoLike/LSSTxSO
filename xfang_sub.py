@@ -22,6 +22,7 @@ module load gsl/2/2.1
 cd $PBS_O_WORKDIR
 /home/u1/xfang/CosmoLike/LSSTxSO/./compute_covariances_fourier $PBS_ARRAY_INDEX >&/home/u1/xfang/output/job_output_$PBS_ARRAY_INDEX.log
 	"""%(i,j)
+	return get_script
 
 
 i_in = int(sys.argv[1])
