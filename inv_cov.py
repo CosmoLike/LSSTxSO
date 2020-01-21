@@ -42,8 +42,8 @@ for k in range(0,1):
 	for i in range(0,covfile.shape[0]):
 	  	cov[int(covfile[i,0]),int(covfile[i,1])] = covfile[i,8]+covfile[i,9]
 	  	cov[int(covfile[i,1]),int(covfile[i,0])] = covfile[i,8]+covfile[i,9]
-		# cov[int(covfile[i,0]),int(covfile[i,1])] = covfile[i,8]
-	 	# cov[int(covfile[i,1]),int(covfile[i,0])] = covfile[i,8]
+		#cov[int(covfile[i,0]),int(covfile[i,1])] = covfile[i,8]
+	 	#cov[int(covfile[i,1]),int(covfile[i,0])] = covfile[i,8]
 	 
 	
 	cor = np.zeros((ndata,ndata))
@@ -113,6 +113,19 @@ for k in range(0,1):
 	  		f.write("%d %d %e\n" %( i,j, inv[i,j]))
 	f.close()
 
+	# ############### invert 4x2 covariance #################
+	a = np.sort(LA.eigvals(cov[0:n2pt+nkappaxlens*ncl,0:n2pt+nkappaxlens*ncl]))
+	print "min+max eigenvalues 3x2pt cov:"
+	print np.min(a), np.max(a)
+	inv = LA.inv(cov[0:n2pt+nkappaxlens*ncl,0:n2pt+nkappaxlens*ncl])
+	outfile = "cov/"+outname[k]+"_4x2pt_inv" 
+	f = open(outfile, "w")
+	for i in range(0,n2pt+nkappaxlens*ncl):
+		inv[i,i]=inv[i,i]*mask[i]
+	  	for j in range(0,n2pt+nkappaxlens*ncl):
+	  		f.write("%d %d %e\n" %( i,j, inv[i,j]))
+	f.close()
+
  	############### invert 6x2 covariance #################
 	a = np.sort(LA.eigvals(cov[0:ndata,0:ndata]))
 	print "min+max eigenvalues 6x2pt cov:"
@@ -128,40 +141,47 @@ for k in range(0,1):
 
 	
 
-	labels = (r'$C^{\gamma \gamma}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$',r'$C^{\kappa \kappa}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$',r'$C^{\kappa \kappa}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$',r'$C^{\kappa \kappa}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$',r'$C^{\kappa \kappa}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$')
-	ticks = np.zeros(7)
-	tickx = np.zeros(6)
-	ticks[1] = nshear*ncl
-	ticks[2] = (nshear+nggl)*ncl
-	ticks[3] = n2pt
-	ticks[4] = n2pt+nkappaxlens*ncl
-	ticks[5] = n2pt+(nkappaxlens+nkappaxsource)*ncl
-	ticks[6] = ndata
+plt.figure()
+plt.imshow(np.log10(np.abs(cov[:,:])), interpolation="nearest",vmin=-25, vmax=-10)
+plt.colorbar()
+savefile="/users/timeifler/CosmoLike/LSSTxSO/plots/cov_"+outname[k]+".png"
+plt.savefig(savefile, format='png', dpi=2000)
 
-	cor = np.zeros((ndata,ndata))
-	for i in range(0,ndata):
-		for j in range(0,ndata):
-			if (cov[i,i]*cov[j,j] >0):
-				cor[i,j] = cov[i,j]/math.sqrt(cov[i,i]*cov[j,j])
 
-	fs= 10
-	for i in range(0,6):
-  		tickx[i] = 0.5*(ticks[i]+ticks[i+1])
-  		plt.plot([ticks[i]-0.5,ticks[i]-0.5],[-.5,ndata-0.5],linestyle ='-',color = 'k')
-  		plt.plot([-.5,ndata-0.5],[ticks[i]-0.5,ticks[i]-0.5],linestyle ='-',color = 'k')
+ #    labels = (r'$C^{\gamma \gamma}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$',r'$C^{\kappa \kappa}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$',r'$C^{\kappa \kappa}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$',r'$C^{\kappa \kappa}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$',r'$C^{\kappa \kappa}\left(\ell,z_{\mathrm{s}_i},z_{\mathrm{s}_j}\right)$')
+	# ticks = np.zeros(7)
+	# tickx = np.zeros(6)
+	# ticks[1] = nshear*ncl
+	# ticks[2] = (nshear+nggl)*ncl
+	# ticks[3] = n2pt
+	# ticks[4] = n2pt+nkappaxlens*ncl
+	# ticks[5] = n2pt+(nkappaxlens+nkappaxsource)*ncl
+	# ticks[6] = ndata
 
-	plt.subplot(1, 1, 1)
-	ax = plt.gca()
-	im = ax.imshow(np.log10(cov[:,:]), interpolation="nearest",vmin=-25, vmax=-10)
-	plt.xticks(tickx, labels,fontsize=fs)
-	plt.yticks(tickx-0.5, labels,fontsize=fs)
-	plt.tick_params(axis = 'x',length = 0, pad = 15)
-	plt.tick_params(axis = 'y',length = 0, pad = 5)
+	# cor = np.zeros((ndata,ndata))
+	# for i in range(0,ndata):
+	# 	for j in range(0,ndata):
+	# 		if (cov[i,i]*cov[j,j] >0):
+	# 			cor[i,j] = cov[i,j]/math.sqrt(cov[i,i]*cov[j,j])
 
-	plt.colorbar(im)
-	plt.show()
+	# fs= 10
+	# for i in range(0,6):
+ #  		tickx[i] = 0.5*(ticks[i]+ticks[i+1])
+ #  		plt.plot([ticks[i]-0.5,ticks[i]-0.5],[-.5,ndata-0.5],linestyle ='-',color = 'k')
+ #  		plt.plot([-.5,ndata-0.5],[ticks[i]-0.5,ticks[i]-0.5],linestyle ='-',color = 'k')
+
+	# plt.subplot(1, 1, 1)
+	# ax = plt.gca()
+	# im = ax.imshow(np.log10(cov[:,:]), interpolation="nearest",vmin=-25, vmax=-10)
+	# plt.xticks(tickx, labels,fontsize=fs)
+	# plt.yticks(tickx-0.5, labels,fontsize=fs)
+	# plt.tick_params(axis = 'x',length = 0, pad = 15)
+	# plt.tick_params(axis = 'y',length = 0, pad = 5)
+
+	# plt.colorbar(im)
+	# plt.show()
 	
-	print ticks
+	# print ticks
 	
 	# plt.figure()
 	# #plt.imshow(np.log10(cov[0:1500,2000:]), interpolation="nearest",vmin=-25, vmax=-10)
