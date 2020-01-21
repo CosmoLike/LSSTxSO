@@ -22,14 +22,18 @@ module load gsl/2/2.1
 cd $PBS_O_WORKDIR
 /home/u1/xfang/CosmoLike/LSSTxSO/./compute_covariances_fourier $PBS_ARRAY_INDEX >&/home/u1/xfang/output/job_output_$PBS_ARRAY_INDEX.log
 	"""%(i,j)
-	return get_script
+	return script
 
 
-i_in = int(sys.argv[1])
-i_fi = int(sys.argv[2])
+i_in = np.int(sys.argv[1])
+i_fi = np.int(sys.argv[2])
 
+print(i_in,i_fi)
 script = get_script(i_in, i_fi)
+print(script)
 
-np.savetxt('xfang_cov.txt', script)
+f = open("xfang_cov.txt","w")
+f.write(script)
+f.close()
 call(['qsub', 'xfang_cov.txt'])
 print('Job submitted')
