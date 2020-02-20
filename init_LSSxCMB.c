@@ -21,8 +21,6 @@ void set_equal_tomo_bins();
 void init_IA(char *model,char *lumfct);
 
 void init_cmb(char * cmbName);
-void set_cmb_actpol();
-void set_cmb_advact();
 void set_cmb_cmbs4();
 void set_cmb_so_baseline();
 void set_cmb_so_gold();
@@ -466,7 +464,7 @@ void set_galaxies_source()
 
 
 
-void set_lens_galaxies_LSST()
+void set_lens_galaxies_LSSTgoldsample()
 {
   int i,j,n,k;
   double frac, zi;
@@ -502,8 +500,8 @@ void set_lens_galaxies_LSST()
   free_double_vector(sum,0,zbins);
     gbias.b1_function = &b1_per_bin;
   for (i =0; i < tomo.clustering_Nbin ; i++){
-    //gbias.b[i] = 0.95/(growfac(1./(1.+(tomo.clustering_zmax[i]+tomo.clustering_zmin[i]/2.)))/growfac(1.));
-    gbias.b[i] = 1.3+0.1*i;
+    gbias.b[i] = 0.95/(growfac(1./(1.+(tomo.clustering_zmax[i]+tomo.clustering_zmin[i]/2.)))/growfac(1.));
+    //gbias.b[i] = 1.3+0.1*i;
     printf("Bin %d: galaxy bias=%le\n",i,gbias.b[i]);
   }
   n=0;
@@ -556,10 +554,6 @@ void init_cmb(char * cmbName) {
    printf("-----------------------------------\n");
    
    printf("CMB survey: %s\n", cmbName);
-   if (strcmp(cmbName, "actpol")==0)
-      set_cmb_actpol();
-   if (strcmp(cmbName, "advact")==0)
-      set_cmb_advact();
    if (strcmp(cmbName, "cmbs4")==0)
       set_cmb_cmbs4();
    if (strcmp(cmbName, "so_baseline")==0)
@@ -568,23 +562,6 @@ void init_cmb(char * cmbName) {
       set_cmb_so_gold();
 }
 
-void set_cmb_actpol() {
-   sprintf(cmb.name, "actpol");
-   cmb.fwhm = 1.4 * (constants.pi/180.) / 60.;
-   cmb.sensitivity = 18.*(constants.pi/180.)/60.;
-   cmb.pathLensRecNoise = "./cmblensrec/actpol/cmblensrecnoise_lmax3000.txt";
-   like.lmax_kappacmb = 2999.;
-   printf("path for CMB lens noise: %s\n", cmb.pathLensRecNoise);
-}
-
-void set_cmb_advact() {
-   sprintf(cmb.name, "advact");
-   cmb.fwhm = 1.4 * (constants.pi/180.) / 60.;
-   cmb.sensitivity = 10.*(constants.pi/180.)/60.;
-   cmb.pathLensRecNoise = "./cmblensrec/advact/cmblensrecnoise_lmax3000.txt";
-   like.lmax_kappacmb = 2999.;
-   printf("path for CMB lens noise: %s\n", cmb.pathLensRecNoise);
-}
 
 void set_cmb_cmbs4() {
    sprintf(cmb.name, "cmbs4");

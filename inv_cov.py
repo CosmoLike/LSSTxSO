@@ -7,11 +7,11 @@ from numpy import linalg as LA
 import numpy as np
 
 
-infile =['/users/timeifler/Dropbox/cosmolike_store/LSSTxSO/cov/cov_LSSTY10xCMBS4']
+infile =['/users/timeifler/Dropbox/cosmolike_store/LSSTxSO/cov/cov_LSSTY10xSO']
 
 #infile =['/users/timeifler/Dropbox/cosmolike_store/WFIRST_forecasts/cov/cov_WFIRST_Ncl25_4clusterbins_nrichmin25_source_Dec17']
 data= ['datav/6x2pt_LSST_Y10_area=1.800000e+04_dmo']
-outname=['cov_LSSTY10xCMBS4']
+outname=['cov_LSSTY10xSO']
 
 # the numbers below can be computed knowing the data vector settings, e.g. 10 tomographic source bins results in 55 shear-shear power spectra. Or they can be read off when running the covariance code, i.e. type 'compute_covariance_fourier 100000' and look for the output mentioning number of ggl bins accepted and/or number of cluster weka lensing bins accepted. The default numbers below most likely don't correspond to your binning choices.
 nlens = 10 	# number of lens bins 

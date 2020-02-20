@@ -1,0 +1,360 @@
+% mnras_template.tex
+%
+% LaTeX template for creating an MNRAS paper
+%
+% v3.0 released 14 May 2015
+% (version numbers match those of mnras.cls)
+%
+% Copyright (C) Royal Astronomical Society 2015
+% Authors:
+% Keith T. Smith (Royal Astronomical Society)
+
+% Change log
+%
+% v3.0 May 2015
+%    Renamed to match the new package name
+%    Version number matches mnras.cls
+%    A few minor tweaks to wording
+% v1.0 September 2013
+%    Beta testing only - never publicly released
+%    First version: a simple (ish) template for creating an MNRAS paper
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Basic setup. Most papers should leave these options alone.
+\documentclass[fleqn,usenatbib,useAMS]{mnras}
+
+% MNRAS is set in Times font. If you don't have this installed (most LaTeX
+% installations will be fine) or prefer the old Computer Modern fonts, comment
+% out the following line
+%\usepackage{newtxtext,newtxmath}violet
+% Depending on your LaTeX fonts installation, you might get better results with one of these:
+\usepackage{mathptmx}
+%\usepackage{txfonts}
+
+% Use vector fonts, so it zooms properly in on-screen viewing software
+% Don't change these lines unless you know what you are doing
+\usepackage[T1]{fontenc}
+\usepackage{ae,aecompl}
+
+
+%%%%% AUTHORS - PLACE YOUR OWN PACKAGES HERE %%%%%
+
+% Only include extra packages if you really need them. Common packages are:
+\usepackage{graphicx}	% Including figure files
+\usepackage{amsmath}	% Advanced maths commands
+\usepackage{amssymb}	% Extra maths symbols
+\usepackage{bm}		% Bold maths symbols, including upright Greek
+\usepackage{pdflscape}	% Landscape pages
+\usepackage{color}
+\usepackage{exscale}
+\usepackage{natbib}
+\usepackage{rotating}
+\usepackage{rotate}
+\usepackage{afterpage}
+\usepackage{booktabs,threeparttable}
+\usepackage{relsize}
+\usepackage{lscape}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{ltxtable}
+\usepackage{txfonts}
+\usepackage{bbm}
+\usepackage{widetext}
+\usepackage{subfig}
+\usepackage{url}
+\usepackage{bm}
+\input{journaldef.tex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% AUTHORS - PLACE YOUR OWN COMMANDS HERE %%%%%
+\newcommand{\tbf}{\textbf}
+\newcommand{\ti}{\textit}
+
+\newcommand{\bea}{\begin{eqnarray}}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ben}{\begin{enumerate}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\eea}{\end{eqnarray}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\een}{\end{enumerate}}
+\newcommand{\nn}{\nonumber}
+\newcommand{\vpi}{\mathbf \pi}
+\newcommand{\vecd}{\mathbf d}
+\newcommand{\matC}{\mathbf C}
+\newcommand{\matQ}{\mathbf Q}
+\newcommand{\ensav}[1]{\left\langle #1 \right\rangle}
+\def\bfp{\mbox{\bf p}}
+\def\bfq{\mbox{\bf q}}
+\def\bfk{\mbox{\bf k}}
+\def\bfr{\mbox{\bf r}}
+
+\newcommand{\like}{L}
+\newcommand{\prob}{P}
+\newcommand{\probr}{P_r}
+\newcommand{\p}{\vek p}
+
+
+
+\newcommand{\om}{\Omega_\mr m}
+\newcommand{\omb}{\Omega_\mr b}
+\newcommand{\sig}{\sigma_8}
+\newcommand{\ns}{n_s}
+\newcommand{\w}{w_0}
+\newcommand{\wa}{w_a}
+
+\renewcommand{\d}{{\rm d}}
+\newcommand{\pd}{P_{\delta}}
+\newcommand{\pe}{P_\mr E}
+
+\newcommand{\vt}{\vartheta}
+\newcommand{\vp}{\varphi}
+\newcommand{\eps}{\epsilon}
+\newcommand{\abs}[1]{| #1 |}
+\newcommand{\mr}{\mathrm}
+
+\newcommand{\vek}{\mathbf}
+\newcommand{\bs}{\boldsymbol}
+\newcommand{\CL}{\textsc{CosmoLike}}
+\newcommand{\ww}{{\textit{WFIRST wide}}}
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[#1]}}}
+
+\newcommand*{\vertbar}{\rule[-1ex]{0.5pt}{2.5ex}}
+\newcommand*{\horzbar}{\rule[.5ex]{2.5ex}{0.5pt}}
+\newcommand{\R}{\bm R}
+\newcommand{\U}{\mathbf U}
+\newcommand{\V}{\mathbf V}
+\renewcommand{\t}{\rm t}
+\newcommand{\D}{\bm D}
+\newcommand{\M}{\bm M}
+\newcommand{\B}{\bm B}
+\newcommand{\W}{\bm W}
+\newcommand{\Q}{\bm Q}
+\renewcommand{\P}{\mathbf P}
+\newcommand{\C}{\mathbf C}
+\newcommand{\I}{\mathbf I}
+\newcommand{\invL}{\mathbf L^{-1}}
+\renewcommand{\L}{\mathbf L}
+\newcommand{\pco}{\bm p_{\rm co}}
+\newcommand{\pnu}{\bm p_{\rm nu}}
+\newcommand{\pcosim}{\bm p_{\rm co, sim}}
+\newcommand{\pcofid}{\bm p_{\rm co, fid}}
+\newcommand{\pcobest}{\bm p_{\rm co, bestfit}}
+
+
+\voffset=-0.5in
+
+\newcommand{\ch}[1]{\textcolor{darkgreen}{#1}} %Chen Heinrich
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
+
+\title[LSST x SO]{Synergies of Large-Scale Structure and Cosmic Microwave Background Data in the 2020s}
+
+\author[]{We$^{1}$\thanks{E-mail:}
+\\
+% List of institutions
+$^{1}$ Here
+}
+
+
+\begin{document}
+
+\date{Accepted . Received ; in original form }
+
+\pagerange{\pageref{firstpage}--\pageref{lastpage}} \pubyear{2014}
+
+\maketitle
+
+\label{firstpage}
+
+\begin{abstract} 
+\end{abstract}
+
+
+\begin{keywords}
+cosmological parameters -- theory --large-scale structure of the Universe
+\end{keywords}
+
+\renewcommand{\thefootnote}{\arabic{footnote}}
+\setcounter{footnote}{0}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Modeling and Analysis Choices}
+\label{sec:modeling}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\arraystretch}{1.3}
+\begin{table}
+\caption{Fiducial parameters, flat priors (min, max) for cosmology and galaxy bias, and Gaussian priors ($\mu$, $\sigma$) for observational systematics. We consider optimistic and pessimistic scenarios in this paper, which is indicated in the corresponding sections of the table.}
+\begin{center}
+\begin{tabular*}{0.45\textwidth}{@{\extracolsep{\fill}}| c c c |}
+\hline
+\hline
+Parameter & Fiducial & Prior \\  
+\hline 
+\multicolumn{3}{|c|}{\tbf{Survey}} \\
+$\Omega_{\mathrm{s}}$ & 18,000 deg$^2$ & fixed\\
+$n_{\mathrm{source}}$ & 51 gal/arcmin$^2$ & fixed\\
+$n_{\mathrm{lens}}$ & 66 gal/arcmin$^2$& fixed \\
+$\sigma_\epsilon$ &0.26& fixed\\
+\hline 
+\multicolumn{3}{|c|}{\tbf{Cosmology}} \\
+$\om$ & 0.3156 &  flat (0.1, 0.6)  \\ 
+$\sig$ & 0.831 &  flat (0.6, 0.95)  \\ 
+$\ns$ & 0.9645 & flat (0.85, 1.06)  \\
+$\w$ &  -1.0 &   flat (-2.0, 0.0)   \\
+$\wa$ &  0.0 &  flat (-2.5, 2.5)   \\
+$\omb$ &  0.0492 &  flat (0.04, 0.055)  \\
+$h_0$  & 0.6727 &  flat (0.6, 0.76)   \\
+\hline
+\end{tabular*}
+\end{center}
+\label{tab:3x2params}
+\end{table}
+\renewcommand{\arraystretch}{1.0}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{table}
+\caption{Fiducial parameters, flat priors (min, max) for cosmology and galaxy bias, and Gaussian priors ($\mu$, $\sigma$) for observational systematics. We consider optimistic and pessimistic scenarios in this paper, which is indicated in the corresponding sections of the table.}
+\begin{center}
+\begin{tabular*}{0.45\textwidth}{@{\extracolsep{\fill}}| c c c |}
+\hline
+\hline
+\multicolumn{3}{|c|}{\tbf{Lens Sample = Source Sample }} \\
+\hline
+\multicolumn{3}{|c|}{\tbf{Galaxy bias (tomographic bins)}} \\
+$b_\mr{g}^i$ & 1.3 + i $\times$ 0.1  & flat (0.8, 3.0) \\
+\hline
+\multicolumn{3}{|c|}{\tbf{Lens photo-z (optimistic)}} \\
+$\Delta_\mr{z,lens}^i $ & 0.0 & Gauss (0.0, 0.002) \\
+$\sigma_\mr{z,lens} $ & 0.01 & Gauss (0.01, 0.002) \\
+\hline
+\multicolumn{3}{|c|}{\tbf{Source photo-z (optimistic)}} \\
+$\Delta_\mr{z,source}^i $ & 0.0 & Gauss (0.0, 0.002) \\
+$\sigma_\mr{z,source}$ &0.01 & Gauss (0.01, 0.002) \\
+\hline
+\multicolumn{3}{|c|}{\tbf{Shear calibration (optimistic)}} \\
+$m_i $ & 0.0 & Gauss (0.0, 0.002)\\
+\hline
+\end{tabular*}
+\end{center}
+\label{tab:3x2params}
+\end{table}
+\renewcommand{\arraystretch}{1.0}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{table}
+\caption{Fiducial parameters, flat priors (min, max) for cosmology and galaxy bias, and Gaussian priors ($\mu$, $\sigma$) for observational systematics. We consider optimistic and pessimistic scenarios in this paper, which is indicated in the corresponding sections of the table.}
+\begin{center}
+\begin{tabular*}{0.45\textwidth}{@{\extracolsep{\fill}}| c c c |}
+\hline
+\hline
+\multicolumn{3}{|c|}{\tbf{Lens Sample = Redmagic}} \\
+\hline
+\multicolumn{3}{|c|}{\tbf{Galaxy bias (tomographic bins)}} \\
+$b_\mr{g}^i$ & 1.3 + i $\times$ 0.1  & flat (0.8, 3.0) \\
+\hline
+\multicolumn{3}{|c|}{\tbf{Lens photo-z (optimistic)}} \\
+$\Delta_\mr{z,lens}^i $ & 0.0 & Gauss (0.0, 0.002) \\
+$\sigma_\mr{z,lens} $ & 0.01 & Gauss (0.01, 0.002) \\
+\hline
+\multicolumn{3}{|c|}{\tbf{Source photo-z (optimistic)}} \\
+$\Delta_\mr{z,source}^i $ & 0.0 & Gauss (0.0, 0.002) \\
+$\sigma_\mr{z,source}$ &0.01 & Gauss (0.01, 0.002) \\
+\hline
+\multicolumn{3}{|c|}{\tbf{Shear calibration (optimistic)}} \\
+$m_i $ & 0.0 & Gauss (0.0, 0.002)\\
+\hline
+\end{tabular*}
+\end{center}
+\label{tab:3x2params}
+\end{table}
+\renewcommand{\arraystretch}{1.0}
+
+
+\renewcommand{\arraystretch}{1.3}
+\begin{table}
+\caption{Fiducial parameters, flat priors (min, max) for cosmology and galaxy bias, and Gaussian priors ($\mu$, $\sigma$) for observational systematics. We consider optimistic and pessimistic scenarios in this paper, which is indicated in the corresponding sections of the table.}
+\begin{center}
+\begin{tabular*}{0.45\textwidth}{@{\extracolsep{\fill}}| c c c |}
+\hline
+\hline
+\multicolumn{3}{|c|}{\tbf{Lens Sample = Gold Sample}} \\
+\hline
+\multicolumn{3}{|c|}{\tbf{Galaxy bias (tomographic bins)}} \\
+$b_\mr{g}^i$ & 1.3 + i $\times$ 0.1  & flat (0.8, 3.0) \\
+\hline
+\multicolumn{3}{|c|}{\tbf{Lens photo-z (optimistic)}} \\
+$\Delta_\mr{z,lens}^i $ & 0.0 & Gauss (0.0, 0.002) \\
+$\sigma_\mr{z,lens} $ & 0.01 & Gauss (0.01, 0.002) \\
+\hline
+\multicolumn{3}{|c|}{\tbf{Source photo-z (optimistic)}} \\
+$\Delta_\mr{z,source}^i $ & 0.0 & Gauss (0.0, 0.002) \\
+$\sigma_\mr{z,source}$ &0.01 & Gauss (0.01, 0.002) \\
+\hline
+\multicolumn{3}{|c|}{\tbf{Shear calibration (optimistic)}} \\
+$m_i $ & 0.0 & Gauss (0.0, 0.002)\\
+\hline
+\end{tabular*}
+\end{center}
+\label{tab:3x2params}
+\end{table}
+\renewcommand{\arraystretch}{1.0}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Constraining power as a function of time}
+\label{sec:time}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Varying the Galaxy Sample}
+\label{sec:galasample}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Modified Gravity}
+\label{sec:mg}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Photo-z Outliers}
+\label{sec:mg}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusions}
+\label{sec:conc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+
+
+
+
+
+
+
+
+
+

@@ -781,7 +781,7 @@ int main(int argc, char** argv)
     init_IA("none", "GAMA"); 
     init_probes("6x2pt");
 
-    init_cmb("cmbs4");
+    init_cmb("so_baseline");
 
     //set l-bins for shear, ggl, clustering, clusterWL
     double logdl=(log(like.lmax)-log(like.lmin))/like.Ncl;
