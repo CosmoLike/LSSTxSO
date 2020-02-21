@@ -665,86 +665,50 @@ void save_zdistr_lenses(int zl){
 
  int main(int argc, char** argv)
 {
-  clock_t begin, end;
-  double time_spent;
   int i;
   char arg1[400],arg2[400],arg3[400];
 /* here, do your time-consuming job */
   int sce=atoi(argv[1]);
 
-  int N_scenarios=3;
+  int N_scenarios=2;
+  double area_table[2]={12300.0,14200.0};
+  double nsource_table[2]={11.0,27.0};
   
-  double area_table[3]={2000.0,18000.0,18000.0};
-  double nsource_table[3]={51.0,27.0,48.0};
-  double nlens_table[3]={66.0,48.0,52.0};
-  double sigma_zphot_shear[3]={0.01,0.05,0.02};
-  double sigma_zphot_clustering[3]={0.01,0.03,0.02};
+  double nlens_table[2]={18.0,48.0};
 
-  char survey_designation[3][200]={"WFIRST","LSST_Y10","WFIRST"};
-  char tomo_binning_source[3][200]={"source_std","source_std","source_std"};
-  char tomo_binning_lens[3][200]={"WF_SN10","LSST_gold","WF_SN10"};
+  double sigma_zphot_shear[3]={0.05,0.05};
+  double sigma_zphot_clustering[3]={0.03,0.03};
 
-  char source_zfile[3][400]={"zdistri_WFIRST_LSST_lensing_fine_bin","SRD_zdistri_model_z0=1.100000e-01_beta=6.800000e-01_Y10_source.txt","zdistri_WFIRST_LSST_lensing_fine_bin"};
 
-  char lens_zfile[3][400]={"zdistri_WFIRST_LSST_clustering_fine_bin","SRD_zdistri_model_z0=2.800000e-01_beta=9.000000e-01_Y10_lens.txt","zdistri_WFIRST_LSST_clustering_fine_bin"};
+  char survey_designation[2][200]={"LSST_Y1","LSST_Y10"};
+  char tomo_binning_source[2][200]={"source_std","source_std"};
+  char tomo_binning_lens[2][200]={"LSST_gold","LSST_gold"};
+
+  char source_zfile[2][400]={"zdistri_model_z0=1.300000e-01_beta=7.800000e-01_Y1_source","zdistri_model_z0=1.100000e-01_beta=6.800000e-01_Y10_source"};
+  char lens_zfile[2][400]={"zdistri_model_z0=2.600000e-01_beta=9.400000e-01_Y1_lens","zdistri_model_z0=2.800000e-01_beta=9.000000e-01_Y10_lens"};
 
 
   init_cosmo_runmode("halofit");
   init_bary(argv[2]);
   init_binning_fourier(15,20.0,3000.0,3000.0,21.0,10,10);
-  //WFIRST opti
-  init_priors(0.002,sigma_zphot_shear[sce],0.001,0.001,sigma_zphot_clustering[sce],0.001,0.001,3.0,1.2,3.8,2.0,16.0,5.0,0.8);
+
+  // init_priors(0.002,sigma_zphot_shear[sce],0.001,0.001,sigma_zphot_clustering[sce],0.001,0.001,3.0,1.2,3.8,2.0,16.0,5.0,0.8);
   init_survey(survey_designation[sce],nsource_table[sce],nlens_table[sce],area_table[sce]);
   sprintf(arg1,"zdistris/%s",source_zfile[sce]);
-  sprintf(arg2,"zdistris/%s",lens_zfile[sce]); 
+  sprintf(arg2,"zdistris/%s",lens_zfile[sce]);
   init_galaxies(arg1,arg2,"gaussian","gaussian",tomo_binning_source[sce],tomo_binning_lens[sce]);
   init_IA("NLA_HF","GAMA"); 
   init_probes("6x2pt");
 
-  init_cmb("cmbs4");
-  //init_Pdelta("emu",0.8,0.35);
-  // init_Pdelta("linear",0.8,0.35);
+  init_cmb("so_baseline");
 
-  // for (i =0; i< 10; i++){
-  //   save_zdistr_sources(i);
-  // }
-  // for (i =0; i< 10; i++){
-  //   save_zdistr_lenses(i);
-  // }
-//   double Omega;
-//   char filename[300];
-// for (i=0;i<200; i++){
-//   Omega=0.05+i*0.002; 
-//   sprintf(filename,"test_fid_%d", i);
-//compute_data_vector(filename,Omega,0.831,0.9645,-1.,0.,0.0491685,0.6727,0.,0.,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,5.92,1.1,-0.47,0.0,0.0,0.0,0.0,0.0,0.0,0.0,3.207,0.993,0.0,0.456,0.0,0.0);
-// }
+  compute_data_vector(arg3,0.3156,0.831,0.9645,-1.,0.,0.0491685,0.6727,0.,0.,\
+    gbias.b[0],gbias.b[1],gbias.b[2],gbias.b[3],gbias.b[4],\
+    gbias.b[5],gbias.b[6],gbias.b[7],gbias.b[8],gbias.b[9],\
+    0.0,0.0,0.0,0.0,0.0,\
+    0.0,0.0,0.0,0.0,0.0,\
+    sigma_zphot_shear[sce],0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,sigma_zphot_clustering[sce],0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,5.92,1.1,-0.47,0.0,0.0,0.0,0.0,0.0,0.0,0.0,3.207,0.993,0.0,0.456,0.0,0.0,0.0,0.0,0.0);
 
-sprintf(arg3,"%s_area=%le_%s",survey_designation[sce],area_table[sce],argv[2]);
-compute_data_vector(arg3,0.3156,0.831,0.9645,-1.,0.,0.0491685,0.6727,0.,0.,gbias.b[0],gbias.b[1],gbias.b[2],gbias.b[3],gbias.b[4],gbias.b[5],gbias.b[6],gbias.b[7],gbias.b[8],gbias.b[9],0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,sigma_zphot_shear[sce],0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,sigma_zphot_clustering[sce],0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,5.92,1.1,-0.47,0.0,0.0,0.0,0.0,0.0,0.0,0.0,3.207,0.993,0.0,0.456,0.0,0.0,0.0,0.0,0.0);
-
-// compute_data_vector("mu1_Sigma0",0.3156,0.831,0.9645,-1.,0.,0.0491685,0.6727,0.,1.,1.35,1.5,1.65,1.8,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.01,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,5.92,1.1,-0.47,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.72+log(1.e+14*0.7),1.08,0.0,0.25,0.9,0.9,0.9,0.9);
-  // compute_data_vector("mu1_Sigma1",0.3156,0.831,0.9645,-1.,0.,0.0491685,0.6727,1.,1.,1.35,1.5,1.65,1.8,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.01,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,5.92,1.1,-0.47,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.72+log(1.e+14*0.7),1.08,0.0,0.25,0.9,0.9,0.9,0.9);
-
-  // init_data_inv("cov/WFIRST_3x2pt_clusterN_clusterWL_inv","datav/WFIRST_all_2pt_clusterN_clusterWL_fid");
-  
-
-  // begin = clock();
-  // log_multi_like(0.3156,0.831,0.9645,-1.,0.,0.0491685,0.6727,0.,0.,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,5.92,1.1,-0.47,0.0,0.0,0.0,0.0,0.0,0.0,0.0,3.207,0.993,0.0,0.456,0.0,0.0);
-  // // printf("knonlin %le\n",nonlinear_scale_computation(1.0));
-  // // printf("knonlin %le\n",nonlinear_scale_computation(0.5));
-  // end = clock();
-  // time_spent = (double)(end - begin) / CLOCKS_PER_SEC;      
-  // printf("timespent %le\n",time_spent);
-  
-  //CH BEGINS
-  //for testing Planck15_BAO_w0wa prior alone
-  //compute_data_vector("fid",3.50989e-01,8.04675e-01,9.64061e-01,-5.05518e-01,-1.46884e+00,5.46245e-02,6.39839e-01,0.,0.,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.01,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,5.92,1.1,-0.47,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.72+log(1.e+14*0.7),1.08,0.0,0.25,0.9,0.9,0.9,0.9);
-  //expect 0.0 for the following
-  //log_multi_like(3.50989e-01,8.04675e-01.1,9.64061e-01,-5.05518e-01,-1.46884e+00,5.46245e-02,6.39839e-01,0.,0.,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.01,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,5.92,1.1,-0.47,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.72+log(1.e+14*0.7),1.08,0.0,0.25,0.9,0.9,0.9,0.9);
-  //expect -13.195605 for the following
-  //log_multi_like(0.35449914, 0.81272201,0.97370111, -0.51057289,-1.48353327,0.05517077,0.64623714,0.,0.,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.01,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,5.92,1.1,-0.47,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.72+log(1.e+14*0.7),1.08,0.0,0.25,0.9,0.9,0.9,0.9); 
-  //CH ENDS
-  
   return 0;
 }
 

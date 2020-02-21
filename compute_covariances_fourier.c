@@ -795,12 +795,6 @@ int main(int argc, char** argv)
       ell[i]=exp(log(like.lmin)+(i+0.5)*logdl);
       dell[i]=exp(log(like.lmin)+(i+1)*logdl)-exp(log(like.lmin)+(i*logdl));
       if(ell[i]<like.lmax_shear) printf("%le\n",ell[i]);
-      if(ell[i]>like.lmax_shear){
-        ell_Cluster[j]=ell[i];
-        dell_Cluster[j]=dell[i];
-        printf("%le %le\n",ell[i],ell_Cluster[j]);
-        j++;
-      }
     } 
 
 

@@ -14,7 +14,7 @@ void init_lens_sample(char *lensphotoz, char *tomo_binning_lens);
 void init_source_sample(char *sourcephotoz, char *tomo_binning_source);
 
 void set_galaxies_source();
-void set_lens_galaxies_LSST();
+void set_lens_galaxies_LSSTgoldsample();
 void set_galaxies_WFIRST_SN10();
 
 void set_equal_tomo_bins();
@@ -396,7 +396,7 @@ void init_lens_sample(char *lensphotoz, char *tomo_binning_lens)
   printf("Lens Sample Redshift Errors set to %s: redshift.clustering_photoz=%d\n",lensphotoz,redshift.clustering_photoz);
   
   if(strcmp(tomo_binning_lens,"LSST_gold")==0){
-    set_lens_galaxies_LSST();
+    set_lens_galaxies_LSSTgoldsample();
   }
   //call test_kmax once to initialize look-up tables at reference cosmology
   test_kmax(1000.,1);
