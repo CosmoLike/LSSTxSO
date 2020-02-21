@@ -913,7 +913,7 @@ int main(int argc, char** argv)
        }
     }
    
-    printf("%d\n",k);
+    printf("lklk %d\n",k);
 
     // lk_ls
     sprintf(OUTFILE,"%s_lkls_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -926,7 +926,7 @@ int main(int argc, char** argv)
           k=k+1;
        }
     }
-    printf("%d\n",k);
+    printf("lkls %d\n",k);
   
     // lk_kk
     sprintf(OUTFILE,"%s_lkkk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -938,7 +938,7 @@ int main(int argc, char** argv)
        // printf("%d\n",k);
        k=k+1;
     }
-    printf("%d\n",k);
+    printf("lkkk %d\n",k);
 
     // lk_ks
     sprintf(OUTFILE,"%s_lkks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -952,7 +952,7 @@ int main(int argc, char** argv)
           k=k+1;
        }
     }
-    printf("%d\n",k);
+    printf("lkks %d\n",k);
 
     // lk_ss
     sprintf(OUTFILE,"%s_lkss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -966,7 +966,7 @@ int main(int argc, char** argv)
           // printf("%d\n",k);
        }
     }
-    printf("%d\n",k);
+    printf("lkss %d\n",k);
 
     // ls_kk
     sprintf(OUTFILE,"%s_lskk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -978,7 +978,7 @@ int main(int argc, char** argv)
       // printf("%d\n",k);
        k=k+1;
     }
-    printf("%d\n",k);
+    printf("lskk%d\n",k);
     
     // ls_ks
     sprintf(OUTFILE,"%s_lsks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -992,7 +992,7 @@ int main(int argc, char** argv)
           k=k+1;
        }
     }
-    printf("%d\n",k);
+    printf("lsks %d\n",k);
     
     // kk_kk
     sprintf(OUTFILE,"%s_kkkk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -1002,7 +1002,7 @@ int main(int argc, char** argv)
     }
     // printf("%d\n",k);
     k=k+1;
-    printf("%d\n",k);
+    printf("kkkk %d\n",k);
 
     // kk_ks
     sprintf(OUTFILE,"%s_kkks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -1014,7 +1014,7 @@ int main(int argc, char** argv)
        // printf("%d\n",k);
        k=k+1;
     }
-    printf("%d\n",k);
+    printf("kkks %d\n",k);
 
     // kk_ss
     sprintf(OUTFILE,"%s_kkss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -1026,7 +1026,7 @@ int main(int argc, char** argv)
        k=k+1;
        // printf("%d\n",k);
     }
-    printf("%d\n",k);
+    printf("kkss %d\n",k);
     
     // ks_ks
     sprintf(OUTFILE,"%s_ksks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -1040,7 +1040,7 @@ int main(int argc, char** argv)
           k=k+1;
        }
     }
-    printf("%d\n",k);
+    printf("ksks %d\n",k);
     
    // ks_ss
    sprintf(OUTFILE,"%s_ksss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -1054,6 +1054,7 @@ int main(int argc, char** argv)
        // printf("%d\n",k);
       }
     }
+    printf("ksss %d\n",k);
 
     // ll_kk
     sprintf(OUTFILE,"%s_llkk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -1065,7 +1066,7 @@ int main(int argc, char** argv)
       // printf("%d\n",k);
        k=k+1;
     }
-    printf("%d\n",k);
+    printf("llkk %d\n",k);
     
     // ll_ks
     sprintf(OUTFILE,"%s_llks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -1079,7 +1080,7 @@ int main(int argc, char** argv)
           k=k+1;
        }
     }
-    printf("%d\n",k);
+    printf("llks %d\n",k);
 
     // ll_lk
     sprintf(OUTFILE,"%s_lllk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
@@ -1093,7 +1094,7 @@ int main(int argc, char** argv)
           k=k+1;
        }
     }
-    printf("%d\n",k);
+    printf("lllk %d\n",k);
   }
   printf("number of cov blocks for parallelization: %d\n",k-1); 
   printf("-----------------\n");
