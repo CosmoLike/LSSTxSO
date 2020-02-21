@@ -1,14 +1,14 @@
-./like_fourier 0 	dmo
-./like_fourier 1	dmo	
-./like_fourier 0 	mb2
-./like_fourier 1	mb2	
-./like_fourier 0 	illustris
-./like_fourier 1	illustris	
-./like_fourier 0 	eagle
-./like_fourier 1	eagle	
-./like_fourier 0 	TNG100
-./like_fourier 1	TNG100	
-./like_fourier 0 	HzAGN
-./like_fourier 1	HzAGN	
-./like_fourier 0 	owls_AGN
-./like_fourier 1	owls_AGN	
+./like_fourier 0 	dmo			so_Y1
+./like_fourier 1	dmo			so_Y5
+./like_fourier 0 	mb2 		so_Y1
+./like_fourier 1	mb2			so_Y5
+./like_fourier 0 	illustris 	so_Y1
+./like_fourier 1	illustris 	so_Y5
+./like_fourier 0 	eagle 		so_Y1
+./like_fourier 1	eagle 		so_Y5
+./like_fourier 0 	TNG100 		so_Y1
+./like_fourier 1	TNG100 		so_Y5
+./like_fourier 0 	HzAGN 		so_Y1
+./like_fourier 1	HzAGN 		so_Y5
+./like_fourier 0 	owls_AGN 	so_Y1
+./like_fourier 1	owls_AGN 	so_Y5
