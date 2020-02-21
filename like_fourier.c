@@ -702,7 +702,7 @@ void save_zdistr_lenses(int zl){
 
   init_cmb("so_baseline");
 
-  compute_data_vector(arg3,0.3156,0.831,0.9645,-1.,0.,0.0491685,0.6727,0.,0.,\
+  compute_data_vector(survey_designation[sce],0.3156,0.831,0.9645,-1.,0.,0.0491685,0.6727,0.,0.,\
     gbias.b[0],gbias.b[1],gbias.b[2],gbias.b[3],gbias.b[4],\
     gbias.b[5],gbias.b[6],gbias.b[7],gbias.b[8],gbias.b[9],\
     0.0,0.0,0.0,0.0,0.0,\

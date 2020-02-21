@@ -1,0 +1,14 @@
+./like_fourier 0 	dmo
+./like_fourier 1	dmo	
+./like_fourier 0 	mb2
+./like_fourier 1	mb2	
+./like_fourier 0 	illustris
+./like_fourier 1	illustris	
+./like_fourier 0 	eagle
+./like_fourier 1	eagle	
+./like_fourier 0 	TNG100
+./like_fourier 1	TNG100	
+./like_fourier 0 	HzAGN
+./like_fourier 1	HzAGN	
+./like_fourier 0 	owls_AGN
+./like_fourier 1	owls_AGN	
