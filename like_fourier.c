@@ -680,12 +680,12 @@ void save_zdistr_lenses(int zl){
   double sigma_zphot_clustering[3]={0.03,0.03};
 
 
-  char survey_designation[2][200]={"LSST_Y1","LSST_Y10"};
+  char survey_designation[2][200]={"LSSTxSO_Y1","LSSTxSO_Y6"};
   char tomo_binning_source[2][200]={"source_std","source_std"};
   char tomo_binning_lens[2][200]={"LSST_gold","LSST_gold"};
 
-  char source_zfile[2][400]={"zdistri_model_z0=1.300000e-01_beta=7.800000e-01_Y1_source","zdistri_model_z0=1.100000e-01_beta=6.800000e-01_Y10_source"};
-  char lens_zfile[2][400]={"zdistri_model_z0=2.600000e-01_beta=9.400000e-01_Y1_lens","zdistri_model_z0=2.800000e-01_beta=9.000000e-01_Y10_lens"};
+  char source_zfile[2][400]={"src_LSSTY1","src_LSSTY6"};
+  char lens_zfile[2][400]={"lens_LSSTY1", "lens_LSSTY6"};
 
 
   init_cosmo_runmode("halofit");
@@ -700,9 +700,9 @@ void save_zdistr_lenses(int zl){
   init_IA("NLA_HF","GAMA"); 
   init_probes("6x2pt");
 
-  init_cmb("so_baseline");
-
-  compute_data_vector(survey_designation[sce],0.3156,0.831,0.9645,-1.,0.,0.0491685,0.6727,0.,0.,\
+  init_cmb(argv[3]);
+  sprintf(arg3,"%s_%s",survey_designation[sce],argv[2]);
+  compute_data_vector(arg3,0.3156,0.831,0.9645,-1.,0.,0.0491685,0.6727,0.,0.,\
     gbias.b[0],gbias.b[1],gbias.b[2],gbias.b[3],gbias.b[4],\
     gbias.b[5],gbias.b[6],gbias.b[7],gbias.b[8],gbias.b[9],\
     0.0,0.0,0.0,0.0,0.0,\
