@@ -22,8 +22,8 @@ void init_IA(char *model,char *lumfct);
 
 void init_cmb(char * cmbName);
 void set_cmb_cmbs4();
-void set_cmb_so_baseline();
-void set_cmb_so_gold();
+void set_cmb_so_Y5();
+void set_cmb_so_Y1();
 
 int count_rows(char* filename,const char delimiter){
   FILE *file = fopen (filename, "r" );
@@ -556,10 +556,10 @@ void init_cmb(char * cmbName) {
    printf("CMB survey: %s\n", cmbName);
    if (strcmp(cmbName, "cmbs4")==0)
       set_cmb_cmbs4();
-   if (strcmp(cmbName, "so_baseline")==0)
-      set_cmb_so_baseline();
-   if (strcmp(cmbName, "so_gold")==0)
-      set_cmb_so_gold();
+   if (strcmp(cmbName, "so_Y1")==0)
+      set_cmb_so_Y1();
+   if (strcmp(cmbName, "so_Y5")==0)
+      set_cmb_so_Y5();
 }
 
 
@@ -572,20 +572,28 @@ void set_cmb_cmbs4() {
    printf("path for CMB lens noise: %s\n", cmb.pathLensRecNoise);
 }
 
-void set_cmb_so_baseline() {
-   sprintf(cmb.name, "so_baseline");
+void set_cmb_so_Y5() {
+   sprintf(cmb.name, "so_Y5");
    // cmb.fwhm = 1.4 * (constants.pi/180.) / 60.;
    // cmb.sensitivity = 18.*(constants.pi/180.)/60.;
-   cmb.pathLensRecNoise = "./cmblensrec/so/so_baseline_nlkk_lmax3000.txt";
+   cmb.pathLensRecNoise = "./cmblensrec/so/YEAR5_nlkk_v3_1_0deproj0_SENS1_fsky0p4_it_lT30-3000_lP30-5000.dat";
+   like.lmax_kappacmb = 2999.;
+   printf("path for CMB lens noise: %s\n", cmb.pathLensRecNoise);
+}
+void set_cmb_so_Y1() {
+   sprintf(cmb.name, "so_Y1");
+   // cmb.fwhm = 1.4 * (constants.pi/180.) / 60.;
+   // cmb.sensitivity = 18.*(constants.pi/180.)/60.;
+   cmb.pathLensRecNoise = "./cmblensrec/so/YEAR1_nlkk_SOlike_y1_tt_SENS1_qe_fsky0p4_lT30-3000.dat";
    like.lmax_kappacmb = 2999.;
    printf("path for CMB lens noise: %s\n", cmb.pathLensRecNoise);
 }
 
-void set_cmb_so_gold() {
-   sprintf(cmb.name, "so_gold");
-   // cmb.fwhm = 1.4 * (constants.pi/180.) / 60.;
-   // cmb.sensitivity = 18.*(constants.pi/180.)/60.;
-   cmb.pathLensRecNoise = "./cmblensrec/so/so_gold_nlkk_lmax3000.txt";
-   like.lmax_kappacmb = 2999.;
-   printf("path for CMB lens noise: %s\n", cmb.pathLensRecNoise);
-}
+// void set_cmb_so_gold() {
+//    sprintf(cmb.name, "so_gold");
+//    // cmb.fwhm = 1.4 * (constants.pi/180.) / 60.;
+//    // cmb.sensitivity = 18.*(constants.pi/180.)/60.;
+//    cmb.pathLensRecNoise = "./cmblensrec/so/so_gold_nlkk_lmax3000.txt";
+//    like.lmax_kappacmb = 2999.;
+//    printf("path for CMB lens noise: %s\n", cmb.pathLensRecNoise);
+// }
