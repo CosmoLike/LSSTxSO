@@ -781,7 +781,8 @@ int main(int argc, char** argv)
     init_IA("none","GAMA"); 
     init_probes("6x2pt");
 
-    init_cmb("so_Y1");
+    if(t==0) init_cmb("so_Y1");
+    if(t==1) init_cmb("so_Y5");
 
     //set l-bins for shear, ggl, clustering, clusterWL
     double logdl=(log(like.lmax)-log(like.lmin))/like.Ncl;
