@@ -754,15 +754,15 @@ int main(int argc, char** argv)
   char OUTFILE[400],filename[400],arg1[400],arg2[400];
   
   int N_scenarios=2;
-  double area_table[2]={12300.0,14200.0};
-  double nsource_table[2]={11.0,27.0};
+  double area_table[2]={12300.0,16500.0}; // Y1 corresponds to DESC SRD Y1, Y6 corresponds to assuming that we cover the full SO area=0.4*fsky and at a depth of 26.1 which is in a range of reasonable scenarios (see https://github.com/LSSTDESC/ObsStrat/tree/static/static )
+  double nsource_table[2]={11.0,23.0};
+  double nlens_table[2]={18.0,41.0};
   
-  double nlens_table[2]={18.0,48.0};
+  char survey_designation[2][200]={"LSSTxSO_Y1","LSSTxSO_Y6"};
   
-  char survey_designation[2][200]={"LSST_Y1","LSST_Y10"};
-  char source_zfile[2][400]={"zdistri_model_z0=1.300000e-01_beta=7.800000e-01_Y1_source","zdistri_model_z0=1.100000e-01_beta=6.800000e-01_Y10_source"};
+  char source_zfile[2][400]={"src_LSSTY1","src_LSSTY6"};
+  char lens_zfile[2][400]={"lens_LSSTY1","lens_LSSTY6"};
 
-  char lens_zfile[2][400]={"zdistri_model_z0=2.600000e-01_beta=9.400000e-01_Y1_lens","zdistri_model_z0=2.800000e-01_beta=9.000000e-01_Y10_lens"};
 
    
   int hit=atoi(argv[1]);
@@ -778,10 +778,10 @@ int main(int argc, char** argv)
     sprintf(arg1,"zdistris/%s",source_zfile[t]);
     sprintf(arg2,"zdistris/%s",lens_zfile[t]); 
     init_galaxies(arg1,arg2,"none","none","source_std","LSST_gold");
-    init_IA("none", "GAMA"); 
+    init_IA("none","GAMA"); 
     init_probes("6x2pt");
 
-    init_cmb("so_baseline");
+    init_cmb("so_Y1");
 
     //set l-bins for shear, ggl, clustering, clusterWL
     double logdl=(log(like.lmax)-log(like.lmin))/like.Ncl;
@@ -799,8 +799,6 @@ int main(int argc, char** argv)
 
 
     printf("----------------------------------\n");  
-    
-    
     sprintf(survey.name,"%s_area%le_ng%le_nl%le",survey_designation[t],survey.area,survey.n_gal,survey.n_lens);
     printf("area: %le n_source: %le n_lens: %le\n",survey.area,survey.n_gal,survey.n_lens);
 
