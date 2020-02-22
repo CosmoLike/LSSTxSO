@@ -44,6 +44,6 @@ for i in range(4):
 	print('LSS n_eff: %f; WL n_eff: %f'%(LSSneff, WLneff))
 	# print('In each z-bin LSS n_eff: %f; WL n_eff: %f'%(LSSneff/Ntomo, WLneff/Ntomo))
 
-	np.savetxt("lens_LSSTY%d"%(year), np.c_[zmin, zmid, zmax, nzLSS])
-	np.savetxt("src_LSSTY%d"%(year), np.c_[zmin, zmid, zmax, nzWL])
+	# np.savetxt("lens_LSSTY%d"%(year), np.c_[zmin, zmid, zmax, nzLSS])
+	# np.savetxt("src_LSSTY%d"%(year), np.c_[zmin, zmid, zmax, nzWL])
 	print('LSST Y%d finished'%(year))
