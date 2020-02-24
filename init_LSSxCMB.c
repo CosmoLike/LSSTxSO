@@ -576,7 +576,7 @@ void set_cmb_so_Y5() {
    sprintf(cmb.name, "so_Y5");
    // cmb.fwhm = 1.4 * (constants.pi/180.) / 60.;
    // cmb.sensitivity = 18.*(constants.pi/180.)/60.;
-   cmb.pathLensRecNoise = "./cmblensrec/so/YEAR5_nlkk_v3_1_0deproj0_SENS1_fsky0p4_it_lT30-3000_lP30-5000.dat";
+   cmb.pathLensRecNoise = "./cmblensrec/so/YEAR5_2colformat_nlkk_v3_1_0deproj0_SENS1_fsky0p4_it_lT30-3000_lP30-5000.dat";
    like.lmax_kappacmb = 2999.;
    printf("path for CMB lens noise: %s\n", cmb.pathLensRecNoise);
 }

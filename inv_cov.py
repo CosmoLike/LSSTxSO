@@ -7,11 +7,11 @@ from numpy import linalg as LA
 import numpy as np
 
 
-infile =['/users/timeifler/Dropbox/cosmolike_store/LSSTxSO/cov/cov_LSSTY10xSO']
+infile =['/users/timeifler/Dropbox/cosmolike_store/LSSTxSO/cov/cov_LSSTxSO_Y6']
 
 #infile =['/users/timeifler/Dropbox/cosmolike_store/WFIRST_forecasts/cov/cov_WFIRST_Ncl25_4clusterbins_nrichmin25_source_Dec17']
-data= ['datav/6x2pt_LSST_Y10_area=1.800000e+04_dmo']
-outname=['cov_LSSTY10xSO']
+data= ['datav/6x2pt_LSSTxSO_Y6_dmo']
+outname=['cov_LSSTxSO_Y6']
 
 # the numbers below can be computed knowing the data vector settings, e.g. 10 tomographic source bins results in 55 shear-shear power spectra. Or they can be read off when running the covariance code, i.e. type 'compute_covariance_fourier 100000' and look for the output mentioning number of ggl bins accepted and/or number of cluster weka lensing bins accepted. The default numbers below most likely don't correspond to your binning choices.
 nlens = 10 	# number of lens bins 
@@ -45,7 +45,9 @@ for k in range(0,1):
 		#cov[int(covfile[i,0]),int(covfile[i,1])] = covfile[i,8]
 	 	#cov[int(covfile[i,1]),int(covfile[i,0])] = covfile[i,8]
 	 
-	
+	numpyfile="/users/timeifler/Dropbox/cosmolike_store/LSSTxSO/npcov/npcov_"+outname[k]
+	np.save(numpyfile, cov)
+
 	cor = np.zeros((ndata,ndata))
 	for i in range(0,ndata):
 	    for j in range(0,ndata):
@@ -113,18 +115,18 @@ for k in range(0,1):
 	  		f.write("%d %d %e\n" %( i,j, inv[i,j]))
 	f.close()
 
-	# ############### invert 4x2 covariance #################
-	a = np.sort(LA.eigvals(cov[0:n2pt+nkappaxlens*ncl,0:n2pt+nkappaxlens*ncl]))
-	print "min+max eigenvalues 3x2pt cov:"
-	print np.min(a), np.max(a)
-	inv = LA.inv(cov[0:n2pt+nkappaxlens*ncl,0:n2pt+nkappaxlens*ncl])
-	outfile = "cov/"+outname[k]+"_4x2pt_inv" 
-	f = open(outfile, "w")
-	for i in range(0,n2pt+nkappaxlens*ncl):
-		inv[i,i]=inv[i,i]*mask[i]
-	  	for j in range(0,n2pt+nkappaxlens*ncl):
-	  		f.write("%d %d %e\n" %( i,j, inv[i,j]))
-	f.close()
+	# # ############### invert 4x2 covariance #################
+	# a = np.sort(LA.eigvals(cov[0:n2pt+nkappaxlens*ncl,0:n2pt+nkappaxlens*ncl]))
+	# print "min+max eigenvalues 4x2pt cov:"
+	# print np.min(a), np.max(a)
+	# inv = LA.inv(cov[0:n2pt+nkappaxlens*ncl,0:n2pt+nkappaxlens*ncl])
+	# outfile = "cov/"+outname[k]+"_4x2pt_inv" 
+	# f = open(outfile, "w")
+	# for i in range(0,n2pt+nkappaxlens*ncl):
+	# 	inv[i,i]=inv[i,i]*mask[i]
+	#   	for j in range(0,n2pt+nkappaxlens*ncl):
+	#   		f.write("%d %d %e\n" %( i,j, inv[i,j]))
+	# f.close()
 
  	############### invert 6x2 covariance #################
 	a = np.sort(LA.eigvals(cov[0:ndata,0:ndata]))

@@ -10,3 +10,5 @@ test_like
 compute_covariances_fourier
 
 cov/
+
+.ipynb_checkpoints/

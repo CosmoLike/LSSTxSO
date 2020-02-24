@@ -769,7 +769,7 @@ int main(int argc, char** argv)
   Ntable.N_a=20;
   k=1;
    
-  for(t=1;t<2;t++){
+  for(t=0;t<1;t++){
    
     //RUN MODE setup
     init_cosmo_runmode("emu");
