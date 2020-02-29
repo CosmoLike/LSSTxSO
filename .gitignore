@@ -12,3 +12,5 @@ compute_covariances_fourier
 cov/
 
 .ipynb_checkpoints/
+
+like_fourier.so.dSYM/
