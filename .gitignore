@@ -13,4 +13,6 @@ cov/
 
 .ipynb_checkpoints/
 
+like_fourier.dSYM/
+
 like_fourier.so.dSYM/

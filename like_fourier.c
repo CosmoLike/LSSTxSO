@@ -671,13 +671,13 @@ void save_zdistr_lenses(int zl){
   int sce=atoi(argv[1]);
 
   int N_scenarios=2;
-  double area_table[2]={12300.0,14200.0};
-  double nsource_table[2]={11.0,27.0};
-  
-  double nlens_table[2]={18.0,48.0};
 
   double sigma_zphot_shear[3]={0.05,0.05};
   double sigma_zphot_clustering[3]={0.03,0.03};
+
+  double area_table[2]={12300.0,16500.0}; // Y1 corresponds to DESC SRD Y1, Y6 corresponds to assuming that we cover the full SO area=0.4*fsky and at a depth of 26.1 which is in a range of reasonable scenarios (see https://github.com/LSSTDESC/ObsStrat/tree/static/static )
+  double nsource_table[2]={11.0,23.0};
+  double nlens_table[2]={18.0,41.0};
 
 
   char survey_designation[2][200]={"LSSTxSO_Y1","LSSTxSO_Y6"};

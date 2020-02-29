@@ -10,6 +10,7 @@ cfftlog := $(cfftlog_dir)cfftlog.c $(cfftlog_dir)utils.c $(cfftlog_dir)utils_com
 
 
 home: 
+	make home_shared
 	make home_datav
 	make home_cov
 
@@ -19,8 +20,11 @@ home_datav:
 home_cov:
 	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier $(opt_home)
 
+home_shared:
+	gcc -shared -o like_fourier.so -fPIC like_fourier.c $(opt_home)
 
-ocelote: 
+ocelote:
+	make ocelote_shared 
 	make ocelote_datav
 	make ocelote_cov
 
@@ -29,3 +33,7 @@ ocelote_datav:
 
 ocelote_cov:
 	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier $(opt_ocelote)
+
+ocelote_shared:
+	gcc -shared -o like_fourier.so -fPIC like_fourier.c $(opt_ocelote)
+
