@@ -244,11 +244,11 @@ class InputNuisanceParams(IterableStruct):
     @classmethod
     def fiducial(cls):
         c = cls()
-        c.bias[:] = [1.2,1.3,1.38,1.47,1.56,1.65,1.74,1.83,1.95,2.09]
+        c.bias[:] = [1.2,1.3,1.38,1.46,1.54,1.63,1.72,1.83,1.94,2.08]
         c.source_z_bias[:] = np.repeat(0.0, 10)
-        c.source_z_s = 0.02
+        c.source_z_s = 0.05
         c.lens_z_bias[:] = np.repeat(0.0, 10)
-        c.lens_z_s = 0.02
+        c.lens_z_s = 0.03
         c.shear_m[:] = np.repeat(0.0, 10)
         c.A_ia = 5.92
         c.beta_ia = 1.1
@@ -348,7 +348,7 @@ def sample_cosmology_3x2_allsys(tomo_N_shear,tomo_N_lens,MG = False):
 
 
 
-def sample_main(varied_parameters, sigma_z, iterations, nwalker, nthreads, filename, blind=False, pool=None):
+def sample_main(varied_parameters,sigma_z_shear,sigma_z_clustering, iterations, nwalker, nthreads, filename, blind=False, pool=None):
     print varied_parameters
 
     likelihood = LikelihoodFunctionWrapper(varied_parameters)
@@ -356,8 +356,8 @@ def sample_main(varied_parameters, sigma_z, iterations, nwalker, nthreads, filen
     
     #changing the center of the 'starting sphere' of the MCMC, according to the fiducial input parameter 
     new=InputNuisanceParams().fiducial()
-    setattr(new,'source_z_s',sigma_z)
-    setattr(new,'lens_z_s',sigma_z*0.6) #assumption is that lens galaxies if chosen as in the SRD have a more precise sigma_z compared to source (0.03 vs 0.05 in the SRD, hence the factor of 60%)
+    setattr(new,'source_z_s',sigma_z_shear)
+    setattr(new,'lens_z_s',sigma_z_clustering) 
     starting_point += new.convert_to_vector_filter(varied_parameters)
     #starting_point += InputCosmologyParams.fiducial().convert_to_vector_filter(varied_parameters)
 

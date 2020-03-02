@@ -423,7 +423,7 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
     return -1.0e15;
   }
        
-  //printf("like %le %le %le %le %le %le %le %le\n",cosmology.Omega_m, cosmology.Omega_v,cosmology.sigma_8,cosmology.n_spec,cosmology.w0,cosmology.wa,cosmology.omb,cosmology.h0); 
+  printf("like %le %le %le %le %le %le %le %le\n",cosmology.Omega_m, cosmology.Omega_v,cosmology.sigma_8,cosmology.n_spec,cosmology.w0,cosmology.wa,cosmology.omb,cosmology.h0); 
   // printf("like %le %le %le %le\n",gbias.b[0][0], gbias.b[1][0], gbias.b[2][0], gbias.b[3][0]);    
   // for (i=0; i<10; i++){
   //   printf("nuisance %le %le %le\n",nuisance.shear_calibration_m[i],nuisance.bias_zphot_shear[i],nuisance.sigma_zphot_shear[i]);
@@ -503,7 +503,7 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
     printf("error: chisqr = %le\n",chisqr);
     //exit(EXIT_FAILURE);
   }
-//  printf("%le\n",chisqr);
+  printf("%le\n",chisqr);
   return -0.5*chisqr+log_L_prior;
 }
 

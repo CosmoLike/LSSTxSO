@@ -32,13 +32,14 @@ survey_designation=["LSSTxSO_Y1","LSSTxSO_Y6"]
 tomo_binning_source=["source_std","source_std"]
 tomo_binning_lens=["LSST_gold","LSST_gold"]
 
-model=1 
+model=0 
 file_source_z = os.path.join(dirname, "zdistris/",source_z[model])
 file_lens_z = os.path.join(dirname, "zdistris/",lens_z[model])
 data_file = os.path.join(dirname, "datav/",data[model])
 cov_file = os.path.join(dirname, "cov/",inv[model])
 #cov_file = os.path.join("/Users/timeifler/Dropbox/cosmolike_store/LSST_emu/inv/",inv[model])
 chain_file = os.path.join(dirname, "/extra/timeifler/LSSTxSO/chains/LSSTxSO_6x2pt_model_%d" %model)
+#chain_file = os.path.join(dirname, "/Users/timeifler/Dropbox/cosmolike_store/LSSTxSO/chains/LSSTxSO_6x2pt_model_%d" %model)
 bary_file=os.path.join(dirname, "baryons/",bary[model])
 
 initcosmo("halofit")
@@ -53,7 +54,7 @@ initia("NLA_HF","GAMA")
 #initpriors("none","none","none","random")
 initprobes("6x2pt")
 initdatainv(cov_file ,data_file, bary_file)
-initcmb("so_Y5")
+initcmb("so_Y1")
 #sample_params= sample_cosmology_only()
 sample_params = sample_cosmology_3x2_allsys(get_N_tomo_shear(),get_N_tomo_clustering())
 
