@@ -16,3 +16,7 @@ cov/
 like_fourier.dSYM/
 
 like_fourier.so.dSYM/
+
+like_fourier
+
+*.so
