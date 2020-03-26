@@ -567,7 +567,7 @@ void set_cmb_cmbs4() {
    sprintf(cmb.name, "cmbs4");
    cmb.fwhm = 1. * (constants.pi/180.) / 60.;
    cmb.sensitivity = 1.*(constants.pi/180.)/60.;
-   cmb.pathLensRecNoise = "./cmblensrec/cmbs4/cmblensrecnoise_lmax3000.txt";
+   cmb.pathLensRecNoise = "./cmblensrec/cmbs4/cmb_lmax3000.txt";
    like.lmax_kappacmb = 2999.;
    printf("path for CMB lens noise: %s\n", cmb.pathLensRecNoise);
 }
