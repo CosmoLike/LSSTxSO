@@ -44,3 +44,10 @@ ocelote_cov:
 ocelote_shared:
 	gcc -shared -o like_fourier.so -fPIC like_fourier.c $(opt_ocelote)
 
+
+ocelote_des:
+	gcc like_fourier_desxplanck.c -o ./like_fourier_desxplanck $(opt_ocelote)
+	
+ocelote_deslib:
+	gcc -shared -o like_fourier_desxplanck.so -fPIC like_fourier_desxplanck.c $(opt_ocelote)
+
