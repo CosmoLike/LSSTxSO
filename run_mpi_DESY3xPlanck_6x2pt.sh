@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -S /bin/bash
-#PBS -W group_list=cosmolike
+#PBS -W group_list=cosmo
 #PBS -q qualified
 ### Set the number of nodes,cores and memory that will be used for this job
 ### select=3 is the node count, ncpus=28 are the cores in each node,
