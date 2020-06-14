@@ -17,6 +17,13 @@ home:
 home_datav:
 	gcc like_fourier.c -o ./like_fourier $(opt_home)
 
+home_des:
+	gcc like_fourier_desxplanck.c -o ./like_fourier_desxplanck $(opt_home)
+	
+home_deslib:
+	gcc -shared -o like_fourier_desxplanck.so -fPIC like_fourier_desxplanck.c $(opt_home)
+
+
 home_cov:
 	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier $(opt_home)
 
