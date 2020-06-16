@@ -5,7 +5,7 @@
 ### Set the number of nodes,cores and memory that will be used for this job
 ### select=3 is the node count, ncpus=28 are the cores in each node,
 ### mem=168gb is memory per node, pcmem=6gb is the memory per core - optional
-#PBS -l select=40:ncpus=28:mem=168GB
+#PBS -l select=20:ncpus=28:mem=168GB
 #PBS -l place=free:shared
 #PBS -l cput=5600:00:00
 #PBS -l walltime=8:00:00
