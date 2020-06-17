@@ -38,7 +38,7 @@ chain_file = os.path.join(dirname, "chains/DESY6xPlanck_6x2pt_3src")
 initcosmo("halofit")
 initbins(20,30.0,3000.0,3000.0,20.0)
 initia(4)
-init_source_sample(file_source_z,4)
+init_source_sample(file_source_z,3)
 init_lens_sample(file_lens_z,5)
 
 initpriors(shear_prior,delta_z_prior_shear,delta_z_prior_clustering);
