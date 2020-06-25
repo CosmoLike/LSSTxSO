@@ -169,7 +169,8 @@ void set_data_shear(int Ncl, double *ell, double *data, int start)
   for (nz = 0; nz < tomo.shear_Npowerspectra; nz++){
     z1 = Z1(nz); z2 = Z2(nz);
     for (i = 0; i < Ncl; i++){
-      if (ell[i] < like.lmax_shear){ data[Ncl*nz+i] = C_shear_tomo_sys(ell[i],z1,z2);}
+      // if (ell[i] < like.lmax_shear){ data[Ncl*nz+i] = C_shear_tomo_sys(ell[i],z1,z2);}
+      if (mask(Ncl*nz+i)){ data[Ncl*nz+i] = C_shear_tomo_sys(ell[i],z1,z2);}
       else {data[Ncl*nz+i] = 0.;}
     }
   }
@@ -181,7 +182,8 @@ void set_data_ggl(int Ncl, double *ell, double *data, int start)
   for (nz = 0; nz < tomo.ggl_Npowerspectra; nz++){
     zl = ZL(nz); zs = ZS(nz);
     for (i = 0; i < Ncl; i++){
-      if (test_kmax(ell[i],zl)){
+      // if (test_kmax(ell[i],zl)){
+      if (mask(start+(Ncl*nz)+i)){
         data[start+(Ncl*nz)+i] = C_gl_tomo_sys(ell[i],zl,zs);
       }
       else{
@@ -196,7 +198,10 @@ void set_data_clustering(int Ncl, double *ell, double *data, int start){
   for (nz = 0; nz < tomo.clustering_Npowerspectra; nz++){
     //printf("%d %e %e\n",nz, gbias.b[nz][1],pf_photoz(gbias.b[nz][1],nz));
     for (i = 0; i < Ncl; i++){
-      if (test_kmax(ell[i],nz)){data[start+(Ncl*nz)+i] = C_cl_tomo_nointerp(ell[i],nz,nz);}
+      // if (test_kmax(ell[i],nz))
+      if (mask(start+(Ncl*nz)+i)) {
+        data[start+(Ncl*nz)+i] = C_cl_tomo_nointerp(ell[i],nz,nz);
+      }
       else{data[start+(Ncl*nz)+i] = 0.;}
       //printf("%d %d %le %le\n",nz,nz,ell[i],data[Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra + nz)+i]);
     }
@@ -208,7 +213,8 @@ void set_data_gk(double *ell, double *data, int start)
 {
    for (int nz=0; nz<tomo.clustering_Nbin; nz++){
       for (int i=0; i<like.Ncl; i++){
-         if (ell[i]<like.lmax_kappacmb && test_kmax(ell[i],nz)){
+         // if (ell[i]<like.lmax_kappacmb && test_kmax(ell[i],nz)){
+         if (mask(start+(like.Ncl*nz)+i)) { 
             data[start+(like.Ncl*nz)+i] = C_gk(ell[i],nz);
          }
          else{
@@ -222,7 +228,8 @@ void set_data_ks(double *ell, double *data, int start)
 {
    for (int nz=0; nz<tomo.shear_Nbin; nz++){
       for (int i=0; i<like.Ncl; i++){
-         if (ell[i]<like.lmax_kappacmb) {
+         // if (ell[i]<like.lmax_kappacmb) {
+         if (mask(start+(like.Ncl*nz)+i)) { 
             data[start+(like.Ncl*nz)+i] = C_ks_sys(ell[i],nz);
          }
          else{
@@ -235,7 +242,8 @@ void set_data_ks(double *ell, double *data, int start)
 void set_data_kk(double *ell, double *data, int start)
 {
    for (int i=0; i<like.Ncl; i++){
-      if (ell[i]<like.lmax_kappacmb){
+      // if (ell[i]<like.lmax_kappacmb){
+      if (mask(start+i)) {
          data[start+i] = C_kk(ell[i]);
       }
       else{
