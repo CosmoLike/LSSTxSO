@@ -565,7 +565,7 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
     for (j=0; j<like.Ndata; j++){
       // a=(pred[i]-data_read(1,i)+Q1*bary_read(1,0,i)+Q2*bary_read(1,1,i)+Q3*bary_read(1,2,i))*invcov_read(1,i,j)*(pred[j]-data_read(1,j)+Q1*bary_read(1,0,j)+Q2*bary_read(1,1,j)+Q3*bary_read(1,2,j));
       a=(pred[i]-data_read(1,i))*invcov_mask(1,i,j)*(pred[j]-data_read(1,j));
-      if(a>10){printf("a,i,j: %le, %d, %d, %le, %le, %le\n",a,i,j,pred[i]-data_read(1,i),pred[j]-data_read(1,j), invcov_mask(1,i,j));}
+      // if(a>10){printf("a,i,j: %le, %d, %d, %le, %le, %le\n",a,i,j,pred[i]-data_read(1,i),pred[j]-data_read(1,j), invcov_mask(1,i,j));}
       chisqr=chisqr+a;
     }
     // if (fabs(data_read(1,i)) < 1.e-25){
