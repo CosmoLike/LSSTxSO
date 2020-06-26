@@ -339,8 +339,10 @@ double invcov_read(int READ, int ci, int cj)
               // apply mask to off-diagonal covariance elements
                 // if (i!=j){m = mask(i)*mask(j);}
                 //printf("%d %d (/%d) %e %e\n",i,j,like.Ndata,cov_G,cov_NG);
-                gsl_matrix_set(cov,i,j,(cov_G+cov_NG));
-                gsl_matrix_set(cov,j,i,(cov_G+cov_NG));
+                // gsl_matrix_set(cov,i,j,(cov_G+cov_NG));
+                // gsl_matrix_set(cov,j,i,(cov_G+cov_NG));
+                gsl_matrix_set(cov,i,j,(cov_G));
+                gsl_matrix_set(cov,j,i,(cov_G));
               }
             } break;
       default: printf("init_LSSxCMB.c:invcov_mask: covariance file %s has %d columns - unsupported format!\nEXIT\n",like.COV_FILE,n_rows);exit(1);
