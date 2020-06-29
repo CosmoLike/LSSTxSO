@@ -257,8 +257,8 @@ double invcov_mask(int READ, int ci, int cj)
               // apply mask to off-diagonal covariance elements
                 if (i!=j){m = mask(i)*mask(j);}
                 //printf("%d %d (/%d) %e %e\n",i,j,like.Ndata,cov_G,cov_NG);
-                gsl_matrix_set(cov,i,j,(cov_G)*m);
-                gsl_matrix_set(cov,j,i,(cov_G)*m);
+                gsl_matrix_set(cov,i,j,(cov_G+cov_NG)*m);
+                gsl_matrix_set(cov,j,i,(cov_G+cov_NG)*m);
               }
             } break;
       case 10: while (fscanf(F,"%d %d %le %le %d %d %d %d %le %le\n", &i, &j, &doublespace, &doublespace,&intspace,&intspace,&intspace,&intspace,&cov_G,&cov_NG) ==10) {
@@ -267,8 +267,8 @@ double invcov_mask(int READ, int ci, int cj)
               // apply mask to off-diagonal covariance elements
                 if (i!=j){m = mask(i)*mask(j);}
                 //printf("%d %d (/%d) %e %e\n",i,j,like.Ndata,cov_G,cov_NG);
-                gsl_matrix_set(cov,i,j,(cov_G)*m);
-                gsl_matrix_set(cov,j,i,(cov_G)*m);
+                gsl_matrix_set(cov,i,j,(cov_G+cov_NG)*m);
+                gsl_matrix_set(cov,j,i,(cov_G+cov_NG)*m);
               }
             } break;
       default: printf("init_LSSxCMB.c:invcov_mask: covariance file %s has %d columns - unsupported format!\nEXIT\n",like.COV_FILE,n_rows);exit(1);
@@ -339,10 +339,8 @@ double invcov_read(int READ, int ci, int cj)
               // apply mask to off-diagonal covariance elements
                 // if (i!=j){m = mask(i)*mask(j);}
                 //printf("%d %d (/%d) %e %e\n",i,j,like.Ndata,cov_G,cov_NG);
-                // gsl_matrix_set(cov,i,j,(cov_G+cov_NG));
-                // gsl_matrix_set(cov,j,i,(cov_G+cov_NG));
-                gsl_matrix_set(cov,i,j,(cov_G));
-                gsl_matrix_set(cov,j,i,(cov_G));
+                gsl_matrix_set(cov,i,j,(cov_G+cov_NG));
+                gsl_matrix_set(cov,j,i,(cov_G+cov_NG));
               }
             } break;
       default: printf("init_LSSxCMB.c:invcov_mask: covariance file %s has %d columns - unsupported format!\nEXIT\n",like.COV_FILE,n_rows);exit(1);
