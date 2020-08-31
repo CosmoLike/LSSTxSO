@@ -762,328 +762,328 @@ int main(int argc, char** argv)
   int hit=atoi(argv[1]);
   Ntable.N_a=100;
   k=1;
-   
-  for(t=1;t<2;t++){
-   
-    //RUN MODE setup
-    init_cosmo_runmode("emu");
-    // init_binning_fourier(20,30.0,3000.0,3000.0,21.0,10,10);
-    init_binning_fourier(20,30.0,3000.0,3000.0,0.0,10,10);
-    init_survey(survey_designation[t],nsource_table[t],nlens_table[t],area_table[t]);
-    sprintf(arg1,"zdistris/%s",source_zfile[t]);
-    sprintf(arg2,"zdistris/%s",lens_zfile[t]); 
-    init_galaxies(arg1,arg2,"none","none","source_std","LSST_gold");
-    init_IA("none","GAMA"); 
-    init_probes("6x2pt");
-
-    if(t==0) init_cmb("so_Y1");
-    if(t==1) init_cmb("so_Y5");
-
-    //set l-bins for shear, ggl, clustering, clusterWL
-    double logdl=(log(like.lmax)-log(like.lmin))/like.Ncl;
-    double *ell, *dell, *ell_Cluster, *dell_Cluster;
-    ell=create_double_vector(0,like.Ncl-1);
-    dell=create_double_vector(0,like.Ncl-1);
-    ell_Cluster=create_double_vector(0,Cluster.lbin-1);
-    dell_Cluster=create_double_vector(0,Cluster.lbin-1);
-    int j=0;
-    for(i=0;i<like.Ncl;i++){
-      ell[i]=exp(log(like.lmin)+(i+0.5)*logdl);
-      dell[i]=exp(log(like.lmin)+(i+1)*logdl)-exp(log(like.lmin)+(i*logdl));
-      if(ell[i]<like.lmax_shear) printf("%le\n",ell[i]);
-    } 
-
-
-    printf("----------------------------------\n");  
-    sprintf(survey.name,"%s_area%le_ng%le_nl%le",survey_designation[t],survey.area,survey.n_gal,survey.n_lens);
-    printf("area: %le n_source: %le n_lens: %le\n",survey.area,survey.n_gal,survey.n_lens);
-
-    // sprintf(covparams.outdir,"/home/u17/timeifler/covparallel/"); 
-    sprintf(covparams.outdir,"out_cov_lsstxso/");
-    //sprintf(covparams.outdir,"/halo_nobackup/cosmos/teifler/covparallel/");
-
-    printf("----------------------------------\n");  
-    sprintf(OUTFILE,"%s_ssss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.shear_Npowerspectra; l++){
-      for (m=l;m<tomo.shear_Npowerspectra; m++){
-        if(k==hit){ 
-          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-          if (fopen(filename, "r") != NULL){exit(1);}
-          else {
-            run_cov_ss_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-          }
-        }
-        k=k+1;
-        //printf("%d\n",k);
-      }
-    }
-
-    sprintf(OUTFILE,"%s_lsls_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.ggl_Npowerspectra; l++){
-      for (m=l;m<tomo.ggl_Npowerspectra; m++){
-        if(k==hit){
-          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-          if (fopen(filename, "r") != NULL){exit(1);}
-          else {
-            run_cov_ls_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-          }
-        }
-       //printf("%d\n",k);
-        k=k+1;
-      }
-    }
-    sprintf(OUTFILE,"%s_llll_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.clustering_Npowerspectra; l++){ //auto bins only for now!
-      for (m=l;m<tomo.clustering_Npowerspectra; m++){
-        if(k==hit){ 
-          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-          if (fopen(filename, "r") != NULL){exit(1);}
-          else {
-            run_cov_ll_ll(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-          }
-        }
-        k=k+1;
-        //printf("%d %d %d\n",l,m,k);
-      }
-    }
-    sprintf(OUTFILE,"%s_llss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.clustering_Npowerspectra; l++){
-      for (m=0;m<tomo.shear_Npowerspectra; m++){
-        if(k==hit){
-          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-          if (fopen(filename, "r") != NULL){exit(1);}
-          else {
-            run_cov_ll_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-          }
-        }
-        k=k+1;
-        //printf("%d\n",k);
-      }
-    }
-    sprintf(OUTFILE,"%s_llls_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.clustering_Npowerspectra; l++){
-      for (m=0;m<tomo.ggl_Npowerspectra; m++){
-        if(k==hit){
-          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-          if (fopen(filename, "r") != NULL){exit(1);}
-          else {
-            run_cov_ll_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-          }
-        }
-        k=k+1;
-        //printf("%d\n",k);
-      }
-    }
-    sprintf(OUTFILE,"%s_lsss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.ggl_Npowerspectra; l++){
-      for (m=0;m<tomo.shear_Npowerspectra; m++){
-        if(k==hit){
-          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-          if (fopen(filename, "r") != NULL){exit(1);}
-          else {
-            run_cov_ls_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-          }
-        }
-        k=k+1;
-        //printf("%d\n",k);
-      }
-    }
-
-   // lk_lk
-    sprintf(OUTFILE,"%s_lklk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.clustering_Nbin; l++){
-       for (m=l;m<tomo.clustering_Nbin; m++){
-          if (k==hit){
-            sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_lk_lk(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-          }
-          k=k+1;
-       }
-    }
-   
-    printf("lklk %d\n",k);
-
-    // lk_ls
-    sprintf(OUTFILE,"%s_lkls_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.clustering_Nbin; l++){
-       for (m=0;m<tomo.ggl_Npowerspectra; m++){
-          if (k==hit){
-            sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_lk_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-          }
-          k=k+1;
-       }
-    }
-    printf("lkls %d\n",k);
   
-    // lk_kk
-    sprintf(OUTFILE,"%s_lkkk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.clustering_Nbin; l++){
-       if (k==hit){
-          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-          run_cov_lk_kk(OUTFILE,covparams.outdir,ell,dell,l,k);
-       }
-       // printf("%d\n",k);
-       k=k+1;
-    }
-    printf("lkkk %d\n",k);
+  t = atoi(argv[2]);
+  
+  //RUN MODE setup
+  init_cosmo_runmode("emu");
+  // init_binning_fourier(20,30.0,3000.0,3000.0,21.0,10,10);
+  init_binning_fourier(15,20.0,3000.0,3000.0,0.0,10,10);
+  init_survey(survey_designation[t],nsource_table[t],nlens_table[t],area_table[t]);
+  sprintf(arg1,"zdistris/%s",source_zfile[t]);
+  sprintf(arg2,"zdistris/%s",lens_zfile[t]); 
+  init_galaxies(arg1,arg2,"none","none","source_std","LSST_gold");
+  init_IA("none","GAMA"); 
+  init_probes("6x2pt");
 
-    // lk_ks
-    sprintf(OUTFILE,"%s_lkks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.clustering_Nbin; l++){
-       for (m=0;m<tomo.shear_Nbin;m++) {
-          if (k==hit){
-            sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_lk_ks(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-          }
-          // printf("%d\n",k);
-          k=k+1;
-       }
-    }
-    printf("lkks %d\n",k);
+  if(t==0) init_cmb("so_Y1");
+  if(t==1) init_cmb("so_Y5");
 
-    // lk_ss
-    sprintf(OUTFILE,"%s_lkss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.clustering_Nbin; l++){
-       for (m=0;m<tomo.shear_Npowerspectra; m++){
-          if (k==hit){
-            sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_lk_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-          }
-          k=k+1;
-          // printf("%d\n",k);
-       }
-    }
-    printf("lkss %d\n",k);
+  //set l-bins for shear, ggl, clustering, clusterWL
+  double logdl=(log(like.lmax)-log(like.lmin))/like.Ncl;
+  double *ell, *dell, *ell_Cluster, *dell_Cluster;
+  ell=create_double_vector(0,like.Ncl-1);
+  dell=create_double_vector(0,like.Ncl-1);
+  ell_Cluster=create_double_vector(0,Cluster.lbin-1);
+  dell_Cluster=create_double_vector(0,Cluster.lbin-1);
+  int j=0;
+  for(i=0;i<like.Ncl;i++){
+    ell[i]=exp(log(like.lmin)+(i+0.5)*logdl);
+    dell[i]=exp(log(like.lmin)+(i+1)*logdl)-exp(log(like.lmin)+(i*logdl));
+    if(ell[i]<like.lmax_shear) printf("%le\n",ell[i]);
+  } 
 
-    // ls_kk
-    sprintf(OUTFILE,"%s_lskk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.ggl_Npowerspectra; l++){
-       if (k==hit){
-            sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_ls_kk(OUTFILE,covparams.outdir,ell,dell,l,k);
-          }
-      // printf("%d\n",k);
-       k=k+1;
-    }
-    printf("lskk%d\n",k);
-    
-    // ls_ks
-    sprintf(OUTFILE,"%s_lsks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.ggl_Npowerspectra; l++){
-       for (m=0;m<tomo.shear_Nbin;m++) {
-          if (k==hit){
-            sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_ls_ks(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-          }
-          // printf("%d\n",k);
-          k=k+1;
-       }
-    }
-    printf("lsks %d\n",k);
-    
-    // kk_kk
-    sprintf(OUTFILE,"%s_kkkk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    if (k==hit){
-      sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-      run_cov_kk_kk(OUTFILE,covparams.outdir,ell,dell,k);
-    }
-    // printf("%d\n",k);
-    k=k+1;
-    printf("kkkk %d\n",k);
 
-    // kk_ks
-    sprintf(OUTFILE,"%s_kkks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.shear_Nbin; l++){
-       if (k==hit){
-          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-          run_cov_kk_ks(OUTFILE,covparams.outdir,ell,dell,l,k);
-       }
-       // printf("%d\n",k);
-       k=k+1;
-    }
-    printf("kkks %d\n",k);
+  printf("----------------------------------\n");  
+  sprintf(survey.name,"%s_area%le_ng%le_nl%le",survey_designation[t],survey.area,survey.n_gal,survey.n_lens);
+  printf("area: %le n_source: %le n_lens: %le\n",survey.area,survey.n_gal,survey.n_lens);
 
-    // kk_ss
-    sprintf(OUTFILE,"%s_kkss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.shear_Npowerspectra; l++){
-       if (k==hit){
+  // sprintf(covparams.outdir,"/home/u17/timeifler/covparallel/"); 
+  sprintf(covparams.outdir,"out_cov_lsstxso/");
+  //sprintf(covparams.outdir,"/halo_nobackup/cosmos/teifler/covparallel/");
+
+  printf("----------------------------------\n");  
+  sprintf(OUTFILE,"%s_ssss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.shear_Npowerspectra; l++){
+    for (m=l;m<tomo.shear_Npowerspectra; m++){
+      if(k==hit){ 
         sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-        run_cov_kk_ss(OUTFILE,covparams.outdir,ell,dell,l,k);
-       }
-       k=k+1;
-       // printf("%d\n",k);
-    }
-    printf("kkss %d\n",k);
-    
-    // ks_ks
-    sprintf(OUTFILE,"%s_ksks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.shear_Nbin; l++){
-       for (m=l;m<tomo.shear_Nbin; m++){
-          if (k==hit){
-            sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_ks_ks(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-          }
-          // printf("%d\n",k);
-          k=k+1;
-       }
-    }
-    printf("ksks %d\n",k);
-    
-   // ks_ss
-   sprintf(OUTFILE,"%s_ksss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-   for (l=0;l<tomo.shear_Nbin; l++){
-     for (m=0;m<tomo.shear_Npowerspectra; m++){
-       if (k==hit){
-          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-          run_cov_ks_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-       }
-       k=k+1;
-       // printf("%d\n",k);
+        if (fopen(filename, "r") != NULL){exit(1);}
+        else {
+          run_cov_ss_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+        }
       }
+      k=k+1;
+      //printf("%d\n",k);
     }
-    printf("ksss %d\n",k);
-
-    // ll_kk
-    sprintf(OUTFILE,"%s_llkk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.clustering_Npowerspectra; l++){
-       if (k==hit){
-            sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_ll_kk(OUTFILE,covparams.outdir,ell,dell,l,k);
-          }
-      // printf("%d\n",k);
-       k=k+1;
-    }
-    printf("llkk %d\n",k);
-    
-    // ll_ks
-    sprintf(OUTFILE,"%s_llks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.clustering_Npowerspectra; l++){
-       for (m=0;m<tomo.shear_Nbin;m++) {
-          if (k==hit){
-            sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_ll_ks(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-          }
-          // printf("%d\n",k);
-          k=k+1;
-       }
-    }
-    printf("llks %d\n",k);
-
-    // ll_lk
-    sprintf(OUTFILE,"%s_lllk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
-    for (l=0;l<tomo.clustering_Npowerspectra; l++){
-       for (m=0;m<tomo.clustering_Nbin;m++) {
-          if (k==hit){
-            sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-            run_cov_ll_lk(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-          }
-          // printf("%d\n",k);
-          k=k+1;
-       }
-    }
-    printf("lllk %d\n",k);
   }
+
+  sprintf(OUTFILE,"%s_lsls_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.ggl_Npowerspectra; l++){
+    for (m=l;m<tomo.ggl_Npowerspectra; m++){
+      if(k==hit){
+        sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+        if (fopen(filename, "r") != NULL){exit(1);}
+        else {
+          run_cov_ls_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+        }
+      }
+     //printf("%d\n",k);
+      k=k+1;
+    }
+  }
+  sprintf(OUTFILE,"%s_llll_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.clustering_Npowerspectra; l++){ //auto bins only for now!
+    for (m=l;m<tomo.clustering_Npowerspectra; m++){
+      if(k==hit){ 
+        sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+        if (fopen(filename, "r") != NULL){exit(1);}
+        else {
+          run_cov_ll_ll(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+        }
+      }
+      k=k+1;
+      //printf("%d %d %d\n",l,m,k);
+    }
+  }
+  sprintf(OUTFILE,"%s_llss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.clustering_Npowerspectra; l++){
+    for (m=0;m<tomo.shear_Npowerspectra; m++){
+      if(k==hit){
+        sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+        if (fopen(filename, "r") != NULL){exit(1);}
+        else {
+          run_cov_ll_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+        }
+      }
+      k=k+1;
+      //printf("%d\n",k);
+    }
+  }
+  sprintf(OUTFILE,"%s_llls_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.clustering_Npowerspectra; l++){
+    for (m=0;m<tomo.ggl_Npowerspectra; m++){
+      if(k==hit){
+        sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+        if (fopen(filename, "r") != NULL){exit(1);}
+        else {
+          run_cov_ll_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+        }
+      }
+      k=k+1;
+      //printf("%d\n",k);
+    }
+  }
+  sprintf(OUTFILE,"%s_lsss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.ggl_Npowerspectra; l++){
+    for (m=0;m<tomo.shear_Npowerspectra; m++){
+      if(k==hit){
+        sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+        if (fopen(filename, "r") != NULL){exit(1);}
+        else {
+          run_cov_ls_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+        }
+      }
+      k=k+1;
+      //printf("%d\n",k);
+    }
+  }
+
+ // lk_lk
+  sprintf(OUTFILE,"%s_lklk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.clustering_Nbin; l++){
+     for (m=l;m<tomo.clustering_Nbin; m++){
+        if (k==hit){
+          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+          run_cov_lk_lk(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+        }
+        k=k+1;
+     }
+  }
+ 
+  printf("lklk %d\n",k);
+
+  // lk_ls
+  sprintf(OUTFILE,"%s_lkls_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.clustering_Nbin; l++){
+     for (m=0;m<tomo.ggl_Npowerspectra; m++){
+        if (k==hit){
+          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+          run_cov_lk_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+        }
+        k=k+1;
+     }
+  }
+  printf("lkls %d\n",k);
+
+  // lk_kk
+  sprintf(OUTFILE,"%s_lkkk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.clustering_Nbin; l++){
+     if (k==hit){
+        sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+        run_cov_lk_kk(OUTFILE,covparams.outdir,ell,dell,l,k);
+     }
+     // printf("%d\n",k);
+     k=k+1;
+  }
+  printf("lkkk %d\n",k);
+
+  // lk_ks
+  sprintf(OUTFILE,"%s_lkks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.clustering_Nbin; l++){
+     for (m=0;m<tomo.shear_Nbin;m++) {
+        if (k==hit){
+          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+          run_cov_lk_ks(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+        }
+        // printf("%d\n",k);
+        k=k+1;
+     }
+  }
+  printf("lkks %d\n",k);
+
+  // lk_ss
+  sprintf(OUTFILE,"%s_lkss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.clustering_Nbin; l++){
+     for (m=0;m<tomo.shear_Npowerspectra; m++){
+        if (k==hit){
+          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+          run_cov_lk_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+        }
+        k=k+1;
+        // printf("%d\n",k);
+     }
+  }
+  printf("lkss %d\n",k);
+
+  // ls_kk
+  sprintf(OUTFILE,"%s_lskk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.ggl_Npowerspectra; l++){
+     if (k==hit){
+          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+          run_cov_ls_kk(OUTFILE,covparams.outdir,ell,dell,l,k);
+        }
+    // printf("%d\n",k);
+     k=k+1;
+  }
+  printf("lskk%d\n",k);
+  
+  // ls_ks
+  sprintf(OUTFILE,"%s_lsks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.ggl_Npowerspectra; l++){
+     for (m=0;m<tomo.shear_Nbin;m++) {
+        if (k==hit){
+          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+          run_cov_ls_ks(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+        }
+        // printf("%d\n",k);
+        k=k+1;
+     }
+  }
+  printf("lsks %d\n",k);
+  
+  // kk_kk
+  sprintf(OUTFILE,"%s_kkkk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  if (k==hit){
+    sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+    run_cov_kk_kk(OUTFILE,covparams.outdir,ell,dell,k);
+  }
+  // printf("%d\n",k);
+  k=k+1;
+  printf("kkkk %d\n",k);
+
+  // kk_ks
+  sprintf(OUTFILE,"%s_kkks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.shear_Nbin; l++){
+     if (k==hit){
+        sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+        run_cov_kk_ks(OUTFILE,covparams.outdir,ell,dell,l,k);
+     }
+     // printf("%d\n",k);
+     k=k+1;
+  }
+  printf("kkks %d\n",k);
+
+  // kk_ss
+  sprintf(OUTFILE,"%s_kkss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.shear_Npowerspectra; l++){
+     if (k==hit){
+      sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+      run_cov_kk_ss(OUTFILE,covparams.outdir,ell,dell,l,k);
+     }
+     k=k+1;
+     // printf("%d\n",k);
+  }
+  printf("kkss %d\n",k);
+  
+  // ks_ks
+  sprintf(OUTFILE,"%s_ksks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.shear_Nbin; l++){
+     for (m=l;m<tomo.shear_Nbin; m++){
+        if (k==hit){
+          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+          run_cov_ks_ks(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+        }
+        // printf("%d\n",k);
+        k=k+1;
+     }
+  }
+  printf("ksks %d\n",k);
+  
+ // ks_ss
+ sprintf(OUTFILE,"%s_ksss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+ for (l=0;l<tomo.shear_Nbin; l++){
+   for (m=0;m<tomo.shear_Npowerspectra; m++){
+     if (k==hit){
+        sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+        run_cov_ks_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+     }
+     k=k+1;
+     // printf("%d\n",k);
+    }
+  }
+  printf("ksss %d\n",k);
+
+  // ll_kk
+  sprintf(OUTFILE,"%s_llkk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.clustering_Npowerspectra; l++){
+     if (k==hit){
+          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+          run_cov_ll_kk(OUTFILE,covparams.outdir,ell,dell,l,k);
+        }
+    // printf("%d\n",k);
+     k=k+1;
+  }
+  printf("llkk %d\n",k);
+  
+  // ll_ks
+  sprintf(OUTFILE,"%s_llks_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.clustering_Npowerspectra; l++){
+     for (m=0;m<tomo.shear_Nbin;m++) {
+        if (k==hit){
+          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+          run_cov_ll_ks(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+        }
+        // printf("%d\n",k);
+        k=k+1;
+     }
+  }
+  printf("llks %d\n",k);
+
+  // ll_lk
+  sprintf(OUTFILE,"%s_lllk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
+  for (l=0;l<tomo.clustering_Npowerspectra; l++){
+     for (m=0;m<tomo.clustering_Nbin;m++) {
+        if (k==hit){
+          sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
+          run_cov_ll_lk(OUTFILE,covparams.outdir,ell,dell,l,m,k);
+        }
+        // printf("%d\n",k);
+        k=k+1;
+     }
+  }
+  printf("lllk %d\n",k);
+
   printf("number of cov blocks for parallelization: %d\n",k-1); 
   printf("-----------------\n");
   printf("PROGRAM EXECUTED\n");

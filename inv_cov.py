@@ -7,7 +7,8 @@ from numpy import linalg as LA
 import numpy as np
 
 
-infile =['/users/timeifler/Dropbox/cosmolike_store/LSSTxSO/cov/cov_LSSTxSO_Y6']
+# infile =['/users/timeifler/Dropbox/cosmolike_store/LSSTxSO/cov/cov_LSSTxSO_Y6']
+infile =['cov/cov_LSSTxSO_Y6']
 
 #infile =['/users/timeifler/Dropbox/cosmolike_store/WFIRST_forecasts/cov/cov_WFIRST_Ncl25_4clusterbins_nrichmin25_source_Dec17']
 data= ['datav/6x2pt_LSSTxSO_Y6_dmo']
@@ -18,9 +19,9 @@ nlens = 10 	# number of lens bins
 nkappa=1
 nkappaxlens=10
 nkappaxsource=10
-nggl = 52 	# number of ggl power spectra
+nggl = 45 	# number of ggl power spectra
 nshear = 55 # number of shear tomographic power spectra
-ncl=15		# number of ell-bins
+ncl=20		# number of ell-bins
 
 
 n2pt = (nshear+nggl+nlens)*ncl 
@@ -45,8 +46,8 @@ for k in range(0,1):
 		#cov[int(covfile[i,0]),int(covfile[i,1])] = covfile[i,8]
 	 	#cov[int(covfile[i,1]),int(covfile[i,0])] = covfile[i,8]
 	 
-	numpyfile="/users/timeifler/Dropbox/cosmolike_store/LSSTxSO/npcov/npcov_"+outname[k]
-	np.save(numpyfile, cov)
+	# numpyfile="/users/timeifler/Dropbox/cosmolike_store/LSSTxSO/npcov/npcov_"+outname[k]
+	# np.save(numpyfile, cov)
 
 	cor = np.zeros((ndata,ndata))
 	for i in range(0,ndata):
@@ -146,7 +147,8 @@ for k in range(0,1):
 plt.figure()
 plt.imshow(np.log10(np.abs(cov[:,:])), interpolation="nearest",vmin=-25, vmax=-10)
 plt.colorbar()
-savefile="/users/timeifler/CosmoLike/LSSTxSO/plots/cov_"+outname[k]+".png"
+# savefile="/users/timeifler/CosmoLike/LSSTxSO/plots/cov_"+outname[k]+".png"
+savefile="plots/cov_"+outname[k]+".png"
 plt.savefig(savefile, format='png', dpi=2000)
 
 
