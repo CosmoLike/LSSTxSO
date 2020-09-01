@@ -44,6 +44,10 @@ ocelote_datav:
 ocelote_cov:
 	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier $(opt_ocelote)
 
+ocelote_cov_1sample:
+	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier_1sample $(opt_ocelote) -DONESAMPLE
+
+
 ocelote_shared:
 	gcc -shared -o like_fourier.so -fPIC like_fourier.c $(opt_ocelote)
 
