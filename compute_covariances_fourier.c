@@ -808,10 +808,7 @@ int main(int argc, char** argv)
     for (m=l;m<tomo.shear_Npowerspectra; m++){
       if(k==hit){ 
         sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-        if (fopen(filename, "r") != NULL){exit(1);}
-        else {
-          run_cov_ss_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-        }
+        run_cov_ss_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
       }
       k=k+1;
       //printf("%d\n",k);
@@ -823,10 +820,7 @@ int main(int argc, char** argv)
     for (m=l;m<tomo.ggl_Npowerspectra; m++){
       if(k==hit){
         sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-        if (fopen(filename, "r") != NULL){exit(1);}
-        else {
-          run_cov_ls_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-        }
+        run_cov_ls_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
       }
      //printf("%d\n",k);
       k=k+1;
@@ -837,10 +831,7 @@ int main(int argc, char** argv)
     for (m=l;m<tomo.clustering_Npowerspectra; m++){
       if(k==hit){ 
         sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-        if (fopen(filename, "r") != NULL){exit(1);}
-        else {
-          run_cov_ll_ll(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-        }
+        run_cov_ll_ll(OUTFILE,covparams.outdir,ell,dell,l,m,k);
       }
       k=k+1;
       //printf("%d %d %d\n",l,m,k);
@@ -851,10 +842,7 @@ int main(int argc, char** argv)
     for (m=0;m<tomo.shear_Npowerspectra; m++){
       if(k==hit){
         sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-        if (fopen(filename, "r") != NULL){exit(1);}
-        else {
-          run_cov_ll_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-        }
+        run_cov_ll_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
       }
       k=k+1;
       //printf("%d\n",k);
@@ -865,10 +853,7 @@ int main(int argc, char** argv)
     for (m=0;m<tomo.ggl_Npowerspectra; m++){
       if(k==hit){
         sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-        if (fopen(filename, "r") != NULL){exit(1);}
-        else {
-          run_cov_ll_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-        }
+        run_cov_ll_ls(OUTFILE,covparams.outdir,ell,dell,l,m,k);
       }
       k=k+1;
       //printf("%d\n",k);
@@ -879,10 +864,7 @@ int main(int argc, char** argv)
     for (m=0;m<tomo.shear_Npowerspectra; m++){
       if(k==hit){
         sprintf(filename,"%s%s_%d",covparams.outdir,OUTFILE,k);
-        if (fopen(filename, "r") != NULL){exit(1);}
-        else {
-          run_cov_ls_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
-        }
+        run_cov_ls_ss(OUTFILE,covparams.outdir,ell,dell,l,m,k);
       }
       k=k+1;
       //printf("%d\n",k);
