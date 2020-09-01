@@ -27,6 +27,9 @@ home_deslib:
 home_cov:
 	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier $(opt_home)
 
+home_cov_1sample:
+	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier_1sample $(opt_home) -DONESAMPLE
+
 home_shared:
 	gcc -shared -o like_fourier.so -fPIC like_fourier.c $(opt_home)
 

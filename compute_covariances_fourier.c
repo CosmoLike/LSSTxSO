@@ -755,10 +755,15 @@ int main(int argc, char** argv)
   char survey_designation[2][200]={"LSSTxSO_Y1","LSSTxSO_Y6"};
   
   char source_zfile[2][400]={"src_LSSTY1","src_LSSTY6"};
+
+#ifdef ONESAMPLE
+  char lens_zfile[2][400]={"src_LSSTY1","src_LSSTY6"};
+  nlens_table[0] = nsource_table[0];
+  nlens_table[1] = nsource_table[1];
+#else
   char lens_zfile[2][400]={"lens_LSSTY1","lens_LSSTY6"};
+#endif
 
-
-   
   int hit=atoi(argv[1]);
   Ntable.N_a=100;
   k=1;
@@ -799,8 +804,12 @@ int main(int argc, char** argv)
   printf("area: %le n_source: %le n_lens: %le\n",survey.area,survey.n_gal,survey.n_lens);
 
   // sprintf(covparams.outdir,"/home/u17/timeifler/covparallel/"); 
+#ifdef ONESAMPLE
+  sprintf(covparams.outdir,"out_cov_lsstxso_1sample/");
+#else
   sprintf(covparams.outdir,"out_cov_lsstxso/");
   //sprintf(covparams.outdir,"/halo_nobackup/cosmos/teifler/covparallel/");
+#endif
 
   printf("----------------------------------\n");  
   sprintf(OUTFILE,"%s_ssss_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);

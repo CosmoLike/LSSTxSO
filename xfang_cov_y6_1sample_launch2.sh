@@ -3,7 +3,7 @@
 #PBS -V
 #PBS -W group_list=cosmo
 #PBS -q high_pri
-#PBS -J 5001-9591
+#PBS -J 5001-9730
 #PBS -l select=1:ncpus=1:mem=1GB
 #PBS -l place=pack:shared
 #PBS -l walltime=10:00:00
@@ -14,7 +14,7 @@
 module load gsl/2/2.1
 
 cd $PBS_O_WORKDIR
-/home/u1/xfang/CosmoLike/LSSTxSO/./compute_covariances_fourier $PBS_ARRAY_INDEX 1 >&/home/u1/xfang/output/job_output_$PBS_ARRAY_INDEX.log
+/home/u1/xfang/CosmoLike/LSSTxSO/./compute_covariances_fourier_1sample $PBS_ARRAY_INDEX 1 >&/home/u1/xfang/output/job_output_$PBS_ARRAY_INDEX.log
 
 
 
