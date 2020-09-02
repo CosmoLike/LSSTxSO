@@ -6,7 +6,7 @@ sys.path.append('/home/u1/xfang/LSSTxSO')
 from cosmolike_libs_LSSTxSO import * 
 from schwimmbad import MPIPool
 
-inv=['cov_LSSTxSO_Y1_6x2pt_inv','cov_LSSTxSO_Y6_6x2pt_inv']
+inv=['invcov_Y1_6x2pt','invcov_Y6_6x2pt']
 
 data=['6x2pt_LSSTxSO_Y1_dmo','6x2pt_LSSTxSO_Y6_dmo']
 
@@ -43,7 +43,7 @@ chain_file = os.path.join(dirname, "chains/LSSTxSO_6x2pt_model_%d" %model)
 bary_file=os.path.join(dirname, "baryons/",bary[model])
 
 initcosmo("halofit")
-initbins(20,30.0,3000.0,3000.0,21.0,10,10)
+initbins(15,20.0,3000.0,3000.0,21.0,10,10)
 initpriors(shear_prior[model],sigma_z_shear[model],delta_z_prior_shear[model],sigma_z_prior_shear[model],sigma_z_clustering[model],delta_z_prior_clustering[model],sigma_z_prior_clustering[model],3.0,1.2,3.8,2.0,16.0,5.0,0.8);
 initsurvey(survey_designation[model],nsource_table[model],nlens_table[model],area_table[model])
 initgalaxies(file_source_z,file_lens_z,"gaussian","gaussian",tomo_binning_source[model],tomo_binning_lens[model])

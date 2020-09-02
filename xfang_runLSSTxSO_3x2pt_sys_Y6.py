@@ -6,11 +6,11 @@ sys.path.append('/home/u1/xfang/LSSTxSO')
 from cosmolike_libs_LSSTxSO import * 
 from schwimmbad import MPIPool
 
-inv=['invcov_Y1_6x2pt','invcov_Y6_6x2pt']
+inv=['invcov_Y1_3x2pt','invcov_Y6_3x2pt']
 
-data=['6x2pt_LSSTxSO_Y1_dmo','6x2pt_LSSTxSO_Y6_dmo']
+data=['3x2pt_LSSTxSO_Y1_dmo','3x2pt_LSSTxSO_Y6_dmo']
 
-bary=['LPC_6x2pt_LSSTxSO_Y1','LPC_6x2pt_LSSTxSO_Y6']
+bary=['LPC_3x2pt_LSSTxSO_Y1','LPC_3x2pt_LSSTxSO_Y6']
 
 source_z=['src_LSSTY1','src_LSSTY6'] 
 
@@ -38,7 +38,7 @@ file_lens_z = os.path.join(dirname, "zdistris/",lens_z[model])
 data_file = os.path.join(dirname, "datav/",data[model])
 cov_file = os.path.join(dirname, "cov/",inv[model])
 #cov_file = os.path.join("/Users/timeifler/Dropbox/cosmolike_store/LSST_emu/inv/",inv[model])
-chain_file = os.path.join(dirname, "chains/LSSTxSO_6x2pt_model_%d" %model)
+chain_file = os.path.join(dirname, "chains/LSSTxSO_3x2pt_model_%d" %model)
 bary_file=os.path.join(dirname, "baryons/",bary[model])
 
 initcosmo("halofit")
@@ -51,9 +51,9 @@ initia("NLA_HF","GAMA")
 # test also with
 #initpriors("none","none","none","Planck")
 #initpriors("none","none","none","random")
-initprobes("6x2pt")
+initprobes("3x2pt")
 initdatainv(cov_file ,data_file, bary_file)
-initcmb("so_Y5")
+# initcmb("so_Y5")
 #sample_params= sample_cosmology_only()
 sample_params = sample_cosmology_3x2_allsys(get_N_tomo_shear(),get_N_tomo_clustering())
 
