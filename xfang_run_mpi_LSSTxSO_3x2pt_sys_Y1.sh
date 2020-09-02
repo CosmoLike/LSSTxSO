@@ -16,6 +16,7 @@
 
 cd $PBS_O_WORKDIR
 
+module load gsl/2/2.1
 module load python/2
 module load mpich/ge/gcc/64/3.2.1
 module load openmpi
