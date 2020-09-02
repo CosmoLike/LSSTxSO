@@ -9,7 +9,7 @@
 #PBS -l place=free:shared
 #PBS -l cput=11200:00:00
 #PBS -l walltime=8:00:00
-#PBS -N W1st_mpi
+#PBS -N lsstso6_3x2
 #PBS -e /home/u1/xfang/output/
 #PBS -o /home/u1/xfang/output/
 
