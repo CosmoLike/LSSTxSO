@@ -214,8 +214,8 @@ class InputCosmologyParams(IterableStruct):
         c.omega_m = 0.01
         c.sigma_8 = 0.01
         c.n_s = 0.01
-        c.w0 = .02
-        c.wa = 0.02
+        c.w0 = 0.1
+        c.wa = 0.1
         c.omega_b = 0.001
         c.h0 = 0.01
         c.MGSigma = 0.1
