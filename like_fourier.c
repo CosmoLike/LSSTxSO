@@ -38,7 +38,7 @@
 #include "../cosmolike_core/theory/pt.c"
 #include "../cosmolike_core/theory/cosmo2D_fourier.c"
 #include "../cosmolike_core/theory/IA.c"
-#include "../cosmolike_core/theory/cluster.c"
+// #include "../cosmolike_core/theory/cluster.c"
 #include "../cosmolike_core/theory/BAO.c"
 #include "../cosmolike_core/theory/external_prior.c"
 #include "../cosmolike_core/theory/init_baryon.c"
@@ -56,7 +56,7 @@ void twopoint_via_hankel(double **xi, double *logthetamin, double *logthetamax, 
 #include "../cosmolike_core/theory/CMBxLSS_fourier.c"
 
 double C_shear_tomo_sys(double ell,int z1,int z2);
-double C_cgl_tomo_sys(double ell_Cluster,int zl,int nN, int zs);
+// double C_cgl_tomo_sys(double ell_Cluster,int zl,int nN, int zs);
 double C_gl_tomo_sys(double ell,int zl,int zs);
 double C_ks_sys(double ell, int zs);
 void set_data_shear(int Ncl, double *ell, double *data, int start);
@@ -65,8 +65,11 @@ void set_data_clustering(int Ncl, double *ell, double *data, int start);
 void set_data_gk(double *ell, double *data, int start);
 void set_data_ks(double *ell, double *data, int start);
 void set_data_kk(double *ell, double *data, int start);
-void compute_data_vector(char *details, double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5, double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q,double mass_obs_norm, double mass_obs_slope, double mass_z_slope, double mass_obs_scatter_norm, double mass_obs_scatter_mass_slope, double mass_obs_scatter_z_slope, double Q1, double Q2, double Q3);
-double log_multi_like(double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5, double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q,double mass_obs_norm, double mass_obs_slope, double mass_z_slope, double mass_obs_scatter_norm, double mass_obs_scatter_mass_slope, double mass_obs_scatter_z_slope, double Q1, double Q2, double Q3);
+// void compute_data_vector(char *details, double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5, double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q,double mass_obs_norm, double mass_obs_slope, double mass_z_slope, double mass_obs_scatter_norm, double mass_obs_scatter_mass_slope, double mass_obs_scatter_z_slope, double Q1, double Q2, double Q3);
+// double log_multi_like(double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5, double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q,double mass_obs_norm, double mass_obs_slope, double mass_z_slope, double mass_obs_scatter_norm, double mass_obs_scatter_mass_slope, double mass_obs_scatter_z_slope, double Q1, double Q2, double Q3);
+void compute_data_vector(char *details, double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5, double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q, double Q1, double Q2, double Q3);
+double log_multi_like(double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5, double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q, double Q1, double Q2, double Q3);
+
 void write_datavector_wrapper(char *details, input_cosmo_params ic, input_nuisance_params in);
 double log_like_wrapper(input_cosmo_params ic, input_nuisance_params in);
 int get_N_tomo_shear(void);
@@ -116,14 +119,14 @@ double C_gl_tomo_sys(double ell,int zl,int zs)
 return C;
 }
 
-double C_cgl_tomo_sys(double ell_Cluster, int zl,int nN, int zs)
-{
-  double C;
-  C=C_cgl_tomo_nointerp(ell_Cluster,zl,nN,zs);
-  //if(like.IA!=0) C += 
-  if(like.shearcalib==1) C *=(1.0+nuisance.shear_calibration_m[zs]);
-return C;
-}      
+// double C_cgl_tomo_sys(double ell_Cluster, int zl,int nN, int zs)
+// {
+//   double C;
+//   C=C_cgl_tomo_nointerp(ell_Cluster,zl,nN,zs);
+//   //if(like.IA!=0) C += 
+//   if(like.shearcalib==1) C *=(1.0+nuisance.shear_calibration_m[zs]);
+// return C;
+// }      
 
 double C_ks_sys(double ell, int zs)
 {
@@ -327,30 +330,30 @@ int set_nuisance_ia(double A_ia, double beta_ia, double eta_ia, double eta_ia_hi
 return 1;
 }
 
-int set_nuisance_cluster_Mobs(double cluster_Mobs_lgN0,  double cluster_Mobs_alpha, double cluster_Mobs_beta, double cluster_Mobs_sigma0, double cluster_Mobs_sigma_qm, double cluster_Mobs_sigma_qz)
-{
-  //  nuisance.cluster_Mobs_lgM0 = mass_obs_norm;  //fiducial : 1.72+log(1.e+14*0.7); could use e.g. sigma = 0.2 Gaussian prior
-  //  nuisance.cluster_Mobs_alpha = mass_obs_slope; //fiducial: 1.08; e.g. sigma = 0.1 Gaussian prior
-  //  nuisance.cluster_Mobs_beta = mass_z_slope; //fiducial: 0.0; e.g. sigma = 0.1 Gaussian prior
-  //  nuisance.cluster_Mobs_sigma = mass_obs_scatter; //fiducial 0.25; e.g. sigma = 0.05 Gaussian prior
+// int set_nuisance_cluster_Mobs(double cluster_Mobs_lgN0,  double cluster_Mobs_alpha, double cluster_Mobs_beta, double cluster_Mobs_sigma0, double cluster_Mobs_sigma_qm, double cluster_Mobs_sigma_qz)
+// {
+//   //  nuisance.cluster_Mobs_lgM0 = mass_obs_norm;  //fiducial : 1.72+log(1.e+14*0.7); could use e.g. sigma = 0.2 Gaussian prior
+//   //  nuisance.cluster_Mobs_alpha = mass_obs_slope; //fiducial: 1.08; e.g. sigma = 0.1 Gaussian prior
+//   //  nuisance.cluster_Mobs_beta = mass_z_slope; //fiducial: 0.0; e.g. sigma = 0.1 Gaussian prior
+//   //  nuisance.cluster_Mobs_sigma = mass_obs_scatter; //fiducial 0.25; e.g. sigma = 0.05 Gaussian prior
 
-  // fiducial values and priors from Murata et al. (2018) except for redshift-related parameters
-  nuisance.cluster_Mobs_lgN0 = cluster_Mobs_lgN0; //fiducial: 3.207, flat prior [0.5, 5.0]
-  nuisance.cluster_Mobs_alpha = cluster_Mobs_alpha; //fiducial: 0.993, flat prior [0.0, 2.0]
-  nuisance.cluster_Mobs_beta = cluster_Mobs_beta; //fiducial: 0.0, flat prior [-1.5, 1.5]
-  nuisance.cluster_Mobs_sigma0 = cluster_Mobs_sigma0; //fiducial: 0.456, flat prior [0.0, 1.5]
-  nuisance.cluster_Mobs_sigma_qm = cluster_Mobs_sigma_qm; //fiducial: -0.169, flat prior [-1.5, 1.5]
-  nuisance.cluster_Mobs_sigma_qz = cluster_Mobs_sigma_qz; //fiducial: 0.0, flat prior [-1.5, 1.5]
+//   // fiducial values and priors from Murata et al. (2018) except for redshift-related parameters
+//   nuisance.cluster_Mobs_lgN0 = cluster_Mobs_lgN0; //fiducial: 3.207, flat prior [0.5, 5.0]
+//   nuisance.cluster_Mobs_alpha = cluster_Mobs_alpha; //fiducial: 0.993, flat prior [0.0, 2.0]
+//   nuisance.cluster_Mobs_beta = cluster_Mobs_beta; //fiducial: 0.0, flat prior [-1.5, 1.5]
+//   nuisance.cluster_Mobs_sigma0 = cluster_Mobs_sigma0; //fiducial: 0.456, flat prior [0.0, 1.5]
+//   nuisance.cluster_Mobs_sigma_qm = cluster_Mobs_sigma_qm; //fiducial: -0.169, flat prior [-1.5, 1.5]
+//   nuisance.cluster_Mobs_sigma_qz = cluster_Mobs_sigma_qz; //fiducial: 0.0, flat prior [-1.5, 1.5]
 
-  if (nuisance.cluster_Mobs_lgN0 < 0.5 || nuisance.cluster_Mobs_lgN0 > 5.0) return 0;
-  if (nuisance.cluster_Mobs_alpha < 0.0 || nuisance.cluster_Mobs_alpha > 2.0) return 0;
-  if (nuisance.cluster_Mobs_beta < -1.5 || nuisance.cluster_Mobs_beta > 1.5) return 0;
-  if (nuisance.cluster_Mobs_sigma0 < 0.0|| nuisance.cluster_Mobs_sigma0 > 1.5) return 0;
-  if (nuisance.cluster_Mobs_sigma_qm < -1.5 && nuisance.cluster_Mobs_sigma_qm > 1.5) return 0;
-  if (nuisance.cluster_Mobs_sigma_qz < -1.5 && nuisance.cluster_Mobs_sigma_qz > 1.5)return 0;
+//   if (nuisance.cluster_Mobs_lgN0 < 0.5 || nuisance.cluster_Mobs_lgN0 > 5.0) return 0;
+//   if (nuisance.cluster_Mobs_alpha < 0.0 || nuisance.cluster_Mobs_alpha > 2.0) return 0;
+//   if (nuisance.cluster_Mobs_beta < -1.5 || nuisance.cluster_Mobs_beta > 1.5) return 0;
+//   if (nuisance.cluster_Mobs_sigma0 < 0.0|| nuisance.cluster_Mobs_sigma0 > 1.5) return 0;
+//   if (nuisance.cluster_Mobs_sigma_qm < -1.5 && nuisance.cluster_Mobs_sigma_qm > 1.5) return 0;
+//   if (nuisance.cluster_Mobs_sigma_qz < -1.5 && nuisance.cluster_Mobs_sigma_qz > 1.5)return 0;
 
-return 1;
-}
+// return 1;
+// }
 
 
 int set_nuisance_gbias(double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8,double B9, double B10)
@@ -375,7 +378,8 @@ int set_nuisance_gbias(double B1, double B2, double B3, double B4,double B5, dou
   return 1;
 } 
 
-double log_multi_like(double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5, double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q,double mass_obs_norm, double mass_obs_slope, double mass_z_slope, double mass_obs_scatter_norm, double mass_obs_scatter_mass_slope, double mass_obs_scatter_z_slope, double Q1, double Q2, double Q3)
+// double log_multi_like(double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5, double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q,double mass_obs_norm, double mass_obs_slope, double mass_z_slope, double mass_obs_scatter_norm, double mass_obs_scatter_mass_slope, double mass_obs_scatter_z_slope, double Q1, double Q2, double Q3)
+double log_multi_like(double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5, double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q, double Q1, double Q2, double Q3)
 {
   int i,j,k,m=0,l;
   static double *pred;
@@ -391,11 +395,11 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
     for (l=0;l<like.Ncl;l++){
       ell[l]=exp(log(like.lmin)+(l+0.5)*darg);
     }
-    ell_Cluster= create_double_vector(0, Cluster.lbin-1);
-    darg=(log(Cluster.l_max)-log(Cluster.l_min))/Cluster.lbin;
-    for (l=0;l<Cluster.lbin;l++){
-      ell_Cluster[l]=exp(log(Cluster.l_min)+(l+0.5)*darg);
-    }
+    // ell_Cluster= create_double_vector(0, Cluster.lbin-1);
+    // darg=(log(Cluster.l_max)-log(Cluster.l_min))/Cluster.lbin;
+    // for (l=0;l<Cluster.lbin;l++){
+    //   ell_Cluster[l]=exp(log(Cluster.l_min)+(l+0.5)*darg);
+    // }
   }
   if (set_cosmology_params(OMM,S8,NS,W0,WA,OMB,H0,MGSigma,MGmu)==0){
     printf("Cosmology out of bounds\n");
@@ -418,10 +422,10 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
     printf("Bias out of bounds\n");
     return -1.0e15;
   }
-  if (set_nuisance_cluster_Mobs(mass_obs_norm, mass_obs_slope, mass_z_slope, mass_obs_scatter_norm, mass_obs_scatter_mass_slope, mass_obs_scatter_z_slope)==0){
-    printf("Mobs out of bounds\n");
-    return -1.0e15;
-  }
+  // if (set_nuisance_cluster_Mobs(mass_obs_norm, mass_obs_slope, mass_z_slope, mass_obs_scatter_norm, mass_obs_scatter_mass_slope, mass_obs_scatter_z_slope)==0){
+  //   printf("Mobs out of bounds\n");
+  //   return -1.0e15;
+  // }
        
   printf("like %le %le %le %le %le %le %le %le\n",cosmology.Omega_m, cosmology.Omega_v,cosmology.sigma_8,cosmology.n_spec,cosmology.w0,cosmology.wa,cosmology.omb,cosmology.h0); 
   // printf("like %le %le %le %le\n",gbias.b[0][0], gbias.b[1][0], gbias.b[2][0], gbias.b[3][0]);    
@@ -507,13 +511,14 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
   return -0.5*chisqr+log_L_prior;
 }
 
-void compute_data_vector(char *details, double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5,double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q, double mass_obs_norm, double mass_obs_slope, double mass_z_slope, double mass_obs_scatter_norm, double mass_obs_scatter_mass_slope, double mass_obs_scatter_z_slope, double Q1, double Q2, double Q3)
+// void compute_data_vector(char *details, double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5,double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q, double mass_obs_norm, double mass_obs_slope, double mass_z_slope, double mass_obs_scatter_norm, double mass_obs_scatter_mass_slope, double mass_obs_scatter_z_slope, double Q1, double Q2, double Q3)
+void compute_data_vector(char *details, double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5,double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q, double Q1, double Q2, double Q3)
 {
 
   int i,j,k,m=0,l;
   static double *pred;
   static double *ell;
-  static double *ell_Cluster;
+  // static double *ell_Cluster;
   static double darg;
   double chisqr,a,log_L_prior=0.0;
   
@@ -524,11 +529,11 @@ void compute_data_vector(char *details, double OMM, double S8, double NS, double
     for (l=0;l<like.Ncl;l++){
       ell[l]=exp(log(like.lmin)+(l+0.5)*darg);
     }
-    ell_Cluster= create_double_vector(0, Cluster.lbin-1);
-    darg=(log(Cluster.l_max)-log(Cluster.l_min))/Cluster.lbin;
-    for (l=0;l<Cluster.lbin;l++){
-      ell_Cluster[l]=exp(log(Cluster.l_min)+(l+0.5)*darg);    
-    }
+    // ell_Cluster= create_double_vector(0, Cluster.lbin-1);
+    // darg=(log(Cluster.l_max)-log(Cluster.l_min))/Cluster.lbin;
+    // for (l=0;l<Cluster.lbin;l++){
+    //   ell_Cluster[l]=exp(log(Cluster.l_min)+(l+0.5)*darg);    
+    // }
   }
 // for (l=0;l<like.Ncl;l++){
 //   printf("%d %le\n",i,ell[l]);
@@ -540,7 +545,7 @@ void compute_data_vector(char *details, double OMM, double S8, double NS, double
   set_nuisance_clustering_photoz(CP1,CP2,CP3,CP4,CP5,CP6,CP7,CP8,CP9,CP10,CPS1);
   set_nuisance_ia(A_ia,beta_ia,eta_ia,eta_ia_highz,LF_alpha,LF_P,LF_Q,LF_red_alpha,LF_red_P,LF_red_Q);
   set_nuisance_gbias(B1,B2,B3,B4,B5,B6,B7,B8,B9,B10);
-  set_nuisance_cluster_Mobs(mass_obs_norm,mass_obs_slope,mass_z_slope,mass_obs_scatter_norm,mass_obs_scatter_mass_slope,mass_obs_scatter_z_slope);
+  // set_nuisance_cluster_Mobs(mass_obs_norm,mass_obs_slope,mass_z_slope,mass_obs_scatter_norm,mass_obs_scatter_mass_slope,mass_obs_scatter_z_slope);
   
   int start=0;  
   if(like.shear_shear==1) {
@@ -598,6 +603,20 @@ void compute_data_vector(char *details, double OMM, double S8, double NS, double
 
 void write_datavector_wrapper(char *details, input_cosmo_params ic, input_nuisance_params in)
 {
+  // compute_data_vector(details, ic.omega_m, ic.sigma_8, ic.n_s, ic.w0, ic.wa, ic.omega_b, ic.h0, ic.MGSigma, ic.MGmu,
+  //   in.bias[0], in.bias[1], in.bias[2], in.bias[3],in.bias[4], in.bias[5], in.bias[6], in.bias[7],in.bias[8], in.bias[9], 
+  //   in.source_z_bias[0], in.source_z_bias[1], in.source_z_bias[2], in.source_z_bias[3], in.source_z_bias[4], 
+  //   in.source_z_bias[5], in.source_z_bias[6], in.source_z_bias[7], in.source_z_bias[8], in.source_z_bias[9], 
+  //   in.source_z_s, 
+  //   in.lens_z_bias[0], in.lens_z_bias[1], in.lens_z_bias[2], in.lens_z_bias[3], in.lens_z_bias[4], 
+  //   in.lens_z_bias[5], in.lens_z_bias[6], in.lens_z_bias[7], in.lens_z_bias[8], in.lens_z_bias[9], 
+  //   in.lens_z_s, 
+  //   in.shear_m[0], in.shear_m[1], in.shear_m[2], in.shear_m[3], in.shear_m[4], 
+  //   in.shear_m[5], in.shear_m[6], in.shear_m[7], in.shear_m[8], in.shear_m[9], 
+  //   in.A_ia, in.beta_ia, in.eta_ia, in.eta_ia_highz,
+  //   in.lf[0], in.lf[1], in.lf[2], in.lf[3], in.lf[4], in.lf[5],
+  //   in.m_lambda[0], in.m_lambda[1], in.m_lambda[2], in.m_lambda[3],
+  //   in.m_lambda[4], in.m_lambda[5],in.bary[0], in.bary[1], in.bary[2]);
   compute_data_vector(details, ic.omega_m, ic.sigma_8, ic.n_s, ic.w0, ic.wa, ic.omega_b, ic.h0, ic.MGSigma, ic.MGmu,
     in.bias[0], in.bias[1], in.bias[2], in.bias[3],in.bias[4], in.bias[5], in.bias[6], in.bias[7],in.bias[8], in.bias[9], 
     in.source_z_bias[0], in.source_z_bias[1], in.source_z_bias[2], in.source_z_bias[3], in.source_z_bias[4], 
@@ -610,12 +629,25 @@ void write_datavector_wrapper(char *details, input_cosmo_params ic, input_nuisan
     in.shear_m[5], in.shear_m[6], in.shear_m[7], in.shear_m[8], in.shear_m[9], 
     in.A_ia, in.beta_ia, in.eta_ia, in.eta_ia_highz,
     in.lf[0], in.lf[1], in.lf[2], in.lf[3], in.lf[4], in.lf[5],
-    in.m_lambda[0], in.m_lambda[1], in.m_lambda[2], in.m_lambda[3],
-    in.m_lambda[4], in.m_lambda[5],in.bary[0], in.bary[1], in.bary[2]);
+    in.bary[0], in.bary[1], in.bary[2]);
 }
 
 double log_like_wrapper(input_cosmo_params ic, input_nuisance_params in)
 {
+  // double like = log_multi_like(ic.omega_m, ic.sigma_8, ic.n_s, ic.w0, ic.wa, ic.omega_b, ic.h0, ic.MGSigma, ic.MGmu,
+  //   in.bias[0], in.bias[1], in.bias[2], in.bias[3],in.bias[4], in.bias[5], in.bias[6], in.bias[7],in.bias[8], in.bias[9], 
+  //   in.source_z_bias[0], in.source_z_bias[1], in.source_z_bias[2], in.source_z_bias[3], in.source_z_bias[4], 
+  //   in.source_z_bias[5], in.source_z_bias[6], in.source_z_bias[7], in.source_z_bias[8], in.source_z_bias[9], 
+  //   in.source_z_s, 
+  //   in.lens_z_bias[0], in.lens_z_bias[1], in.lens_z_bias[2], in.lens_z_bias[3], in.lens_z_bias[4], 
+  //   in.lens_z_bias[5], in.lens_z_bias[6], in.lens_z_bias[7], in.lens_z_bias[8], in.lens_z_bias[9], 
+  //   in.lens_z_s, 
+  //   in.shear_m[0], in.shear_m[1], in.shear_m[2], in.shear_m[3], in.shear_m[4], 
+  //   in.shear_m[5], in.shear_m[6], in.shear_m[7], in.shear_m[8], in.shear_m[9], 
+  //   in.A_ia, in.beta_ia, in.eta_ia, in.eta_ia_highz,
+  //   in.lf[0], in.lf[1], in.lf[2], in.lf[3], in.lf[4], in.lf[5], 
+  //   in.m_lambda[0], in.m_lambda[1], in.m_lambda[2], in.m_lambda[3],
+  //   in.m_lambda[4], in.m_lambda[5],in.bary[0], in.bary[1], in.bary[2]); 
   double like = log_multi_like(ic.omega_m, ic.sigma_8, ic.n_s, ic.w0, ic.wa, ic.omega_b, ic.h0, ic.MGSigma, ic.MGmu,
     in.bias[0], in.bias[1], in.bias[2], in.bias[3],in.bias[4], in.bias[5], in.bias[6], in.bias[7],in.bias[8], in.bias[9], 
     in.source_z_bias[0], in.source_z_bias[1], in.source_z_bias[2], in.source_z_bias[3], in.source_z_bias[4], 
@@ -628,8 +660,7 @@ double log_like_wrapper(input_cosmo_params ic, input_nuisance_params in)
     in.shear_m[5], in.shear_m[6], in.shear_m[7], in.shear_m[8], in.shear_m[9], 
     in.A_ia, in.beta_ia, in.eta_ia, in.eta_ia_highz,
     in.lf[0], in.lf[1], in.lf[2], in.lf[3], in.lf[4], in.lf[5], 
-    in.m_lambda[0], in.m_lambda[1], in.m_lambda[2], in.m_lambda[3],
-    in.m_lambda[4], in.m_lambda[5],in.bary[0], in.bary[1], in.bary[2]); 
+    in.bary[0], in.bary[1], in.bary[2]); 
   return like;
 }
 
@@ -682,18 +713,18 @@ void save_zdistr_lenses(int zl){
 
   char survey_designation[2][200]={"LSSTxSO_Y1","LSSTxSO_Y6"};
   char tomo_binning_source[2][200]={"source_std","source_std"};
+  // even for lens=src, this setting is valid, because the input lens/src zfiles are generated with the same z-cut:(0.2,1.2)
+  char tomo_binning_lens[2][200]={"LSST_gold","LSST_gold"};
 
   char source_zfile[2][400]={"src_LSSTY1","src_LSSTY6"};
 #ifdef ONESAMPLE
   char lens_zfile[2][400]={"src_LSSTY1","src_LSSTY6"};
-  char tomo_binning_lens[2][200]={"LSST_gold","LSST_gold"}; //???????
   nlens_table[0] = nsource_table[0];
   nlens_table[1] = nsource_table[1];
   sigma_zphot_clustering[0] = sigma_zphot_shear[0];
   sigma_zphot_clustering[1] = sigma_zphot_shear[1];
 #else
   char lens_zfile[2][400]={"lens_LSSTY1", "lens_LSSTY6"};
-  char tomo_binning_lens[2][200]={"LSST_gold","LSST_gold"};
 #endif
 
 
@@ -716,7 +747,7 @@ void save_zdistr_lenses(int zl){
     gbias.b[5],gbias.b[6],gbias.b[7],gbias.b[8],gbias.b[9],\
     0.0,0.0,0.0,0.0,0.0,\
     0.0,0.0,0.0,0.0,0.0,\
-    sigma_zphot_shear[sce],0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,sigma_zphot_clustering[sce],0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,5.92,1.1,-0.47,0.0,0.0,0.0,0.0,0.0,0.0,0.0,3.207,0.993,0.0,0.456,0.0,0.0,0.0,0.0,0.0);
+    sigma_zphot_shear[sce],0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,sigma_zphot_clustering[sce],0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,5.92,1.1,-0.47,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0);
 
   return 0;
 }
