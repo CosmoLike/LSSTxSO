@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=lsstso6_6x2
-#SBATCH --ntasks=1152
-#SBATCH --ntasks-per-node=96
+#SBATCH --ntasks=1128
+#SBATCH --ntasks-per-node=94
 #SBATCH --nodes=12
 #SBATCH --mem-per-cpu=168gb
 #SBATCH --time=20:00:00
@@ -21,5 +21,5 @@ module load openmpi
 ### run your executable program with begin and end date and time output
 export MPI_DSM_DISTRIBUTE
 date
-/usr/bin/time mpiexec -n 1152 python xfang_runLSSTxSO_6x2pt_sys_Y6.py
+/usr/bin/time mpiexec -n 1128 python xfang_runLSSTxSO_6x2pt_sys_Y6.py
 date
