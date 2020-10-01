@@ -149,9 +149,9 @@ class IterableStruct(ctypes.Structure):
             obj = getattr(self, name)
             if hasattr(ptype, "_length_"):
                 for i in xrange(ptype._length_):
-                    print "%s[%d] = %f" % (name, i, obj[i])
+                    print("%s[%d] = %f"%(name, i, obj[i]))
             else:
-                print "%s = %f" % (name, obj)
+                print("%s = %f"%(name, obj))
 
 
     def number_of_doubles(self):
@@ -349,7 +349,7 @@ def sample_cosmology_3x2_allsys(tomo_N_shear,tomo_N_lens,MG = False):
 
 
 def sample_main(varied_parameters,sigma_z_shear,sigma_z_clustering, iterations, nwalker, nthreads, filename, blind=False, pool=None):
-    print varied_parameters
+    print(varied_parameters)
 
     likelihood = LikelihoodFunctionWrapper(varied_parameters)
     starting_point = InputCosmologyParams.fiducial().convert_to_vector_filter(varied_parameters)
@@ -367,9 +367,9 @@ def sample_main(varied_parameters,sigma_z_shear,sigma_z_clustering, iterations, 
     p0 = emcee.utils.sample_ball(starting_point, std, size=nwalker)
 
     ndim = len(starting_point)
-    print "ndim = ", ndim
-    print "start = ", starting_point
-    print "std = ", std
+    print("ndim = %d"%(ndim))
+    print("start = ", starting_point)
+    print("std = ", std)
 
 
     # if pool is not None:
