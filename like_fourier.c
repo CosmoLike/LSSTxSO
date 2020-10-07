@@ -664,6 +664,23 @@ double log_like_wrapper(input_cosmo_params ic, input_nuisance_params in)
   return like;
 }
 
+double log_like_wrapper_1sample(input_cosmo_params ic, input_nuisance_params in) // Only used in sampling, not in datav
+{
+  double like = log_multi_like(ic.omega_m, ic.sigma_8, ic.n_s, ic.w0, ic.wa, ic.omega_b, ic.h0, ic.MGSigma, ic.MGmu,
+    in.bias[0], in.bias[1], in.bias[2], in.bias[3],in.bias[4], in.bias[5], in.bias[6], in.bias[7],in.bias[8], in.bias[9], 
+    in.source_z_bias[0], in.source_z_bias[1], in.source_z_bias[2], in.source_z_bias[3], in.source_z_bias[4], 
+    in.source_z_bias[5], in.source_z_bias[6], in.source_z_bias[7], in.source_z_bias[8], in.source_z_bias[9], 
+    in.source_z_s, 
+    in.source_z_bias[0], in.source_z_bias[1], in.source_z_bias[2], in.source_z_bias[3], in.source_z_bias[4], 
+    in.source_z_bias[5], in.source_z_bias[6], in.source_z_bias[7], in.source_z_bias[8], in.source_z_bias[9], 
+    in.source_z_s, 
+    in.shear_m[0], in.shear_m[1], in.shear_m[2], in.shear_m[3], in.shear_m[4], 
+    in.shear_m[5], in.shear_m[6], in.shear_m[7], in.shear_m[8], in.shear_m[9], 
+    in.A_ia, in.beta_ia, in.eta_ia, in.eta_ia_highz,
+    in.lf[0], in.lf[1], in.lf[2], in.lf[3], in.lf[4], in.lf[5], 
+    in.bary[0], in.bary[1], in.bary[2]); 
+  return like;
+}
 
 
 void save_zdistr_sources(int zs){
@@ -741,7 +758,11 @@ void save_zdistr_lenses(int zl){
   init_probes("6x2pt");
 
   init_cmb(argv[3]);
+#ifdef ONESAMPLE
+  sprintf(arg3,"%s_1sample_%s",survey_designation[sce],argv[2]);
+#else
   sprintf(arg3,"%s_%s",survey_designation[sce],argv[2]);
+#endif
   compute_data_vector(arg3,0.3156,0.831,0.9645,-1.,0.,0.0491685,0.6727,0.,0.,\
     gbias.b[0],gbias.b[1],gbias.b[2],gbias.b[3],gbias.b[4],\
     gbias.b[5],gbias.b[6],gbias.b[7],gbias.b[8],gbias.b[9],\

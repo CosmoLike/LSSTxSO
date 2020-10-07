@@ -17,6 +17,9 @@ home:
 home_datav:
 	gcc like_fourier.c -o ./like_fourier $(opt_home)
 
+home_datav_1sample:
+	gcc like_fourier.c -o ./like_fourier_1sample $(opt_home) -DONESAMPLE
+
 home_des:
 	gcc like_fourier_desxplanck.c -o ./like_fourier_desxplanck $(opt_home)
 	
