@@ -468,7 +468,7 @@ def sample_main_1sample(varied_parameters,sigma_z_shear, iterations, nwalker, nt
     #changing the center of the 'starting sphere' of the MCMC, according to the fiducial input parameter 
     new=InputNuisanceParams().fiducial()
     setattr(new,'source_z_s',sigma_z_shear)
-    setattr(new,'lens_z_s',sigma_z_shaer)
+    setattr(new,'lens_z_s',sigma_z_shear)
     starting_point += new.convert_to_vector_filter(varied_parameters)
     #starting_point += InputCosmologyParams.fiducial().convert_to_vector_filter(varied_parameters)
 

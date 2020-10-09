@@ -57,5 +57,5 @@ initcmb("so_Y5")
 #sample_params= sample_cosmology_only()
 sample_params = sample_cosmology_3x2_allsys_1sample(get_N_tomo_shear())
 
-sample_main(sample_params,sigma_z_shear[model],sigma_z_clustering[model],4000,1120,1,chain_file, blind=False, pool=MPIPool())
+sample_main_1sample(sample_params,sigma_z_shear[model],4000,1120,1,chain_file, blind=False, pool=MPIPool())
 
