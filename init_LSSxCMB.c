@@ -395,6 +395,9 @@ void init_lens_sample(char *lensphotoz, char *tomo_binning_lens)
   }
   printf("Lens Sample Redshift Errors set to %s: redshift.clustering_photoz=%d\n",lensphotoz,redshift.clustering_photoz);
   
+  if(strcmp(tomo_binning_lens,"WF_SN10")==0){
+    set_galaxies_WFIRST_SN10();
+  }
   if(strcmp(tomo_binning_lens,"LSST_gold")==0){
     set_lens_galaxies_LSSTgoldsample();
   }
@@ -597,3 +600,57 @@ void set_cmb_so_Y1() {
 //    like.lmax_kappacmb = 2999.;
 //    printf("path for CMB lens noise: %s\n", cmb.pathLensRecNoise);
 // }
+
+
+
+////// For WFIRSTxSO forecast
+void set_galaxies_WFIRST_SN10()
+{
+  int k,j,n,i;
+  double frac, zi;
+  redshift.clustering_zdistrpar_zmin = 0.25;
+  redshift.clustering_zdistrpar_zmax = 4.0;
+  tomo.clustering_Npowerspectra=tomo.clustering_Nbin;
+  tomo.clustering_zmin[0] = redshift.clustering_zdistrpar_zmin;
+  tomo.clustering_zmax[tomo.clustering_Nbin-1] = redshift.clustering_zdistrpar_zmax;
+  pf_histo(zi, NULL);
+  int zbins =2000;
+  double da = (redshift.clustering_zdistrpar_zmax-redshift.clustering_zdistrpar_zmin)/(1.0*zbins);
+  double *sum;
+  sum=create_double_vector(0, zbins);
+  
+  sum[0] = 0.0;
+  for (k = 0, zi = redshift.clustering_zdistrpar_zmin; k<zbins; k++,zi+=da){
+    sum[k+1] = sum[k]+pf_histo(zi, NULL);
+  }
+  
+  printf("\n");
+  printf("Lens Sample - Tomographic Bin limits:\n");
+  for(k=0;k<tomo.clustering_Nbin-1;k++){
+    frac=(k+1.)/(1.*tomo.clustering_Nbin)*sum[zbins-1];
+    j = 0;
+    while (sum[j]< frac){
+      j++;
+    }
+    tomo.clustering_zmax[k] = redshift.clustering_zdistrpar_zmin+j*da;
+    tomo.clustering_zmin[k+1] = redshift.clustering_zdistrpar_zmin+j*da;
+    printf("min=%le max=%le\n",tomo.clustering_zmin[k],tomo.clustering_zmax[k]);
+  }
+  printf("min=%le max=%le\n",tomo.clustering_zmin[tomo.clustering_Nbin-1],tomo.clustering_zmax[tomo.clustering_Nbin-1]);
+  printf("redshift.clustering_zdistrpar_zmin=%le max=%le\n",redshift.clustering_zdistrpar_zmin,redshift.clustering_zdistrpar_zmax);
+  free_double_vector(sum,0,zbins);
+    gbias.b1_function = &b1_per_bin;
+  for (i =0; i < tomo.clustering_Nbin; i++){
+    gbias.b[i] = 1.3+0.1*i;
+    printf("Bin %d: galaxy bias=%le\n",i,gbias.b[i]);
+  }
+  n=0;
+  for (i = 0; i < tomo.clustering_Nbin; i++){
+    for(j = 0; j<tomo.shear_Nbin;j++){
+      n += test_zoverlap(i,j);
+      printf("GGL combinations zl=%d zs=%d accept=%d\n",i,j,test_zoverlap(i,j));
+    }
+  }
+  tomo.ggl_Npowerspectra = n;
+  printf("%d GGL Powerspectra\n",tomo.ggl_Npowerspectra);
+}

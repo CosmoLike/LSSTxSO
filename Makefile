@@ -30,6 +30,10 @@ home_deslib:
 home_cov:
 	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier $(opt_home)
 
+home_cov_wfirstxso:
+	gcc compute_covariances_fourier_wfirstxso.c -o ./compute_covariances_fourier_wfirstxso $(opt_home)
+
+
 home_cov_1sample:
 	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier_1sample $(opt_home) -DONESAMPLE
 
@@ -46,6 +50,9 @@ ocelote_datav:
 
 ocelote_cov:
 	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier $(opt_ocelote)
+
+ocelote_cov_wfirstxso:
+	gcc compute_covariances_fourier_wfirstxso.c -o ./compute_covariances_fourier_wfirstxso $(opt_ocelote)
 
 ocelote_cov_1sample:
 	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier_1sample $(opt_ocelote) -DONESAMPLE
