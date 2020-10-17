@@ -773,7 +773,7 @@ int main(int argc, char** argv)
   //RUN MODE setup
   init_cosmo_runmode("emu");
   // init_binning_fourier(20,30.0,3000.0,3000.0,21.0,10,10);
-  init_binning_fourier(15,20.0,3000.0,3000.0,0.0,10,10);
+  init_binning_fourier(15,20.0,3000.0,3000.0,21.0,10,10);
   init_survey(survey_designation[t],nsource_table[t],nlens_table[t],area_table[t]);
   sprintf(arg1,"zdistris/%s",source_zfile[t]);
   sprintf(arg2,"zdistris/%s",lens_zfile[t]); 
