@@ -159,7 +159,7 @@ void run_cov_ll_ls(char *OUTFILE, char *PATH, double *ell, double *dell, int n1,
       c_ng = 0.; c_g = 0.;
       weight = test_kmax(ell[nl1],z1)*test_kmax(ell[nl2],zl);
       if (weight){
-        if((z1 == zl)){c_ng = cov_NG_cl_gl_tomo(ell[nl1],ell[nl2],z1,z2,zl,zs);}
+        if((z1 == zl)*test_zoverlap(z1,zs)){c_ng = cov_NG_cl_gl_tomo(ell[nl1],ell[nl2],z1,z2,zl,zs);}
         if (nl1 == nl2){
           c_g =  cov_G_cl_gl_tomo(ell[nl1],dell[nl1],z1,z2,zl,zs);
         }
