@@ -748,7 +748,7 @@ int main(int argc, char** argv)
   char OUTFILE[400],filename[400],arg1[400],arg2[400];
   
   int N_scenarios=2;
-  double area_table[2]={18000.0,2000.0}; // Y1 corresponds to DESC SRD Y1, Y6 corresponds to assuming that we cover the full SO area=0.4*fsky and at a depth of 26.1 which is in a range of reasonable scenarios (see https://github.com/LSSTDESC/ObsStrat/tree/static/static )
+  double area_table[2]={18000.0,2000.0};
   double nsource_table[2]={43.0,51.0};
   double nlens_table[2]={50.0,66.0};
   
