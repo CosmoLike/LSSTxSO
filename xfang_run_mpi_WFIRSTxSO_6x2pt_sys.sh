@@ -8,7 +8,7 @@
 #PBS -l select=40:ncpus=28:mem=168GB
 #PBS -l place=free:shared
 #PBS -l cput=36000:00:00
-#PBS -l walltime=20:00:00
+#PBS -l walltime=32:00:00
 #PBS -N wfirst-widexso_6x2
 #PBS -e /home/u1/xfang/output/
 #PBS -o /home/u1/xfang/output/
