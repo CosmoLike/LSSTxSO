@@ -120,7 +120,7 @@ double bary_read(int READ, int PC, int cj)
     FILE *F;
     F=fopen(like.BARY_FILE,"r");
     for (i=0;i<like.Ndata; i++){
-      fscanf(F,"%d %le %le %le %le %le %le\n",&intspace,&bary[0][i],&bary[1][i],&bary[2][i],&bary[3][i],&bary[4][i],&bary[5][i]);  
+      fscanf(F,"%le %le %le %le %le %le\n",&bary[0][i],&bary[1][i],&bary[2][i],&bary[3][i],&bary[4][i],&bary[5][i]);  
     }
     fclose(F);
     printf("FINISHED READING BARYON MATRIX\n");
