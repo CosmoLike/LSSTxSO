@@ -55,6 +55,34 @@ void twopoint_via_hankel(double **xi, double *logthetamin, double *logthetamax, 
 
 #include "../cosmolike_core/theory/CMBxLSS_fourier.c"
 
+typedef struct input_cosmo_params_local {
+    double omega_m;
+    double sigma_8;
+    double n_s;
+    double w0;
+    double wa;
+    double omega_b;
+    double h0;
+    double MGSigma;
+    double MGmu;
+} input_cosmo_params_local;
+
+typedef struct input_nuisance_params_local {
+    double bias[10];
+    double source_z_bias[10];
+    double source_z_s;
+    double lens_z_bias[10];
+    double lens_z_s;
+    double shear_m[10];
+    double A_ia;
+    double beta_ia;
+    double eta_ia;
+    double eta_ia_highz;
+    double lf[6];
+    double m_lambda[6];
+    double bary[3];
+} input_nuisance_params_local;
+
 double C_shear_tomo_sys(double ell,int z1,int z2);
 // double C_cgl_tomo_sys(double ell_Cluster,int zl,int nN, int zs);
 double C_gl_tomo_sys(double ell,int zl,int zs);
@@ -70,8 +98,8 @@ void set_data_kk(double *ell, double *data, int start);
 void compute_data_vector(char *details, double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5, double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q, double Q1, double Q2, double Q3);
 double log_multi_like(double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5, double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q, double Q1, double Q2, double Q3);
 
-void write_datavector_wrapper(char *details, input_cosmo_params ic, input_nuisance_params in);
-double log_like_wrapper(input_cosmo_params ic, input_nuisance_params in);
+void write_datavector_wrapper(char *details, input_cosmo_params_local ic, input_nuisance_params_local in);
+double log_like_wrapper(input_cosmo_params_local ic, input_nuisance_params_local in);
 int get_N_tomo_shear(void);
 int get_N_tomo_clustering(void);
 int get_N_ggl(void);
@@ -601,7 +629,7 @@ void compute_data_vector(char *details, double OMM, double S8, double NS, double
 }
 
 
-void write_datavector_wrapper(char *details, input_cosmo_params ic, input_nuisance_params in)
+void write_datavector_wrapper(char *details, input_cosmo_params_local ic, input_nuisance_params_local in)
 {
   // compute_data_vector(details, ic.omega_m, ic.sigma_8, ic.n_s, ic.w0, ic.wa, ic.omega_b, ic.h0, ic.MGSigma, ic.MGmu,
   //   in.bias[0], in.bias[1], in.bias[2], in.bias[3],in.bias[4], in.bias[5], in.bias[6], in.bias[7],in.bias[8], in.bias[9], 
@@ -632,7 +660,7 @@ void write_datavector_wrapper(char *details, input_cosmo_params ic, input_nuisan
     in.bary[0], in.bary[1], in.bary[2]);
 }
 
-double log_like_wrapper(input_cosmo_params ic, input_nuisance_params in)
+double log_like_wrapper(input_cosmo_params_local ic, input_nuisance_params_local in)
 {
   // double like = log_multi_like(ic.omega_m, ic.sigma_8, ic.n_s, ic.w0, ic.wa, ic.omega_b, ic.h0, ic.MGSigma, ic.MGmu,
   //   in.bias[0], in.bias[1], in.bias[2], in.bias[3],in.bias[4], in.bias[5], in.bias[6], in.bias[7],in.bias[8], in.bias[9], 
@@ -664,7 +692,7 @@ double log_like_wrapper(input_cosmo_params ic, input_nuisance_params in)
   return like;
 }
 
-double log_like_wrapper_1sample(input_cosmo_params ic, input_nuisance_params in) // Only used in sampling, not in datav
+double log_like_wrapper_1sample(input_cosmo_params_local ic, input_nuisance_params_local in) // Only used in sampling, not in datav
 {
   double like = log_multi_like(ic.omega_m, ic.sigma_8, ic.n_s, ic.w0, ic.wa, ic.omega_b, ic.h0, ic.MGSigma, ic.MGmu,
     in.bias[0], in.bias[1], in.bias[2], in.bias[3],in.bias[4], in.bias[5], in.bias[6], in.bias[7],in.bias[8], in.bias[9], 
