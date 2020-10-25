@@ -455,7 +455,18 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
   //   return -1.0e15;
   // }
        
-  printf("like %le %le %le %le %le %le %le %le\n",cosmology.Omega_m, cosmology.Omega_v,cosmology.sigma_8,cosmology.n_spec,cosmology.w0,cosmology.wa,cosmology.omb,cosmology.h0); 
+  // printf("like %le %le %le %le %le %le %le %le %le %le\n",cosmology.Omega_m, cosmology.Omega_v,cosmology.sigma_8,cosmology.n_spec,cosmology.w0,cosmology.wa,cosmology.omb,cosmology.h0,cosmology.MGSigma,cosmology.MGmu); 
+  // for(i=0;i<10;i++){printf("b: %le", gbias.b[i]);} printf("\n");
+  // for(i=0;i<10;i++){printf("bias_zs: %le", nuisance.bias_zphot_shear[i]);} printf("\n");
+  // for(i=0;i<10;i++){printf("sigma_zs: %le", nuisance.sigma_zphot_shear[i]);} printf("\n");
+  // for(i=0;i<10;i++){printf("bias_zl: %le", nuisance.bias_zphot_clustering[i]);} printf("\n");
+  // for(i=0;i<10;i++){printf("sigma_zl: %le", nuisance.sigma_zphot_clustering[i]);} printf("\n");
+  // for(i=0;i<10;i++){printf("m: %le", nuisance.shear_calibration_m[i]);} printf("\n");
+  // for(i=0;i<10;i++){printf("m: %le", nuisance.shear_calibration_m[i]);} printf("\n");
+  // printf("IA: %le %le %le %le %le %le %le %le %le %le\n",nuisance.A_ia, nuisance.beta_ia, nuisance.eta_ia, nuisance.eta_ia_highz, nuisance.LF_alpha, nuisance.LF_P, nuisance.LF_Q, nuisance.LF_red_alpha, nuisance.LF_red_P, nuisance.LF_red_Q);
+  // printf("bary: %le %le %le\n",Q1, Q2, Q3);
+  // printf("bary prior: %le %le %le %le %le %le\n", prior.bary_Q1[0],prior.bary_Q1[1],prior.bary_Q2[0],prior.bary_Q2[1],prior.bary_Q3[0],prior.bary_Q3[1]);
+
   // printf("like %le %le %le %le\n",gbias.b[0][0], gbias.b[1][0], gbias.b[2][0], gbias.b[3][0]);    
   // for (i=0; i<10; i++){
   //   printf("nuisance %le %le %le\n",nuisance.shear_calibration_m[i],nuisance.bias_zphot_shear[i],nuisance.sigma_zphot_shear[i]);
