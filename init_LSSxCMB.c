@@ -228,6 +228,7 @@ void init_priors(double M_Prior, double SigZ_source, double DeltaZ_source_Prior,
   prior.bary_Q3[1]=Q3_Prior; 
   like.baryons=1;
 
+#ifdef NOMPP
   printf("\n");
   printf("---------------------------------------\n");
   printf("Shear Calibration Prior\n");
@@ -259,16 +260,19 @@ void init_priors(double M_Prior, double SigZ_source, double DeltaZ_source_Prior,
   printf("Q1=%le, Sigma (Q1)=%le\n",prior.bary_Q1[0],prior.bary_Q1[1]);
   printf("Q2=%le, Sigma (Q2)=%le\n",prior.bary_Q2[0],prior.bary_Q2[1]);
   printf("Q3=%le, Sigma (Q3)=%le\n",prior.bary_Q3[0],prior.bary_Q3[1]);
+#endif
 }
  
 
 void init_survey(char *surveyname, double nsource, double nlens, double area)
 {
+#ifdef NOMPP
   printf("\n");
   printf("-------------------------------\n");
   printf("Initializing Survey Parameters\n");
   printf("-------------------------------\n");
-  
+#endif
+
   survey.area   = area;
   survey.n_gal   = nsource;
   survey.n_lens=nlens;
@@ -277,28 +281,33 @@ void init_survey(char *surveyname, double nsource, double nlens, double area)
   survey.area_conversion_factor = 60.0*60.0*constants.arcmin*constants.arcmin;
   survey.n_gal_conversion_factor=1.0/constants.arcmin/constants.arcmin;
   survey.m_lim=24.5;
-
+#ifdef NOMPP
   printf("Survey set to %s\n",survey.name);
   printf("Survey area: %le deg^2\n",survey.area);
-  printf("Source Galaxy Density: %le galaxies/arcmin^2\n",survey.n_gal); 
+  printf("Source Galaxy Density: %le galaxies/arcmin^2\n",survey.n_gal);
+#endif
 }
 
 
 void init_galaxies(char *SOURCE_ZFILE, char *LENS_ZFILE, char *lensphotoz, char *sourcephotoz, char *tomo_binning_source, char *tomo_binning_lens)
 {
+#ifdef NOMPP
   printf("\n");
   printf("-----------------------------------\n");
   printf("Initializing galaxy samples\n");
   printf("-----------------------------------\n");
-  
+#endif
   sprintf(redshift.shear_REDSHIFT_FILE,"%s",SOURCE_ZFILE);
+#ifdef NOMPP
   printf("PATH TO SOURCE_ZFILE: %s\n",redshift.shear_REDSHIFT_FILE);
-  
+#endif
   init_source_sample(sourcephotoz,tomo_binning_source);
   
   sprintf(redshift.clustering_REDSHIFT_FILE,"%s",LENS_ZFILE);
+#ifdef NOMPP
   printf("\n");
   printf("PATH TO LENS_ZFILE: %s\n",redshift.clustering_REDSHIFT_FILE);
+#endif
   init_lens_sample(lensphotoz,tomo_binning_lens);
 }
 
@@ -306,6 +315,7 @@ void init_galaxies(char *SOURCE_ZFILE, char *LENS_ZFILE, char *lensphotoz, char 
 
 void init_probes(char *probes)
 {
+#ifdef NOMPP
   printf("\n");
   printf("------------------------------\n");
   printf("Initializing Probes\n");
@@ -314,6 +324,7 @@ void init_probes(char *probes)
   printf("tomo.shear_Npowerspectra=%d\n",tomo.shear_Npowerspectra);
   printf("tomo.ggl_Npowerspectra=%d\n",tomo.ggl_Npowerspectra);
   printf("tomo.clustering_Npowerspectra=%d\n",tomo.clustering_Npowerspectra);
+#endif
 
   sprintf(like.probes,"%s",probes);
   if(strcmp(probes,"shear_shear")==0){
@@ -448,8 +459,11 @@ void set_galaxies_source()
   
   tomo.shear_zmin[0] = redshift.shear_zdistrpar_zmin;
   tomo.shear_zmax[tomo.shear_Nbin-1] = redshift.shear_zdistrpar_zmax;
+#ifdef NOMPP
   printf("\n");
   printf("Source Sample - Tomographic Bin limits:\n");
+#endif
+
   for(k=0;k<tomo.shear_Nbin-1;k++){
     frac=(k+1.)/(1.*tomo.shear_Nbin)*sum[zbins-1];
     j = 0;
@@ -458,10 +472,14 @@ void set_galaxies_source()
     }
     tomo.shear_zmax[k] = redshift.shear_zdistrpar_zmin+j*da;
     tomo.shear_zmin[k+1] = redshift.shear_zdistrpar_zmin+j*da;
+#ifdef NOMPP
     printf("min=%le max=%le\n",tomo.shear_zmin[k],tomo.shear_zmax[k]);
+#endif
   }
+#ifdef NOMPP
   printf("min=%le max=%le\n",tomo.shear_zmin[tomo.shear_Nbin-1],tomo.shear_zmax[tomo.shear_Nbin-1]);
   printf("redshift.shear_zdistrpar_zmin=%le max=%le\n",redshift.shear_zdistrpar_zmin,redshift.shear_zdistrpar_zmax);
+#endif
   free_double_vector(sum,0,zbins);
 }
 
@@ -623,9 +641,11 @@ void set_galaxies_WFIRST_SN10()
   for (k = 0, zi = redshift.clustering_zdistrpar_zmin; k<zbins; k++,zi+=da){
     sum[k+1] = sum[k]+pf_histo(zi, NULL);
   }
-  
+
+#ifdef NOMPP
   printf("\n");
   printf("Lens Sample - Tomographic Bin limits:\n");
+#endif
   for(k=0;k<tomo.clustering_Nbin-1;k++){
     frac=(k+1.)/(1.*tomo.clustering_Nbin)*sum[zbins-1];
     j = 0;
@@ -634,21 +654,29 @@ void set_galaxies_WFIRST_SN10()
     }
     tomo.clustering_zmax[k] = redshift.clustering_zdistrpar_zmin+j*da;
     tomo.clustering_zmin[k+1] = redshift.clustering_zdistrpar_zmin+j*da;
+#ifdef NOMPP
     printf("min=%le max=%le\n",tomo.clustering_zmin[k],tomo.clustering_zmax[k]);
+#endif
   }
+#ifdef NOMPP
   printf("min=%le max=%le\n",tomo.clustering_zmin[tomo.clustering_Nbin-1],tomo.clustering_zmax[tomo.clustering_Nbin-1]);
   printf("redshift.clustering_zdistrpar_zmin=%le max=%le\n",redshift.clustering_zdistrpar_zmin,redshift.clustering_zdistrpar_zmax);
+#endif
   free_double_vector(sum,0,zbins);
     gbias.b1_function = &b1_per_bin;
   for (i =0; i < tomo.clustering_Nbin; i++){
     gbias.b[i] = 1.3+0.1*i;
+#ifdef NOMPP
     printf("Bin %d: galaxy bias=%le\n",i,gbias.b[i]);
+#endif
   }
   n=0;
   for (i = 0; i < tomo.clustering_Nbin; i++){
     for(j = 0; j<tomo.shear_Nbin;j++){
       n += test_zoverlap(i,j);
+#ifdef NOMPP
       printf("GGL combinations zl=%d zs=%d accept=%d\n",i,j,test_zoverlap(i,j));
+#endif
     }
   }
   tomo.ggl_Npowerspectra = n;

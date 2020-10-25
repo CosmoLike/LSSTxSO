@@ -577,6 +577,7 @@ void compute_data_vector(char *details, double OMM, double S8, double NS, double
 // for (l=0;l<like.Ncl;l++){
 //   printf("%d %le\n",i,ell[l]);
 // }
+  clock_t begin[7];
 
   set_cosmology_params(OMM,S8,NS,W0,WA,OMB,H0,MGSigma,MGmu);
   set_nuisance_shear_calib(M1,M2,M3,M4,M5,M6,M7,M8,M9,M10);
@@ -586,32 +587,38 @@ void compute_data_vector(char *details, double OMM, double S8, double NS, double
   set_nuisance_gbias(B1,B2,B3,B4,B5,B6,B7,B8,B9,B10);
   // set_nuisance_cluster_Mobs(mass_obs_norm,mass_obs_slope,mass_z_slope,mass_obs_scatter_norm,mass_obs_scatter_mass_slope,mass_obs_scatter_z_slope);
   
+  begin[0] = clock();
   int start=0;  
   if(like.shear_shear==1) {
     set_data_shear(like.Ncl, ell, pred, start);
     start=start+like.Ncl*tomo.shear_Npowerspectra;
   }
+  begin[1] = clock();
   if(like.shear_pos==1){
     // printf("ggl\n");
     set_data_ggl(like.Ncl, ell, pred, start);
     start=start+like.Ncl*tomo.ggl_Npowerspectra;
   } 
+  begin[2] = clock();
   if(like.pos_pos==1){
     // printf("clustering\n");
     set_data_clustering(like.Ncl,ell,pred, start);
     start=start+like.Ncl*tomo.clustering_Npowerspectra;
   }
 
+  begin[3] = clock();
   if(like.gk==1) {
     // printf("Computing data vector: gk\n");
     set_data_gk(ell, pred, start);
     start += like.Ncl * tomo.clustering_Nbin;
   }
+  begin[4] = clock();
   if(like.ks==1) {
     // printf("Computing data vector: ks\n");
     set_data_ks(ell, pred, start);
     start += like.Ncl * tomo.shear_Nbin;
   }
+  begin[5] = clock();
   if (like.kk) {
     // printf("Computing data vector: kk\n");
     set_data_kk(ell, pred, start);
@@ -636,7 +643,12 @@ void compute_data_vector(char *details, double OMM, double S8, double NS, double
   // printf("&bgal_z  %p\n",&bgal_z);
   // printf("b1_per_bin   %p\n",b1_per_bin);
   // printf("&b1_per_bin  %p\n",&b1_per_bin);
-
+  begin[6]  = clock();
+  double time_spent;
+  for(i=0;i<6;i++){
+    time_spent = (double)(begin[i+1] - begin[i]) / CLOCKS_PER_SEC;
+   printf("time spent here %le\n",time_spent);
+ }
 }
 
 

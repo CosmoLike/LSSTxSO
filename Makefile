@@ -18,7 +18,7 @@ home_datav:
 	gcc like_fourier.c -o ./like_fourier $(opt_home)
 
 home_datav_wfirstxso:
-	gcc like_fourier_wfirstxso.c -o ./like_fourier_wfirstxso $(opt_home)
+	gcc like_fourier_wfirstxso.c -o ./like_fourier_wfirstxso $(opt_home) -DNOMPP
 
 
 home_datav_1sample:
