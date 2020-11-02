@@ -386,6 +386,11 @@ void init_probes(char *probes)
     printf("CMBkappa-Shear computation initialized\n");
     printf("CMBkappa-CMBkappa computation initialized\n");
   }
+  if(strcmp(probes,"kk")==0) {
+    like.Ndata = like.Ncl;
+    like.kk = 1;
+    printf("CMBkappa-CMBkappa computation initialized\n");
+  }
   printf("Total number of data points like.Ndata=%d\n",like.Ndata);
 }
 

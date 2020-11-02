@@ -550,6 +550,72 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
   return -0.5*chisqr+log_L_prior;
 }
 
+double log_multi_like_kk(double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double Q1, double Q2, double Q3)
+{
+  int i,j,k,m=0,l;
+  static double *pred;
+  static double *ell;
+  static double *ell_Cluster;
+  static double darg;
+  double chisqr,a,log_L_prior=0.0, log_L=0.0;;
+  
+  if(ell==0){
+    pred= create_double_vector(0, like.Ndata-1);
+    ell= create_double_vector(0, like.Ncl-1);
+    darg=(log(like.lmax)-log(like.lmin))/like.Ncl;
+    for (l=0;l<like.Ncl;l++){
+      ell[l]=exp(log(like.lmin)+(l+0.5)*darg);
+    }
+    // ell_Cluster= create_double_vector(0, Cluster.lbin-1);
+    // darg=(log(Cluster.l_max)-log(Cluster.l_min))/Cluster.lbin;
+    // for (l=0;l<Cluster.lbin;l++){
+    //   ell_Cluster[l]=exp(log(Cluster.l_min)+(l+0.5)*darg);
+    // }
+  }
+  if (set_cosmology_params(OMM,S8,NS,W0,WA,OMB,H0,MGSigma,MGmu)==0){
+    printf("Cosmology out of bounds\n");
+    return -1.0e15;
+  }
+
+  log_L_prior=0.0;
+  if(like.baryons==1){
+    log_L = 0.0;
+    log_L -= pow((Q1 - prior.bary_Q1[0])/prior.bary_Q1[1],2.0);
+    log_L -= pow((Q2 - prior.bary_Q2[0])/prior.bary_Q2[1],2.0);
+    log_L -= pow((Q3 - prior.bary_Q3[0])/prior.bary_Q3[1],2.0);
+    log_L_prior+=0.5*log_L;
+  }
+ 
+  // if(like.clusterMobs==1) log_L_prior+=log_L_clusterMobs();
+ 
+  // printf("%d %d %d %d\n",like.BAO,like.wlphotoz,like.clphotoz,like.shearcalib);
+  // printf("logl %le %le %le %le\n",log_L_shear_calib(),log_L_wlphotoz(),log_L_clphotoz(),log_L_clusterMobs());
+  int start=0;  
+  
+  if(like.kk==1) {
+    set_data_kk(ell, pred, start);
+    start += like.Ncl;
+  }
+  
+  chisqr=0.0;
+  for (i=0; i<like.Ndata; i++){
+    for (j=0; j<like.Ndata; j++){
+      a=(pred[i]-data_read(1,i)+Q1*bary_read(1,0,i)+Q2*bary_read(1,1,i)+Q3*bary_read(1,2,i))*invcov_read(1,i,j)*(pred[j]-data_read(1,j)+Q1*bary_read(1,0,j)+Q2*bary_read(1,1,j)+Q3*bary_read(1,2,j));
+      //a=(pred[i]-data_read(1,i))*invcov_read(1,i,j)*(pred[j]-data_read(1,j));
+      chisqr=chisqr+a;
+    }
+    // if (fabs(data_read(1,i)) < 1.e-25){
+    //    printf("%d %le %le %le\n",i,data_read(1,i),pred[i],invcov_read(1,i,i));
+    // }
+  }
+  if (chisqr<0.0){
+    printf("error: chisqr = %le\n",chisqr);
+    //exit(EXIT_FAILURE);
+  }
+  printf("%le\n",chisqr);
+  return -0.5*chisqr+log_L_prior;
+}
+
 // void compute_data_vector(char *details, double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5,double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q, double mass_obs_norm, double mass_obs_slope, double mass_z_slope, double mass_obs_scatter_norm, double mass_obs_scatter_mass_slope, double mass_obs_scatter_z_slope, double Q1, double Q2, double Q3)
 void compute_data_vector(char *details, double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5,double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q, double Q1, double Q2, double Q3)
 {
@@ -729,6 +795,13 @@ double log_like_wrapper_1sample(input_cosmo_params_local ic, input_nuisance_para
     in.shear_m[5], in.shear_m[6], in.shear_m[7], in.shear_m[8], in.shear_m[9], 
     in.A_ia, in.beta_ia, in.eta_ia, in.eta_ia_highz,
     in.lf[0], in.lf[1], in.lf[2], in.lf[3], in.lf[4], in.lf[5], 
+    in.bary[0], in.bary[1], in.bary[2]); 
+  return like;
+}
+
+double log_like_wrapper_kk(input_cosmo_params_local ic, input_nuisance_params_local in) // Only used in sampling, not in datav
+{
+  double like = log_multi_like_kk(ic.omega_m, ic.sigma_8, ic.n_s, ic.w0, ic.wa, ic.omega_b, ic.h0, ic.MGSigma, ic.MGmu,
     in.bary[0], in.bary[1], in.bary[2]); 
   return like;
 }
