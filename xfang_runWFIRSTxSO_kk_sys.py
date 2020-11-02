@@ -40,7 +40,7 @@ file_lens_z = os.path.join(dirname, "zdistris/",lens_z[model])
 data_file = os.path.join(dirname, "datav/",data[model])
 cov_file = os.path.join(dirname, "cov/",inv[model])
 #cov_file = os.path.join("/Users/timeifler/Dropbox/cosmolike_store/LSST_emu/inv/",inv[model])
-chain_file = os.path.join(dirname, "chains/%s_6x2pt_model" %survey_designation[model])
+chain_file = os.path.join(dirname, "chains/%s_kk_model" %survey_designation[model])
 bary_file=os.path.join(dirname, "baryons/",bary[model])
 
 initcosmo("halofit")
