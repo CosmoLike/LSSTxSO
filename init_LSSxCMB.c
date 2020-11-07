@@ -386,6 +386,15 @@ void init_probes(char *probes)
     printf("CMBkappa-Shear computation initialized\n");
     printf("CMBkappa-CMBkappa computation initialized\n");
   }
+  if(strcmp(probes,"gk_ks_kk")==0) {
+    like.Ndata = like.Ncl * (1+tomo.shear_Nbin+tomo.clustering_Nbin);
+    like.kk = 1;
+    like.ks = 1;
+    like.gk = 1;
+    printf("Position-CMBkappa computation initialized\n");
+    printf("CMBkappa-Shear computation initialized\n");
+    printf("CMBkappa-CMBkappa computation initialized\n");
+  }
   if(strcmp(probes,"kk")==0) {
     like.Ndata = like.Ncl;
     like.kk = 1;

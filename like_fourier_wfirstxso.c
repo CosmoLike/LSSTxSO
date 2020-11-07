@@ -535,7 +535,7 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
   for (i=0; i<like.Ndata; i++){
     for (j=0; j<like.Ndata; j++){
       a=(pred[i]-data_read(1,i)+Q1*bary_read(1,0,i)+Q2*bary_read(1,1,i)+Q3*bary_read(1,2,i))*invcov_read(1,i,j)*(pred[j]-data_read(1,j)+Q1*bary_read(1,0,j)+Q2*bary_read(1,1,j)+Q3*bary_read(1,2,j));
-      //a=(pred[i]-data_read(1,i))*invcov_read(1,i,j)*(pred[j]-data_read(1,j));
+      // a=(pred[i]-data_read(1,i))*invcov_read(1,i,j)*(pred[j]-data_read(1,j));
       chisqr=chisqr+a;
     }
     // if (fabs(data_read(1,i)) < 1.e-25){
@@ -596,7 +596,7 @@ double log_multi_like_kk(double OMM, double S8, double NS, double W0,double WA, 
     set_data_kk(ell, pred, start);
     start += like.Ncl;
   }
-  
+
   chisqr=0.0;
   for (i=0; i<like.Ndata; i++){
     for (j=0; j<like.Ndata; j++){
