@@ -431,7 +431,7 @@ def sample_cosmology_3x2_allsys_1sample(tomo_N,MG = False):
 
 def sample_cosmology_kk_allsys(MG = False):
     varied_parameters = sample_cosmology_only(MG)
-    varied_parameters += ['bary_%d'%i for i in xrange(3)]
+    # varied_parameters += ['bary_%d'%i for i in xrange(3)]
     return varied_parameters
 
 def sample_main(varied_parameters,sigma_z_shear,sigma_z_clustering, iterations, nwalker, nthreads, filename, blind=False, pool=None):
