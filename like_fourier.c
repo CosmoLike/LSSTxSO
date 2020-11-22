@@ -131,7 +131,7 @@ return C;
 double C_ks_sys(double ell, int zs)
 {
    double C;
-   C = C_ks(ell,zs);
+   C = C_ks_nointerp(ell,zs);
    if(like.shearcalib==1) C *=(1.0+nuisance.shear_calibration_m[zs]);
    return C;
 }
@@ -183,7 +183,7 @@ void set_data_gk(double *ell, double *data, int start)
    for (int nz=0; nz<tomo.clustering_Nbin; nz++){
       for (int i=0; i<like.Ncl; i++){
          if (ell[i]<like.lmax_kappacmb && test_kmax(ell[i],nz)){
-            data[start+(like.Ncl*nz)+i] = C_gk(ell[i],nz);
+            data[start+(like.Ncl*nz)+i] = C_gk_nointerp(ell[i],nz);
          }
          else{
             data[start+(like.Ncl*nz)+i] = 0.;
@@ -210,7 +210,7 @@ void set_data_kk(double *ell, double *data, int start)
 {
    for (int i=0; i<like.Ncl; i++){
       if (ell[i]<like.lmax_kappacmb){
-         data[start+i] = C_kk(ell[i]);
+         data[start+i] = C_kk_nointerp(ell[i]);
       }
       else{
          data[start+i] = 0.;
