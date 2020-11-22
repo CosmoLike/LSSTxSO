@@ -32,6 +32,8 @@ survey_designation=["LSSTxSO_Y1","LSSTxSO_Y6"]
 tomo_binning_source=["source_std","source_std"]
 tomo_binning_lens=["LSST_gold","LSST_gold"]
 
+Qprior_sigma=[28.,3.5,1.7]
+
 model=1 
 file_source_z = os.path.join(dirname, "zdistris/",source_z[model])
 file_lens_z = os.path.join(dirname, "zdistris/",lens_z[model])
@@ -43,7 +45,7 @@ bary_file=os.path.join(dirname, "baryons/",bary[model])
 
 initcosmo("halofit")
 initbins(15,20.0,3000.0,3000.0,21.0,10,10)
-initpriors(shear_prior[model],sigma_z_shear[model],delta_z_prior_shear[model],sigma_z_prior_shear[model],sigma_z_clustering[model],delta_z_prior_clustering[model],sigma_z_prior_clustering[model],3.0,1.2,3.8,2.0,16.0,5.0,0.8);
+initpriors(shear_prior[model],sigma_z_shear[model],delta_z_prior_shear[model],sigma_z_prior_shear[model],sigma_z_clustering[model],delta_z_prior_clustering[model],sigma_z_prior_clustering[model],3.0,1.2,3.8,2.0,Qprior_sigma[0],Qprior_sigma[1],Qprior_sigma[2])
 initsurvey(survey_designation[model],nsource_table[model],nlens_table[model],area_table[model])
 initgalaxies(file_source_z,file_lens_z,"gaussian","gaussian",tomo_binning_source[model],tomo_binning_lens[model])
 initia("NLA_HF","GAMA")
@@ -57,5 +59,5 @@ initcmb("so_Y5")
 #sample_params= sample_cosmology_only()
 sample_params = sample_cosmology_3x2_allsys(get_N_tomo_shear(),get_N_tomo_clustering())
 
-sample_main(sample_params,sigma_z_shear[model],sigma_z_clustering[model],4000,1120,1,chain_file, blind=False, pool=MPIPool())
+sample_main(sample_params,sigma_z_shear[model],sigma_z_clustering[model],8000,1120,1,chain_file, blind=False, pool=MPIPool())
 
