@@ -789,8 +789,6 @@ int main(int argc, char** argv)
   double *ell, *dell, *ell_Cluster, *dell_Cluster;
   ell=create_double_vector(0,like.Ncl-1);
   dell=create_double_vector(0,like.Ncl-1);
-  ell_Cluster=create_double_vector(0,Cluster.lbin-1);
-  dell_Cluster=create_double_vector(0,Cluster.lbin-1);
   int j=0;
   for(i=0;i<like.Ncl;i++){
     ell[i]=exp(log(like.lmin)+(i+0.5)*logdl);

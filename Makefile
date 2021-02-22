@@ -36,6 +36,9 @@ home_cov:
 home_cov_wfirstxso:
 	gcc compute_covariances_fourier_wfirstxso.c -o ./compute_covariances_fourier_wfirstxso $(opt_home)
 
+home_cov_binned:
+	gcc compute_covariances_fourier_binned.c -o ./compute_covariances_fourier_binned $(opt_home)
+
 
 home_cov_1sample:
 	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier_1sample $(opt_home) -DONESAMPLE
