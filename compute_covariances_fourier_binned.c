@@ -114,7 +114,7 @@ int main(int argc, char** argv)
   like.ell = ellmin;
 
   covparams.ng = 1;
-  covparams.cng= 1;
+  covparams.cng= 0;
 
   printf("----------------------------------\n");  
   sprintf(survey.name,"%s_area%le_ng%le_nl%le",survey_designation[t],survey.area,survey.n_gal,survey.n_lens);
