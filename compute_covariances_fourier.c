@@ -159,7 +159,7 @@ void run_cov_ll_ls(char *OUTFILE, char *PATH, double *ell, double *dell, int n1,
       c_ng = 0.; c_g = 0.;
       weight = test_kmax(ell[nl1],z1)*test_kmax(ell[nl2],zl);
       if (weight){
-        if((z1 == zl)){c_ng = cov_NG_cl_gl_tomo(ell[nl1],ell[nl2],z1,z2,zl,zs);}
+        if(z1 == zl){c_ng = cov_NG_cl_gl_tomo(ell[nl1],ell[nl2],z1,z2,zl,zs);}
         if (nl1 == nl2){
           c_g =  cov_G_cl_gl_tomo(ell[nl1],dell[nl1],z1,z2,zl,zs);
         }
@@ -728,7 +728,7 @@ void run_cov_ll_lk(char *OUTFILE, char *PATH, double *ell, double *dell, int n1,
       c_ng = 0.; c_g = 0.;
       weight = test_kmax(ell[nl1],z1)*test_kmax(ell[nl2],zl);
       if (weight){
-        if((z1 == zl)) {c_ng = cov_NG_gg_gk(ell[nl1],ell[nl2],z1,z2,zl);}
+        if(z1 == zl) {c_ng = cov_NG_gg_gk(ell[nl1],ell[nl2],z1,z2,zl);}
         if (nl1 == nl2){
           c_g =  cov_G_gg_gk(ell[nl1],dell[nl1],z1,z2,zl);
         }
@@ -777,7 +777,11 @@ int main(int argc, char** argv)
   init_survey(survey_designation[t],nsource_table[t],nlens_table[t],area_table[t]);
   sprintf(arg1,"zdistris/%s",source_zfile[t]);
   sprintf(arg2,"zdistris/%s",lens_zfile[t]); 
+#ifdef ONESAMPLE
+  init_galaxies(arg1,arg2,"none","none","source_std","lens=src");
+#else
   init_galaxies(arg1,arg2,"none","none","source_std","LSST_gold");
+#endif
   init_IA("none","GAMA"); 
   init_probes("6x2pt");
 
