@@ -796,6 +796,8 @@ int main(int argc, char** argv)
     if(ell[i]<like.lmax_shear) printf("%le\n",ell[i]);
   } 
 
+  covparams.ng = 1;
+  covparams.cng = 1;
 
   printf("----------------------------------\n");  
   sprintf(survey.name,"%s_area%le_ng%le_nl%le",survey_designation[t],survey.area,survey.n_gal,survey.n_lens);
