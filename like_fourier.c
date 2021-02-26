@@ -731,17 +731,18 @@ void save_zdistr_lenses(int zl){
   char survey_designation[2][200]={"LSSTxSO_Y1","LSSTxSO_Y6"};
   char tomo_binning_source[2][200]={"source_std","source_std"};
   // even for lens=src, this setting is valid, because the input lens/src zfiles are generated with the same z-cut:(0.2,1.2)
-  char tomo_binning_lens[2][200]={"LSST_gold","LSST_gold"};
 
   char source_zfile[2][400]={"src_LSSTY1","src_LSSTY6"};
 #ifdef ONESAMPLE
   char lens_zfile[2][400]={"src_LSSTY1","src_LSSTY6"};
+  char tomo_binning_lens[2][200]={"lens=src","lens=src"};
   nlens_table[0] = nsource_table[0];
   nlens_table[1] = nsource_table[1];
   sigma_zphot_clustering[0] = sigma_zphot_shear[0];
   sigma_zphot_clustering[1] = sigma_zphot_shear[1];
 #else
   char lens_zfile[2][400]={"lens_LSSTY1", "lens_LSSTY6"};
+  char tomo_binning_lens[2][200]={"LSST_gold","LSST_gold"};
 #endif
 
 
