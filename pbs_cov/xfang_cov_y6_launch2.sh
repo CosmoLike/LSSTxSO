@@ -1,12 +1,12 @@
 #!/bin/bash
 #PBS -S /bin/bash
 #PBS -V
-#PBS -W group_list=cosmo
-#PBS -q high_pri
+#PBS -W group_list=cosmolike
+#PBS -q standard
 #PBS -J 5001-9591
 #PBS -l select=1:ncpus=1:mem=1GB
 #PBS -l place=pack:shared
-#PBS -l walltime=10:00:00
+#PBS -l walltime=6:00:00
 #PBS -N LSSTxSO_cov
 #PBS -e /home/u1/xfang/output/
 #PBS -o /home/u1/xfang/output/
