@@ -151,17 +151,26 @@ void set_data_shear(int Ncl, double *ell, double *data, int start)
 
 void set_data_ggl(int Ncl, double *ell, double *data, int start)
 {
-  int i, zl,zs,nz;  
+  int i, zl,zs,nz; 
   for (nz = 0; nz < tomo.ggl_Npowerspectra; nz++){
     zl = ZL(nz); zs = ZS(nz);
-    for (i = 0; i < Ncl; i++){
-      if (test_kmax(ell[i],zl)){
-        data[start+(Ncl*nz)+i] = C_gl_tomo_sys(ell[i],zl,zs);
+#ifdef ONESAMPLE
+    if(zl==0){
+      for (i = 0; i < Ncl; i++){data[start+(Ncl*nz)+i] = 0.;}
+    }
+    else{
+#endif
+      for (i = 0; i < Ncl; i++){
+        if (test_kmax(ell[i],zl)){
+          data[start+(Ncl*nz)+i] = C_gl_tomo_sys(ell[i],zl,zs);
+        }
+        else{
+          data[start+(Ncl*nz)+i] = 0.;
+        }
       }
-      else{
-        data[start+(Ncl*nz)+i] = 0.;
-      }
-    } 
+#ifdef ONESAMPLE
+    }
+#endif
   }
 }
 
@@ -180,16 +189,22 @@ void set_data_clustering(int Ncl, double *ell, double *data, int start){
 
 void set_data_gk(double *ell, double *data, int start)
 {
-   for (int nz=0; nz<tomo.clustering_Nbin; nz++){
-      for (int i=0; i<like.Ncl; i++){
-         if (ell[i]<like.lmax_kappacmb && test_kmax(ell[i],nz)){
-            data[start+(like.Ncl*nz)+i] = C_gk_nointerp(ell[i],nz);
-         }
-         else{
-            data[start+(like.Ncl*nz)+i] = 0.;
-         }
-      }
-   }
+#ifdef ONESAMPLE
+  int nz=0;
+  for (int i=0; i<like.Ncl; i++) {data[start+(like.Ncl*nz)+i] = 0.;}
+  for (nz=1; nz<tomo.clustering_Nbin; nz++){
+#else
+  for (int nz=0; nz<tomo.clustering_Nbin; nz++){
+#endif
+    for (int i=0; i<like.Ncl; i++){
+       if (ell[i]<like.lmax_kappacmb && test_kmax(ell[i],nz)){
+          data[start+(like.Ncl*nz)+i] = C_gk_nointerp(ell[i],nz);
+       }
+       else{
+          data[start+(like.Ncl*nz)+i] = 0.;
+       }
+    }
+  }
 }
 
 void set_data_ks(double *ell, double *data, int start)
@@ -744,7 +759,7 @@ void save_zdistr_lenses(int zl){
   char lens_zfile[2][400]={"lens_LSSTY1", "lens_LSSTY6"};
   char tomo_binning_lens[2][200]={"LSST_gold","LSST_gold"};
 #endif
-
+  char cmb_yr[2][100]={"so_Y1","so_Y5"};
 
   init_cosmo_runmode("halofit");
   init_bary(argv[2]);
@@ -757,8 +772,8 @@ void save_zdistr_lenses(int zl){
   init_galaxies(arg1,arg2,"gaussian","gaussian",tomo_binning_source[sce],tomo_binning_lens[sce]);
   init_IA("NLA_HF","GAMA"); 
   init_probes("6x2pt");
+  init_cmb(cmb_yr[sce]);
 
-  init_cmb(argv[3]);
 #ifdef ONESAMPLE
   sprintf(arg3,"%s_1sample_%s",survey_designation[sce],argv[2]);
 #else
