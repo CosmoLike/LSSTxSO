@@ -32,7 +32,7 @@ survey_designation=["LSSTxSO_Y1","LSSTxSO_Y6"]
 tomo_binning_source=["source_std","source_std"]
 tomo_binning_lens=["LSST_gold","LSST_gold"]
 
-Qprior_sigma=[28.,3.5,1.7]
+Qprior_sigma=[29.,3.5,1.7]
 
 model=1 
 file_source_z = os.path.join(dirname, "zdistris/",source_z[model])

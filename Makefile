@@ -45,10 +45,7 @@ home_cov_1sample:
 
 home_shared:
 	gcc -shared -o like_fourier.so -fPIC like_fourier.c $(opt_home)
-
-home_shared_1sample:
-	gcc -shared -o like_fourier.so -fPIC like_fourier.c $(opt_home) -DONESAMPLE
-
+	gcc -shared -o like_fourier_1sample.so -fPIC like_fourier.c $(opt_home) -DONESAMPLE
 
 home_shared_wfirstxso:
 	gcc -shared -o like_fourier_wfirstxso.so -fPIC like_fourier_wfirstxso.c $(opt_home)
@@ -77,10 +74,7 @@ ocelote_cov_1sample:
 
 ocelote_shared:
 	gcc -shared -o like_fourier.so -fPIC like_fourier.c $(opt_ocelote)
-
-ocelote_shared_1sample:
-	gcc -shared -o like_fourier.so -fPIC like_fourier.c $(opt_ocelote) -DONESAMPLE
-
+	gcc -shared -o like_fourier_1sample.so -fPIC like_fourier.c $(opt_ocelote) -DONESAMPLE
 
 ocelote_shared_wfirstxso:
 	gcc -shared -o like_fourier_wfirstxso.so -fPIC like_fourier_wfirstxso.c $(opt_ocelote)
