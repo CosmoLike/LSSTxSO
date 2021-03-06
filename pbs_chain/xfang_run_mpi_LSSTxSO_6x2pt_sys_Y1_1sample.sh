@@ -7,8 +7,8 @@
 ### mem=168gb is memory per node, pcmem=6gb is the memory per core - optional
 #PBS -l select=40:ncpus=28:mem=168GB
 #PBS -l place=free:shared
-#PBS -l cput=46000:00:00
-#PBS -l walltime=40:00:00
+#PBS -l cput=20000:00:00
+#PBS -l walltime=17:00:00
 #PBS -N lsstso1_6x2
 #PBS -e /home/u1/xfang/output/
 #PBS -o /home/u1/xfang/output/
