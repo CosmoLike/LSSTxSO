@@ -55,6 +55,35 @@ void twopoint_via_hankel(double **xi, double *logthetamin, double *logthetamax, 
 
 #include "../cosmolike_core/theory/CMBxLSS_fourier.c"
 
+
+typedef struct input_cosmo_params_local {
+    double omega_m;
+    double sigma_8;
+    double n_s;
+    double w0;
+    double wa;
+    double omega_b;
+    double h0;
+    double MGSigma;
+    double MGmu;
+} input_cosmo_params_local;
+
+typedef struct input_nuisance_params_local {
+    double bias[10];
+    double source_z_bias[10];
+    double source_z_s;
+    double lens_z_bias[10];
+    double lens_z_s;
+    double shear_m[10];
+    double A_ia;
+    double beta_ia;
+    double eta_ia;
+    double eta_ia_highz;
+    double lf[6];
+    double m_lambda[6];
+    double bary[3];
+} input_nuisance_params_local;
+
 double C_shear_tomo_sys(double ell,int z1,int z2);
 // double C_cgl_tomo_sys(double ell_Cluster,int zl,int nN, int zs);
 double C_gl_tomo_sys(double ell,int zl,int zs);
