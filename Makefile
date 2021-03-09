@@ -1,6 +1,8 @@
 cfastcov_dir := cfastcov/
 cfastcov := $(cfastcov_dir)twobessel.c $(cfastcov_dir)utils.c $(cfastcov_dir)utils_complex.c
-opt_home := -std=c99 -Wno-missing-braces -Wno-missing-field-initializers -I/usr/local/include -L/usr/local/lib -lgsl -lfftw3 -lgslcblas -lm -g -O3 -std=gnu99 -ffast-math -funroll-loops -L../cosmolike_core/class -lclass
+opt_home := -std=c99 -Wno-missing-braces -Wno-missing-field-initializers \
+-I/usr/local/include -L/usr/local/lib -lgsl -lfftw3 -lgslcblas -lm -g -O3 \
+-std=gnu99 -ffast-math -funroll-loops -L../cosmolike_core/class -lclass
 opt_ocelote := -std=c99 -Wno-missing-braces -Wno-missing-field-initializers \
 -I/cm/shared/uaapps/gsl/2.1/include -L/cm/shared/uaapps/gsl/2.1/lib \
 -lfftw3 -lgsl -lgslcblas -lm -g -O3 \
@@ -50,6 +52,11 @@ home_shared:
 home_shared_wfirstxso:
 	gcc -shared -o like_fourier_wfirstxso.so -fPIC like_fourier_wfirstxso.c $(opt_home)
 
+home_shared_fast:
+	gcc -shared -o like_fourier.so -fPIC like_fourier_fast.c $(opt_home)
+	gcc -shared -o like_fourier_1sample.so -fPIC like_fourier_fast.c $(opt_home) -DONESAMPLE
+home_datav_fast:
+	gcc like_fourier_fast.c -o ./like_fourier $(opt_home)
 
 
 ocelote:
