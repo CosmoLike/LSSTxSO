@@ -83,6 +83,10 @@ ocelote_shared:
 	gcc -shared -o like_fourier.so -fPIC like_fourier.c $(opt_ocelote)
 	gcc -shared -o like_fourier_1sample.so -fPIC like_fourier.c $(opt_ocelote) -DONESAMPLE
 
+ocelote_shared_fast:
+	gcc -shared -o like_fourier.so -fPIC like_fourier_fast.c $(opt_ocelote)
+	gcc -shared -o like_fourier_1sample.so -fPIC like_fourier_fast.c $(opt_ocelote) -DONESAMPLE
+
 ocelote_shared_wfirstxso:
 	gcc -shared -o like_fourier_wfirstxso.so -fPIC like_fourier_wfirstxso.c $(opt_ocelote)
 
