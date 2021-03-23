@@ -18,11 +18,11 @@ lens_z=['lens_LSSTY1','lens_LSSTY6']
 
 shear_prior=[0.01,0.003] 
 delta_z_prior_shear=[0.002,0.001]
-delta_z_prior_clustering=[0.002,0.001]
+delta_z_prior_clustering=[0.002,0.001]## Wrong!
 sigma_z_shear=[0.05,0.05]
 sigma_z_clustering=[0.03,0.03]
 sigma_z_prior_shear=[0.006,0.003]
-sigma_z_prior_clustering=[0.006,0.003]
+sigma_z_prior_clustering=[0.006,0.003] ## Wrong!
 
 nsource_table=[11.0,23.0]  
 nlens_table=[18.0,41.0]

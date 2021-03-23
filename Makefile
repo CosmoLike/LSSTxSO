@@ -26,6 +26,11 @@ home_datav_wfirstxso:
 home_datav_1sample:
 	gcc like_fourier.c -o ./like_fourier_1sample $(opt_home) -DONESAMPLE
 
+home_datav_1sample_outlier:
+	gcc like_fourier_fast_outlier.c -o ./like_fourier_1sample_outlier $(opt_home) -DONESAMPLE
+home_datav_1sample_nooutlier:
+	gcc like_fourier_fast_nooutlier.c -o ./like_fourier_1sample_nooutlier $(opt_home) -DONESAMPLE
+
 home_des:
 	gcc like_fourier_desxplanck.c -o ./like_fourier_desxplanck $(opt_home)
 	
@@ -44,6 +49,9 @@ home_cov_binned:
 
 home_cov_1sample:
 	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier_1sample $(opt_home) -DONESAMPLE
+home_cov_1sample_ztrue:
+	gcc compute_covariances_fourier_ztrue.c -o ./compute_covariances_fourier_1sample_ztrue $(opt_home) -DONESAMPLE
+
 
 home_shared:
 	gcc -shared -o like_fourier.so -fPIC like_fourier.c $(opt_home)
