@@ -7,6 +7,10 @@ opt_ocelote := -std=c99 -Wno-missing-braces -Wno-missing-field-initializers \
 -I/cm/shared/uaapps/gsl/2.1/include -L/cm/shared/uaapps/gsl/2.1/lib \
 -lfftw3 -lgsl -lgslcblas -lm -g -O3 \
 -ffast-math -funroll-loops -std=gnu99 -L../cosmolike_core/class -lclass
+opt_puma := -std=c99 -Wno-missing-braces -Wno-missing-field-initializers \
+-I/cm/shared/uaapps/gsl/2.6/include -L/cm/shared/uaapps/gsl/2.6/lib \
+-lfftw3 -lgsl -lgslcblas -lm -g -O3 \
+-ffast-math -funroll-loops -std=gnu99 -L../cosmolike_core/class -lclass
 cfftlog_dir := ../cosmolike_core/cfftlog/
 cfftlog := $(cfftlog_dir)cfftlog.c $(cfftlog_dir)utils.c $(cfftlog_dir)utils_complex.c
 
@@ -105,3 +109,9 @@ ocelote_des:
 ocelote_deslib:
 	gcc -shared -o like_fourier_desxplanck.so -fPIC like_fourier_desxplanck.c $(opt_ocelote)
 
+
+###### Puma
+
+puma_shared_fast:
+	gcc -shared -o like_fourier.so -fPIC like_fourier_fast.c $(opt_puma)
+	gcc -shared -o like_fourier_1sample.so -fPIC like_fourier_fast.c $(opt_puma) -DONESAMPLE
