@@ -1,25 +1,26 @@
 #!/bin/bash
 #SBATCH --job-name=lsstso1_6x2
+#SBATCH --nodes=12
 #SBATCH --ntasks=1128
 #SBATCH --ntasks-per-node=94
-#SBATCH --nodes=12
+#SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=1gb
-#SBATCH --time=20:00:00
+#SBATCH --time=30:00:00
 
 #SBATCH --account=cosmo
 #SBATCH --partition=standard
 #SBATCH --qos=user_qos_timeifler
-#SBATCH --output=/home/u1/xfang/output/%A.out
-#SBATCH --error=/home/u1/xfang/output/%A.err
+#SBATCH --output=%A.out
+#SBATCH --error=%A.err
 
+cd $SLURM_SUBMIT_DIR
 
-module load gsl/2/2.1
-module load python/2
-module load mpich/ge/gcc/64/3.2.1
-module load openmpi
+module load gsl/2.6
+module load python/3.6/3.6.5
+module load openmpi3/3.1.4
 
 ### run your executable program with begin and end date and time output
 export MPI_DSM_DISTRIBUTE
 date
-/usr/bin/time mpiexec -n 1128 python xfang_runLSSTxSO_6x2pt_sys_Y1.py
+/usr/bin/time mpirun --mca pml ob1 --mca btl ^openib -n 1128 python3 xfang_runLSSTxSO_6x2pt_sys_Y1.py 1128
 date

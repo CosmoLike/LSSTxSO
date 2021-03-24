@@ -24,5 +24,5 @@ module load openmpi
 ### run your executable program with begin and end date and time output
 export MPI_DSM_DISTRIBUTE
 date
-/usr/bin/time mpiexec -n 1120 python xfang_runLSSTxSO_3x2pt_sys_Y6.py
+/usr/bin/time mpiexec -n 1120 python xfang_runLSSTxSO_3x2pt_sys_Y6.py 1120
 date

@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=lsstso6_6x2
+#SBATCH --job-name=lsstso6_6x2-1sample
 #SBATCH --nodes=12
 #SBATCH --ntasks=1128
 #SBATCH --ntasks-per-node=94
