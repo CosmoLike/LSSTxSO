@@ -488,9 +488,9 @@ def sample_main_1sample(varied_parameters,sigma_z_shear, iterations, nwalker, nt
     #         pool.wait()
     #         sys.exit(0)
 
-
+    print(here!!)
     sampler = emcee.EnsembleSampler(nwalker, ndim, likelihood,threads=nthreads,pool=pool)
-
+    print(here!!!!)
 #    sampler = emcee.EnsembleSampler(nwalker, ndim, likelihood, pool=pool)
 
     f = open(filename, 'w')
