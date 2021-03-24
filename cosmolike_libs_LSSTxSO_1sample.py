@@ -488,9 +488,8 @@ def sample_main_1sample(varied_parameters,sigma_z_shear, iterations, nwalker, nt
     #         pool.wait()
     #         sys.exit(0)
 
-    print("here!!")
     sampler = emcee.EnsembleSampler(nwalker, ndim, likelihood,threads=nthreads,pool=pool)
-    print("here!!!!")
+
 #    sampler = emcee.EnsembleSampler(nwalker, ndim, likelihood, pool=pool)
 
     f = open(filename, 'w')
@@ -502,13 +501,11 @@ def sample_main_1sample(varied_parameters,sigma_z_shear, iterations, nwalker, nt
         f.write('#blinding_seed=%d\n'%blinding_seed)
 
     for (p, loglike, state) in sampler.sample(p0,iterations=iterations):
-        print('start a row!')
         for row,logl in zip(p,loglike):
             if blind:
                 row = blind_parameters(varied_parameters, row)
             p_text = '  '.join(str(r) for r in row)
             f.write('%s %e\n' % (p_text,logl))
-        print('finish a row and flush!')
         f.flush()
     f.close()
     
