@@ -8,7 +8,7 @@ opt_ocelote := -std=c99 -Wno-missing-braces -Wno-missing-field-initializers \
 -lfftw3 -lgsl -lgslcblas -lm -g -O3 \
 -ffast-math -funroll-loops -std=gnu99 -L../cosmolike_core/class -lclass
 opt_puma := -std=c99 -Wno-missing-braces -Wno-missing-field-initializers \
--I/cm/shared/uaapps/gsl/2.6/include -L/cm/shared/uaapps/gsl/2.6/lib \
+-I/opt/ohpc/pub/libs/gnu8/gsl/2.6/include -L/opt/ohpc/pub/libs/gnu8/gsl/2.6/lib \
 -lfftw3 -lgsl -lgslcblas -lm -g -O3 \
 -ffast-math -funroll-loops -std=gnu99 -L../cosmolike_core/class -lclass
 cfftlog_dir := ../cosmolike_core/cfftlog/
