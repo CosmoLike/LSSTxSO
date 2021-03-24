@@ -1,8 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=lsstso6_6x2
+#SBATCH --nodes=12
 #SBATCH --ntasks=1128
 #SBATCH --ntasks-per-node=94
-#SBATCH --nodes=12
+#SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=1gb
 #SBATCH --time=30:00:00
 
