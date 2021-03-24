@@ -19,7 +19,7 @@ module load python/3.6/3.6.5
 module load openmpi3/3.1.4
 
 ### run your executable program with begin and end date and time output
-# export MPI_DSM_DISTRIBUTE
+export MPI_DSM_DISTRIBUTE
 date
 /usr/bin/time mpirun -n 1128 python3 xfang_runLSSTxSO_6x2pt_sys_Y6_1sample.py 1128
 date
