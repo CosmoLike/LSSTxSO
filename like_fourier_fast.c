@@ -500,7 +500,7 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
     log_L -= pow((nuisance.eta_ia_highz - prior.eta_ia_highz[0])/prior.eta_ia_highz[1],2.0);
     log_L_prior+=0.5*log_L;
   }
-  if(like.baryons==1){printf("baryons: %le, %le, %le\n", Q1, prior.bary_Q1[0], prior.bary_Q1[1]);
+  if(like.baryons==1){;
     log_L = 0.0;
     log_L -= pow((Q1 - prior.bary_Q1[0])/prior.bary_Q1[1],2.0);
     log_L -= pow((Q2 - prior.bary_Q2[0])/prior.bary_Q2[1],2.0);
@@ -513,8 +513,8 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
   // printf("%d %d %d %d\n",like.BAO,like.wlphotoz,like.clphotoz,like.shearcalib);
   // printf("logl %le %le %le %le\n",log_L_shear_calib(),log_L_wlphotoz(),log_L_clphotoz(),log_L_clusterMobs());
   int start=0;  
-  clock_t t1, t2;
-  t1 = clock();
+  // clock_t t1, t2;
+  // t1 = clock();
   if(like.shear_shear==1) {
     set_data_shear(like.Ncl, ell, pred, start);
     start=start+like.Ncl*tomo.shear_Npowerspectra;
@@ -544,7 +544,7 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
     set_data_kk(ell, pred, start);
     start += like.Ncl;
   }
-  t2 = clock(); printf("kk: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
+  // t2 = clock(); printf("kk: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
   chisqr=0.0;
   for (i=0; i<like.Ndata; i++){
     for (j=0; j<like.Ndata; j++){
@@ -555,7 +555,8 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
     // if (fabs(data_read(1,i)) < 1.e-25){
     //    printf("%d %le %le %le\n",i,data_read(1,i),pred[i],invcov_read(1,i,i));
     // }
-  }t2 = clock(); printf("chisqr: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
+  }
+  // t2 = clock(); printf("chisqr: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
   if (chisqr<0.0){
     printf("error: chisqr = %le\n",chisqr);
     //exit(EXIT_FAILURE);
