@@ -90,7 +90,7 @@ class IterableStruct(ctypes.Structure):
             if length==0:
                 out.append(name)
             else:
-                for i in xrange(length):
+                for i in range(length):
                     out.append(name + "_" + str(i))
         return out
 
@@ -115,7 +115,7 @@ class IterableStruct(ctypes.Structure):
             if length==0:
                 p.append(obj)
             else:
-                for i in xrange(length):
+                for i in range(length):
                     p.append(obj[i])
         return p
 
@@ -126,7 +126,7 @@ class IterableStruct(ctypes.Structure):
                 if name in used:
                     p.append(obj)
             else:
-                for i in xrange(length):
+                for i in range(length):
                     if name+'_'+str(i) in used:
                         p.append(obj[i])
         return p
@@ -137,7 +137,7 @@ class IterableStruct(ctypes.Structure):
         for name,ptype in self._fields_:
             obj = getattr(self, name)
             if hasattr(ptype, "_length_"):
-                for i in xrange(ptype._length_):
+                for i in range(ptype._length_):
                     obj[i] = block[self.section_name, name+"_"+str(i)]
             else:
                 setattr(self, name, block[self.section_name, name])
@@ -148,7 +148,7 @@ class IterableStruct(ctypes.Structure):
         for name,ptype in self._fields_:
             obj = getattr(self, name)
             if hasattr(ptype, "_length_"):
-                for i in xrange(ptype._length_):
+                for i in range(ptype._length_):
                     print("%s[%d] = %f"%(name, i, obj[i]))
             else:
                 print("%s = %f"%(name, obj))
@@ -175,7 +175,7 @@ class IterableStruct(ctypes.Structure):
             else:
                 x = getattr(self, name)
                 assert x._type_==double
-                for k in xrange(x._length_):
+                for k in range(x._length_):
                     x[k] = p[i]
                     i+=1
 
@@ -293,7 +293,7 @@ class LikelihoodFunctionWrapper(object):
                         setattr(s, name, x[i])        
                         i+=1
                 else:
-                    for j in xrange(length):
+                    for j in range(length):
                         name_i = name + "_" + str(j)
                         if name_i in self.varied_parameters:
                             obj[j] = x[i]
@@ -324,7 +324,7 @@ class LikelihoodFunctionWrapper_1sample(object):
                         setattr(s, name, x[i])        
                         i+=1
                 else:
-                    for j in xrange(length):
+                    for j in range(length):
                         name_i = name + "_" + str(j)
                         if name_i in self.varied_parameters:
                             obj[j] = x[i]
@@ -366,32 +366,32 @@ def sample_cosmology_only(MG = False):
 
 def sample_cosmology_3x2_allsys(tomo_N_shear,tomo_N_lens,MG = False):
     varied_parameters = sample_cosmology_only(MG)
-    varied_parameters += ['bias_%d'%i for i in xrange(tomo_N_lens)]
-    varied_parameters += ['source_z_bias_%d'%i for i in xrange(tomo_N_shear)]
+    varied_parameters += ['bias_%d'%i for i in range(tomo_N_lens)]
+    varied_parameters += ['source_z_bias_%d'%i for i in range(tomo_N_shear)]
     varied_parameters.append('source_z_s')
-    varied_parameters += ['lens_z_bias_%d'%i for i in xrange(tomo_N_lens)]
+    varied_parameters += ['lens_z_bias_%d'%i for i in range(tomo_N_lens)]
     varied_parameters.append('lens_z_s')
-    varied_parameters += ['shear_m_%d'%i for i in xrange(tomo_N_shear)]
+    varied_parameters += ['shear_m_%d'%i for i in range(tomo_N_shear)]
     varied_parameters.append('A_ia')
     varied_parameters.append('beta_ia')
     varied_parameters.append('eta_ia')
     varied_parameters.append('eta_ia_highz')
-    varied_parameters += ['bary_%d'%i for i in xrange(3)]
+    varied_parameters += ['bary_%d'%i for i in range(3)]
     return varied_parameters
 
 def sample_cosmology_3x2_allsys_1sample(tomo_N,MG = False):
     varied_parameters = sample_cosmology_only(MG)
-    varied_parameters += ['bias_%d'%i for i in xrange(tomo_N)]
-    varied_parameters += ['source_z_bias_%d'%i for i in xrange(tomo_N)]
+    varied_parameters += ['bias_%d'%i for i in range(tomo_N)]
+    varied_parameters += ['source_z_bias_%d'%i for i in range(tomo_N)]
     varied_parameters.append('source_z_s')
-    # varied_parameters += ['lens_z_bias_%d'%i for i in xrange(tomo_N_lens)]
+    # varied_parameters += ['lens_z_bias_%d'%i for i in range(tomo_N_lens)]
     # varied_parameters.append('lens_z_s')
-    varied_parameters += ['shear_m_%d'%i for i in xrange(tomo_N)]
+    varied_parameters += ['shear_m_%d'%i for i in range(tomo_N)]
     varied_parameters.append('A_ia')
     varied_parameters.append('beta_ia')
     varied_parameters.append('eta_ia')
     varied_parameters.append('eta_ia_highz')
-    varied_parameters += ['bary_%d'%i for i in xrange(3)]
+    varied_parameters += ['bary_%d'%i for i in range(3)]
     return varied_parameters
 
 
