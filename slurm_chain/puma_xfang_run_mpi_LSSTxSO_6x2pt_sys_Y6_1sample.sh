@@ -9,8 +9,8 @@
 #SBATCH --account=cosmo
 #SBATCH --partition=standard
 #SBATCH --qos=user_qos_timeifler
-#SBATCH --output=/home/u1/xfang/output/%A.out
-#SBATCH --error=/home/u1/xfang/output/%A.err
+#SBATCH --output=%A.out
+#SBATCH --error=%A.err
 
 cd $SLURM_SUBMIT_DIR
 
@@ -21,5 +21,5 @@ module load openmpi3/3.1.4
 ### run your executable program with begin and end date and time output
 # export MPI_DSM_DISTRIBUTE
 date
-/usr/bin/time mpirun -n 1128 python3 slurm_chain/xfang_runLSSTxSO_6x2pt_sys_Y6_1sample.py
+/usr/bin/time mpirun -n 1128 python3 xfang_runLSSTxSO_6x2pt_sys_Y6_1sample.py
 date
