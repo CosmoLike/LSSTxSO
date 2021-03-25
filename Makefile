@@ -69,7 +69,7 @@ home_shared_fast:
 	gcc -shared -o like_fourier_1sample.so -fPIC like_fourier_fast.c $(opt_home) -DONESAMPLE
 home_datav_fast:
 	gcc like_fourier_fast.c -o ./like_fourier $(opt_home)
-
+	gcc like_fourier_fast.c -o ./like_fourier_1sample $(opt_home) -DONESAMPLE
 
 ocelote:
 	make ocelote_shared 

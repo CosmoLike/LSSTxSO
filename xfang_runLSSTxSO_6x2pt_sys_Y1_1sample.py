@@ -16,7 +16,7 @@ source_z=['src_LSSTY1','src_LSSTY6']
 
 lens_z=source_z # lens=src
 
-shear_prior=[0.01,0.003] 
+shear_prior=[0.013,0.003] 
 delta_z_prior_shear=[0.002,0.001]
 delta_z_prior_clustering=delta_z_prior_shear
 sigma_z_shear=[0.05,0.05]

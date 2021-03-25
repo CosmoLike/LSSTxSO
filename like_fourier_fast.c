@@ -278,13 +278,15 @@ int set_cosmology_params(double OMM, double S8, double NS, double W0,double WA, 
   cosmology.MGSigma=MGSigma;
   cosmology.MGmu=MGmu;
 
-  if (cosmology.Omega_m < 0.05 || cosmology.Omega_m > 0.6) return 0;
+  if (cosmology.Omega_m < 0.1 || cosmology.Omega_m > 0.6) return 0;
   if (cosmology.omb < 0.04 || cosmology.omb > 0.055) return 0;
   if (cosmology.sigma_8 < 0.5 || cosmology.sigma_8 > 1.1) return 0;
-  if (cosmology.n_spec < 0.84 || cosmology.n_spec > 1.06) return 0;
-  if (cosmology.w0 < -2.1 || cosmology.w0 > -0.0) return 0;
-  if (cosmology.wa < -2.6 || cosmology.wa > 2.6) return 0;
+  if (cosmology.n_spec < 0.85 || cosmology.n_spec > 1.05) return 0;
+  if (cosmology.w0 < -2.0 || cosmology.w0 > -0.0) return 0;
+  if (cosmology.wa < -2.5 || cosmology.wa > 2.5) return 0;
   if (cosmology.h0 < 0.4 || cosmology.h0 > 0.9) return 0;
+  if (cosmology.MGmu < -3.0 || cosmology.MGmu > 3.0) return 0;
+  if (cosmology.MGSigma < -3.0 || cosmology.MGSigma > 3.0) return 0; // DESY1 extension paper flat priors
   //CH BEGINS 
   //CH: to use for running planck15_BA0_w0_wa prior alone) 
   //printf("like_fourier.c from WFIRST_forecasts: cosmology bounds set for running with planck15_BA0_w0_wa prior\n");
@@ -492,14 +494,14 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
   if(like.wlphotoz!=0) log_L_prior+=log_L_wlphotoz();
   if(like.clphotoz!=0) log_L_prior+=log_L_clphotoz();
   if(like.shearcalib==1) log_L_prior+=log_L_shear_calib();
-  if(like.IA!=0) {
-    log_L = 0.0;
-    log_L -= pow((nuisance.A_ia - prior.A_ia[0])/prior.A_ia[1],2.0);
-    log_L -= pow((nuisance.beta_ia - prior.beta_ia[0])/prior.beta_ia[1],2.0);
-    log_L -= pow((nuisance.eta_ia - prior.eta_ia[0])/prior.eta_ia[1],2.0);
-    log_L -= pow((nuisance.eta_ia_highz - prior.eta_ia_highz[0])/prior.eta_ia_highz[1],2.0);
-    log_L_prior+=0.5*log_L;
-  }
+  // if(like.IA!=0) {
+  //   log_L = 0.0;
+  //   log_L -= pow((nuisance.A_ia - prior.A_ia[0])/prior.A_ia[1],2.0);
+  //   log_L -= pow((nuisance.beta_ia - prior.beta_ia[0])/prior.beta_ia[1],2.0);
+  //   log_L -= pow((nuisance.eta_ia - prior.eta_ia[0])/prior.eta_ia[1],2.0);
+  //   log_L -= pow((nuisance.eta_ia_highz - prior.eta_ia_highz[0])/prior.eta_ia_highz[1],2.0);
+  //   log_L_prior+=0.5*log_L;
+  // }
   if(like.baryons==1){;
     log_L = 0.0;
     log_L -= pow((Q1 - prior.bary_Q1[0])/prior.bary_Q1[1],2.0);
@@ -592,9 +594,9 @@ void compute_data_vector(char *details, double OMM, double S8, double NS, double
 // for (l=0;l<like.Ncl;l++){
 //   printf("%d %le\n",i,ell[l]);
 // }
-  clock_t t1, t2;
+  // clock_t t1, t2;
 
-  t1 = clock();
+  // t1 = clock();
   set_cosmology_params(OMM,S8,NS,W0,WA,OMB,H0,MGSigma,MGmu);
   set_nuisance_shear_calib(M1,M2,M3,M4,M5,M6,M7,M8,M9,M10);
   set_nuisance_shear_photoz(SP1,SP2,SP3,SP4,SP5,SP6,SP7,SP8,SP9,SP10,SPS1);
@@ -603,40 +605,44 @@ void compute_data_vector(char *details, double OMM, double S8, double NS, double
   set_nuisance_gbias(B1,B2,B3,B4,B5,B6,B7,B8,B9,B10);
   // set_nuisance_cluster_Mobs(mass_obs_norm,mass_obs_slope,mass_z_slope,mass_obs_scatter_norm,mass_obs_scatter_mass_slope,mass_obs_scatter_z_slope);
   
-  t2 = clock(); printf("setting: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
+  // t2 = clock(); printf("setting: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
   int start=0;  
   if(like.shear_shear==1) {
     set_data_shear(like.Ncl, ell, pred, start);
     start=start+like.Ncl*tomo.shear_Npowerspectra;
   }
-  t2 = clock(); printf("shear: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
+  // t2 = clock(); printf("shear: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
   if(like.shear_pos==1){
     //printf("ggl\n");
     set_data_ggl(like.Ncl, ell, pred, start);
     start=start+like.Ncl*tomo.ggl_Npowerspectra;
-  } t2 = clock(); printf("ggl: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
+  } 
+  // t2 = clock(); printf("ggl: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
   if(like.pos_pos==1){
     //printf("clustering\n");
     set_data_clustering(like.Ncl,ell,pred, start);
     start=start+like.Ncl*tomo.clustering_Npowerspectra;
-  }t2 = clock(); printf("gg: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
+  }
+  // t2 = clock(); printf("gg: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
 
   if(like.gk==1) {
     printf("Computing data vector: gk\n");
     set_data_gk(ell, pred, start);
     start += like.Ncl * tomo.clustering_Nbin;
-  }t2 = clock(); printf("gk: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
+  }
+  // t2 = clock(); printf("gk: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
   if(like.ks==1) {
     printf("Computing data vector: ks\n");
     set_data_ks(ell, pred, start);
     start += like.Ncl * tomo.shear_Nbin;
-  }t2 = clock(); printf("ks: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
+  }
+  // t2 = clock(); printf("ks: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
   if (like.kk) {
     printf("Computing data vector: kk\n");
     set_data_kk(ell, pred, start);
     start += like.Ncl;
-  }t2 = clock(); printf("kk: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
-  exit(0);
+  }
+  // t2 = clock(); printf("kk: %le\n", (double)(t2-t1)/CLOCKS_PER_SEC); t1 = t2;
 
   FILE *F;
   char filename[300];

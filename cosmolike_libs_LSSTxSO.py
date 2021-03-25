@@ -270,7 +270,7 @@ class InputNuisanceParams(IterableStruct):
         c.shear_m[:] = np.repeat(0.01, 10)
         c.A_ia = 0.1
         c.beta_ia = 0.02
-        c.eta_ia = 0.02
+        c.eta_ia = 0.1
         c.eta_ia_highz = 0.02
         c.lf[:] = np.repeat(0.005, 6)
         c.m_lambda[:] = [0.05, 0.01, 0.01, 0.01, 0.01, 0.01]

@@ -275,13 +275,15 @@ int set_cosmology_params(double OMM, double S8, double NS, double W0,double WA, 
   cosmology.MGSigma=MGSigma;
   cosmology.MGmu=MGmu;
 
-  if (cosmology.Omega_m < 0.05 || cosmology.Omega_m > 0.6) return 0;
+  if (cosmology.Omega_m < 0.1 || cosmology.Omega_m > 0.6) return 0;
   if (cosmology.omb < 0.04 || cosmology.omb > 0.055) return 0;
   if (cosmology.sigma_8 < 0.5 || cosmology.sigma_8 > 1.1) return 0;
-  if (cosmology.n_spec < 0.84 || cosmology.n_spec > 1.06) return 0;
-  if (cosmology.w0 < -2.1 || cosmology.w0 > -0.0) return 0;
-  if (cosmology.wa < -2.6 || cosmology.wa > 2.6) return 0;
+  if (cosmology.n_spec < 0.85 || cosmology.n_spec > 1.05) return 0;
+  if (cosmology.w0 < -2.0 || cosmology.w0 > -0.0) return 0;
+  if (cosmology.wa < -2.5 || cosmology.wa > 2.5) return 0;
   if (cosmology.h0 < 0.4 || cosmology.h0 > 0.9) return 0;
+  if (cosmology.MGmu < -3.0 || cosmology.MGmu > 3.0) return 0;
+  if (cosmology.MGSigma < -3.0 || cosmology.MGSigma > 3.0) return 0; // DESY1 extension paper flat priors
   //CH BEGINS 
   //CH: to use for running planck15_BA0_w0_wa prior alone) 
   //printf("like_fourier.c from WFIRST_forecasts: cosmology bounds set for running with planck15_BA0_w0_wa prior\n");
@@ -489,14 +491,14 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
   if(like.wlphotoz!=0) log_L_prior+=log_L_wlphotoz();
   if(like.clphotoz!=0) log_L_prior+=log_L_clphotoz();
   if(like.shearcalib==1) log_L_prior+=log_L_shear_calib();
-  if(like.IA!=0) {
-    log_L = 0.0;
-    log_L -= pow((nuisance.A_ia - prior.A_ia[0])/prior.A_ia[1],2.0);
-    log_L -= pow((nuisance.beta_ia - prior.beta_ia[0])/prior.beta_ia[1],2.0);
-    log_L -= pow((nuisance.eta_ia - prior.eta_ia[0])/prior.eta_ia[1],2.0);
-    log_L -= pow((nuisance.eta_ia_highz - prior.eta_ia_highz[0])/prior.eta_ia_highz[1],2.0);
-    log_L_prior+=0.5*log_L;
-  }
+  // if(like.IA!=0) {
+  //   log_L = 0.0;
+  //   log_L -= pow((nuisance.A_ia - prior.A_ia[0])/prior.A_ia[1],2.0);
+  //   log_L -= pow((nuisance.beta_ia - prior.beta_ia[0])/prior.beta_ia[1],2.0);
+  //   log_L -= pow((nuisance.eta_ia - prior.eta_ia[0])/prior.eta_ia[1],2.0);
+  //   log_L -= pow((nuisance.eta_ia_highz - prior.eta_ia_highz[0])/prior.eta_ia_highz[1],2.0);
+  //   log_L_prior+=0.5*log_L;
+  // }
   if(like.baryons==1){
     log_L = 0.0;
     log_L -= pow((Q1 - prior.bary_Q1[0])/prior.bary_Q1[1],2.0);
