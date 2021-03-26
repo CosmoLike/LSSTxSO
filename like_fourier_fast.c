@@ -494,14 +494,14 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
   if(like.wlphotoz!=0) log_L_prior+=log_L_wlphotoz();
   if(like.clphotoz!=0) log_L_prior+=log_L_clphotoz();
   if(like.shearcalib==1) log_L_prior+=log_L_shear_calib();
-  // if(like.IA!=0) {
-  //   log_L = 0.0;
-  //   log_L -= pow((nuisance.A_ia - prior.A_ia[0])/prior.A_ia[1],2.0);
-  //   log_L -= pow((nuisance.beta_ia - prior.beta_ia[0])/prior.beta_ia[1],2.0);
-  //   log_L -= pow((nuisance.eta_ia - prior.eta_ia[0])/prior.eta_ia[1],2.0);
-  //   log_L -= pow((nuisance.eta_ia_highz - prior.eta_ia_highz[0])/prior.eta_ia_highz[1],2.0);
-  //   log_L_prior+=0.5*log_L;
-  // }
+  if(like.IA!=0) {
+    log_L = 0.0;
+    log_L -= pow((nuisance.A_ia - prior.A_ia[0])/prior.A_ia[1],2.0);
+    log_L -= pow((nuisance.beta_ia - prior.beta_ia[0])/prior.beta_ia[1],2.0);
+    log_L -= pow((nuisance.eta_ia - prior.eta_ia[0])/prior.eta_ia[1],2.0);
+    log_L -= pow((nuisance.eta_ia_highz - prior.eta_ia_highz[0])/prior.eta_ia_highz[1],2.0);
+    log_L_prior+=0.5*log_L;
+  }
   if(like.baryons==1){;
     log_L = 0.0;
     log_L -= pow((Q1 - prior.bary_Q1[0])/prior.bary_Q1[1],2.0);
