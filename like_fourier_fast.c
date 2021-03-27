@@ -421,7 +421,11 @@ int set_nuisance_gbias(double B1, double B2, double B3, double B4,double B5, dou
   gbias.b[9] = B10;
   for (i = 0; i < 10; i++){
   //    printf("in set routine %d %le\n",i,gbias.b[i]);
+#ifdef ONESAMPLE
+    if (gbias.b[i] < 0.8 || gbias.b[i] > 5.0) return 0;
+#else
     if (gbias.b[i] < 0.4 || gbias.b[i] > 3.0) return 0;
+#endif
   }
 
   return 1;
