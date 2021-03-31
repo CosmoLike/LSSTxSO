@@ -35,6 +35,14 @@ home_datav_1sample_outlier:
 home_datav_1sample_nooutlier:
 	gcc like_fourier_fast_nooutlier.c -o ./like_fourier_1sample_nooutlier $(opt_home) -DONESAMPLE
 
+
+
+home_datav_outext:
+	gcc like_fourier_fast_outext.c -o ./like_fourier_outext $(opt_home)
+home_datav_1sample_outext:
+	gcc like_fourier_fast_outext.c -o ./like_fourier_1sample_outext $(opt_home) -DONESAMPLE
+
+
 home_des:
 	gcc like_fourier_desxplanck.c -o ./like_fourier_desxplanck $(opt_home)
 	
