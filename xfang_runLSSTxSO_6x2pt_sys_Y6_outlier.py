@@ -8,7 +8,7 @@ from schwimmbad import MPIPool
 
 inv=['invcov_Y1_6x2pt','invcov_Y6_6x2pt']
 
-data=['6x2pt_LSSTxSO_Y1_dmo_outext_cut','6x2pt_LSSTxSO_Y6_dmo_outext_cut']
+data=['6x2pt_LSSTxSO_Y1_dmo_outext','6x2pt_LSSTxSO_Y6_dmo_outext']
 
 bary=['LPC_6x2pt_LSSTxSO_Y1','LPC_6x2pt_LSSTxSO_Y6']
 

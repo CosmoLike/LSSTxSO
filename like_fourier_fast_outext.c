@@ -192,13 +192,13 @@ void set_data_ggl(int Ncl, double *ell, double *data, int start)
     }
     else{
 #endif
-      for (i = 0; i < Ncl; i++){ // Compute full datav
-        // if (test_kmax(ell[i],zl)){
+      for (i = 0; i < Ncl; i++){
+        if (test_kmax(ell[i],zl)){
           data[start+(Ncl*nz)+i] = C_gl_tomo_sys(ell[i],zl,zs);
-        // }
-        // else{
-        //   data[start+(Ncl*nz)+i] = 0.;
-        // }
+        }
+        else{
+          data[start+(Ncl*nz)+i] = 0.;
+        }
       }
 #ifdef ONESAMPLE
     }
@@ -210,11 +210,9 @@ void set_data_clustering(int Ncl, double *ell, double *data, int start){
   int i, nz;
   for (nz = 0; nz < tomo.clustering_Npowerspectra; nz++){
     //printf("%d %e %e\n",nz, gbias.b[nz][1],pf_photoz(gbias.b[nz][1],nz));
-    for (i = 0; i < Ncl; i++){ // Compute full datav
-      // if (test_kmax(ell[i],nz)){
-        data[start+(Ncl*nz)+i] = C_cl_tomo_nointerp(ell[i],nz,nz);
-      // }
-      // else{data[start+(Ncl*nz)+i] = 0.;}
+    for (i = 0; i < Ncl; i++){
+      if (test_kmax(ell[i],nz)){data[start+(Ncl*nz)+i] = C_cl_tomo_nointerp(ell[i],nz,nz);}
+      else{data[start+(Ncl*nz)+i] = 0.;}
       //printf("%d %d %le %le\n",nz,nz,ell[i],data[Ncl*(tomo.shear_Npowerspectra+tomo.ggl_Npowerspectra + nz)+i]);
     }
   }
@@ -230,13 +228,13 @@ void set_data_gk(double *ell, double *data, int start)
 #else
   for (int nz=0; nz<tomo.clustering_Nbin; nz++){
 #endif
-    for (int i=0; i<like.Ncl; i++){ // Compute full datav
-       // if (ell[i]<like.lmax_kappacmb && test_kmax(ell[i],nz)){
+    for (int i=0; i<like.Ncl; i++){
+       if (ell[i]<like.lmax_kappacmb && test_kmax(ell[i],nz)){
           data[start+(like.Ncl*nz)+i] = C_gk_nointerp(ell[i],nz);
-       // }
-       // else{
-       //    data[start+(like.Ncl*nz)+i] = 0.;
-       // }
+       }
+       else{
+          data[start+(like.Ncl*nz)+i] = 0.;
+       }
     }
   }
 }
@@ -825,7 +823,7 @@ void save_zdistr_lenses(int zl){
   init_survey(survey_designation[sce],nsource_table[sce],nlens_table[sce],area_table[sce]);
   sprintf(arg1,"zdistris/%s",source_zfile[sce]);
   sprintf(arg2,"zdistris/%s",lens_zfile[sce]);
-  init_galaxies(arg1,arg2,"gaussian","gaussian",tomo_binning_source[sce],tomo_binning_lens[sce]);
+  init_galaxies(arg1,arg2,"outlier_sim","outlier_sim",tomo_binning_source[sce],tomo_binning_lens[sce]);
   init_IA("NLA_HF","GAMA"); 
   init_probes("6x2pt");
   init_cmb(cmb_yr[sce]);
