@@ -42,6 +42,8 @@ home_datav_outext:
 home_datav_1sample_outext:
 	gcc like_fourier_fast_outext.c -o ./like_fourier_1sample_outext $(opt_home) -DONESAMPLE
 
+home_datav_outext_tests:
+	gcc like_fourier_fast_outext_tests.c -o ./like_fourier_outext_tests $(opt_home)
 
 home_des:
 	gcc like_fourier_desxplanck.c -o ./like_fourier_desxplanck $(opt_home)
