@@ -587,7 +587,7 @@ void set_lens_galaxies_LSSTgoldsample()
     sum[k+1] = sum[k]+pf_histo(zi, NULL);
   }
   printf("\n");
-  printf("Source Sample - Tomographic Bin limits:\n");
+  printf("Lens Sample - Tomographic Bin limits:\n");
   for(k=0;k<tomo.clustering_Nbin-1;k++){
     frac=(k+1.)/(1.*tomo.clustering_Nbin)*sum[zbins-1];
     j = 0;

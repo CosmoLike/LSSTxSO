@@ -21,7 +21,7 @@ home:
 	make home_cov
 
 home_datav:
-	gcc like_fourier.c -o ./like_fourier $(opt_home)
+	gcc like_fourier.c -o ./like_fourier $(opt_home) -DNOMPP
 
 home_datav_wfirstxso:
 	gcc like_fourier_wfirstxso.c -o ./like_fourier_wfirstxso $(opt_home) -DNOMPP
@@ -38,7 +38,7 @@ home_datav_1sample_nooutlier:
 
 
 home_datav_outext:
-	gcc like_fourier_fast_outext.c -o ./like_fourier_outext $(opt_home)
+	gcc like_fourier_fast_outext.c -o ./like_fourier_outext $(opt_home) -DNOMPP
 home_datav_1sample_outext:
 	gcc like_fourier_fast_outext.c -o ./like_fourier_1sample_outext $(opt_home) -DONESAMPLE
 
