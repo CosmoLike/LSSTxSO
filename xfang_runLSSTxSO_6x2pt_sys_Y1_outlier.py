@@ -55,7 +55,7 @@ initia("NLA_HF".encode('utf-8'),"GAMA".encode('utf-8'))
 #initpriors("none","none","none","random")
 initprobes("6x2pt".encode('utf-8'))
 initdatainv(cov_file.encode('utf-8') ,data_file.encode('utf-8'), bary_file.encode('utf-8'))
-initcmb("so_Y5".encode('utf-8'))
+initcmb("so_Y1".encode('utf-8'))
 #sample_params= sample_cosmology_only()
 sample_params = sample_cosmology_3x2_allsys(get_N_tomo_shear(),get_N_tomo_clustering())
 
