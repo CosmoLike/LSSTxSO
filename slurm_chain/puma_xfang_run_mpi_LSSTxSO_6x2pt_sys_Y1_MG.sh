@@ -21,6 +21,7 @@ module load openmpi3/3.1.4
 
 ### run your executable program with begin and end date and time output
 export MPI_DSM_DISTRIBUTE
+export LD_LIBRARY_PATH="/opt/ohpc/pub/libs/gnu8/gsl/2.6/lib:$LD_LIBRARY_PATH"
 date
-/usr/bin/time mpirun --mca pml ob1 --mca btl ^openib -n 1128 python3 xfang_runLSSTxSO_6x2pt_sys_Y1_MG.py 1128
+/usr/bin/time mpirun -x LD_LIBRARY_PATH --mca pml ob1 --mca btl ^openib -n 1128 python3 xfang_runLSSTxSO_6x2pt_sys_Y1_MG.py 1128
 date
