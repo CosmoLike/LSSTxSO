@@ -567,6 +567,15 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
     printf("error: chisqr = %le\n",chisqr);
     //exit(EXIT_FAILURE);
   }
+  if (isnan(chisqr)){
+    printf("%le\n%le %le %le %le %le %le %le %le %le\n%le %le %le %le %le %le %le %le %le %le\n%le %le %le %le %le %le %le %le %le %le %le\n%le %le %le %le %le %le %le %le %le %le %le\n%le %le %le %le %le %le %le %le %le %le\n%le %le %le %le %le %le %le\n",chisqr,
+          OMM, S8, NS, W0,WA, OMB, H0, MGSigma, MGmu,
+          B1, B2, B3, B4,B5, B6, B7, B8, B9, B10,
+          SP1, SP2, SP3, SP4, SP5, SP6, SP7, SP8, SP9, SP10, SPS1,
+          CP1, CP2, CP3, CP4, CP5, CP6, CP7, CP8, CP9, CP10, CPS1,
+          M1, M2, M3, M4, M5, M6, M7, M8, M9, M10,
+          A_ia, beta_ia, eta_ia, eta_ia_highz, Q1, Q2, Q3);
+  }
   printf("%le\n",chisqr);
   return -0.5*chisqr+log_L_prior;
 }

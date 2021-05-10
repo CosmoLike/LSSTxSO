@@ -81,6 +81,10 @@ home_datav_fast:
 	gcc like_fourier_fast.c -o ./like_fourier $(opt_home)
 	gcc like_fourier_fast.c -o ./like_fourier_1sample $(opt_home) -DONESAMPLE
 
+home_datav_fast_testnans:
+	gcc like_fourier_fast_testnans.c -o ./like_fourier_testnans $(opt_home)
+
+
 ocelote:
 	make ocelote_shared 
 	make ocelote_datav
