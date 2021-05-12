@@ -577,7 +577,9 @@ double log_multi_like(double OMM, double S8, double NS, double W0,double WA, dou
           A_ia, beta_ia, eta_ia, eta_ia_highz, Q1, Q2, Q3);
   }
   printf("%le\n",chisqr);
-  return -0.5*chisqr+log_L_prior;
+  log_L = -0.5*chisqr+log_L_prior;
+  if(log_L < -1.0e15 || isnan(log_L)) {return -1.0e15;}
+  return log_L;
 }
 
 // void compute_data_vector(char *details, double OMM, double S8, double NS, double W0,double WA, double OMB, double H0, double MGSigma, double MGmu, double B1, double B2, double B3, double B4,double B5, double B6, double B7, double B8, double B9, double B10, double SP1, double SP2, double SP3, double SP4, double SP5,double SP6, double SP7, double SP8, double SP9, double SP10, double SPS1, double CP1, double CP2, double CP3, double CP4, double CP5, double CP6, double CP7, double CP8, double CP9, double CP10, double CPS1, double M1, double M2, double M3, double M4, double M5, double M6, double M7, double M8, double M9, double M10, double A_ia, double beta_ia, double eta_ia, double eta_ia_highz, double LF_alpha, double LF_P, double LF_Q, double LF_red_alpha, double LF_red_P, double LF_red_Q, double mass_obs_norm, double mass_obs_slope, double mass_z_slope, double mass_obs_scatter_norm, double mass_obs_scatter_mass_slope, double mass_obs_scatter_z_slope, double Q1, double Q2, double Q3)
