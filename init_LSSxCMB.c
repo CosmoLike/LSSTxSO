@@ -427,8 +427,9 @@ void init_lens_sample(char *lensphotoz, char *tomo_binning_lens)
   if(strcmp(lensphotoz,"gaussian")==0) redshift.clustering_photoz=3;
   if(strcmp(lensphotoz,"multihisto")==0) redshift.clustering_photoz=4;
   if(strcmp(lensphotoz,"outlier_sim")==0) redshift.clustering_photoz=5;
+  if(strcmp(lensphotoz,"outlier_model")==0) redshift.clustering_photoz=6;
   
-  if ((redshift.clustering_photoz !=0) && (redshift.clustering_photoz !=1) && (redshift.clustering_photoz !=2) && (redshift.clustering_photoz !=3) && (redshift.clustering_photoz !=5)) 
+  if ((redshift.clustering_photoz !=0) && (redshift.clustering_photoz !=1) && (redshift.clustering_photoz !=2) && (redshift.clustering_photoz !=3) && (redshift.clustering_photoz !=5) && (redshift.clustering_photoz !=6)) 
   {
     printf("init.c: init_lens_sample: redshift.clustering_photoz = %d not set properly!\nEXIT!\n",redshift.clustering_photoz);
     exit(1);
@@ -461,7 +462,8 @@ void init_source_sample(char *sourcephotoz, char *tomo_binning_source)
     exit(1);
   }
   if(strcmp(sourcephotoz,"outlier_sim")==0) redshift.shear_photoz=5;
-  if ((redshift.shear_photoz !=0) && (redshift.shear_photoz !=1) && (redshift.shear_photoz !=2) && (redshift.shear_photoz !=3) && (redshift.shear_photoz !=5)) 
+  if(strcmp(sourcephotoz,"outlier_model")==0) redshift.shear_photoz=6;
+  if ((redshift.shear_photoz !=0) && (redshift.shear_photoz !=1) && (redshift.shear_photoz !=2) && (redshift.shear_photoz !=3) && (redshift.shear_photoz !=5) && (redshift.shear_photoz !=6)) 
   {
     printf("init.c: init_source_sample: redshift.shear_photoz = %d not set properly!\nEXIT!\n",redshift.shear_photoz);
     exit(1);

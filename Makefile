@@ -45,6 +45,10 @@ home_datav_1sample_outext:
 home_datav_outext_tests:
 	gcc like_fourier_fast_outext_tests.c -o ./like_fourier_outext_tests $(opt_home)
 
+home_datav_outmodel:
+	gcc like_fourier_fast_outmodel.c -o ./like_fourier_outmodel $(opt_home) -DNOMPP
+
+
 home_des:
 	gcc like_fourier_desxplanck.c -o ./like_fourier_desxplanck $(opt_home)
 	
@@ -70,6 +74,9 @@ home_cov_1sample_ztrue:
 home_shared:
 	gcc -shared -o like_fourier.so -fPIC like_fourier.c $(opt_home)
 	gcc -shared -o like_fourier_1sample.so -fPIC like_fourier.c $(opt_home) -DONESAMPLE
+
+home_shared_fast_outmodel:
+	gcc -shared -o like_fourier_outmodel.so -fPIC like_fourier_fast_outmodel.c $(opt_home)
 
 home_shared_wfirstxso:
 	gcc -shared -o like_fourier_wfirstxso.so -fPIC like_fourier_wfirstxso.c $(opt_home)
@@ -129,3 +136,7 @@ ocelote_deslib:
 puma_shared_fast:
 	gcc -shared -o like_fourier.so -fPIC like_fourier_fast.c $(opt_puma)
 	gcc -shared -o like_fourier_1sample.so -fPIC like_fourier_fast.c $(opt_puma) -DONESAMPLE
+
+puma_shared_fast_outmodel:
+	gcc -shared -o like_fourier_fast_outmodel.so -fPIC like_fourier_fast_outmodel.c $(opt_puma)
+
