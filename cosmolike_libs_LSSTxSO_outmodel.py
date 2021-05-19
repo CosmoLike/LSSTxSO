@@ -9,7 +9,7 @@ import mpi4py
 # from mpp_blinding import seed as blinding_seed
 
 dirname = os.path.split(__file__)[0]
-lib_name = os.path.join(dirname, "like_fourier_outmodel.so")
+lib_name = os.path.join(dirname, "like_fourier_fast_outmodel.so")
 lib=ctypes.cdll.LoadLibrary(lib_name)
 double = ctypes.c_double
 
