@@ -5,7 +5,7 @@
 #SBATCH --ntasks-per-node=94
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=1gb
-#SBATCH --time=30:00:00
+#SBATCH --time=22:15:00
 
 #SBATCH --account=cosmo
 #SBATCH --partition=standard

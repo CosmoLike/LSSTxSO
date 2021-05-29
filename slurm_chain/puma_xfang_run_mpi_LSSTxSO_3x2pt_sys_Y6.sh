@@ -7,9 +7,9 @@
 #SBATCH --mem-per-cpu=1gb
 #SBATCH --time=30:00:00
 
-#SBATCH --account=cosmo
+#SBATCH --account=cosmolike
 #SBATCH --partition=standard
-#SBATCH --qos=user_qos_timeifler
+## SBATCH --qos=user_qos_timeifler
 #SBATCH --output=%A.out
 #SBATCH --error=%A.err
 

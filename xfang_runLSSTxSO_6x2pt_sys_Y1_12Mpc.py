@@ -6,7 +6,7 @@ sys.path.append('/home/u1/xfang/LSSTxSO')
 from cosmolike_libs_LSSTxSO import * 
 from schwimmbad import MPIPool
 
-inv=['invcov_Y1_6x2pt','invcov_Y6_6x2pt']
+inv=['invcov_Y1_6x2pt_12Mpc','invcov_Y6_6x2pt_12Mpc']
 
 data=['6x2pt_LSSTxSO_Y1_dmo_12Mpc','6x2pt_LSSTxSO_Y6_dmo_12Mpc']
 
