@@ -141,6 +141,8 @@ ocelote_des:
 ocelote_deslib:
 	gcc -shared -o like_fourier_desxplanck.so -fPIC like_fourier_desxplanck.c $(opt_ocelote)
 
+ocelote_shared_fast_outmodel:
+	gcc -shared -o like_fourier_fast_outmodel.so -fPIC like_fourier_fast_outmodel.c $(opt_ocelote)
 
 ###### Puma
 
