@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=lsstso6_6x2
-#SBATCH --nodes=11
-#SBATCH --ntasks=1034
+#SBATCH --nodes=2
+#SBATCH --ntasks=188
 #SBATCH --ntasks-per-node=94
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=1gb
@@ -23,5 +23,5 @@ module load openmpi3/3.1.4
 export MPI_DSM_DISTRIBUTE
 export LD_LIBRARY_PATH="/opt/ohpc/pub/libs/gnu8/gsl/2.6/lib:$LD_LIBRARY_PATH"
 date
-/usr/bin/time mpirun -x LD_LIBRARY_PATH --mca pml ob1 --mca btl ^openib -n 1034 python3 xfang_runLSSTxSO_6x2pt_sys_Y6_outmodel-DV_2-island.py 1034
+/usr/bin/time mpirun -x LD_LIBRARY_PATH --mca pml ob1 --mca btl ^openib -n 188 python3 xfang_runLSSTxSO_6x2pt_sys_Y6_outmodel-DV_2-island.py 188
 date
