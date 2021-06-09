@@ -435,8 +435,8 @@ int set_nuisance_gbias(double B1, double B2, double B3, double B4,double B5, dou
 int set_nuisance_outlier(double out_frac_lowz, double out_frac_highz){
   nuisance.frac_lowz = out_frac_lowz;
   nuisance.frac_highz= out_frac_highz;
-  if(nuisance.frac_lowz < 0.0 || nuisance.frac_lowz > 0.4 ) return 0;
-  if(nuisance.frac_highz < 0.0 || nuisance.frac_highz > 0.4 ) return 0;
+  if(nuisance.frac_lowz < 0.0 || nuisance.frac_lowz > 0.2 ) return 0;
+  if(nuisance.frac_highz < 0.0 || nuisance.frac_highz > 0.5 ) return 0;
   return 1;
 }
 
