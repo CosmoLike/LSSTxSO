@@ -258,7 +258,7 @@ class InputNuisanceParams(IterableStruct):
         c.lf[:] = np.repeat(0.0, 6)
         c.m_lambda[:] = [3.207, 0.993, 0.0, 0.456, 0.0, 0.0]
         c.bary[:] = [0.0,0.0,0.0]
-        c.out_frac[:] = [0.5,0.15]
+        c.out_frac[:] = [0.05,0.15]
         return c
 
     @classmethod
