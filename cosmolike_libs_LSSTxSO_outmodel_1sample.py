@@ -9,7 +9,7 @@ import mpi4py
 # from mpp_blinding import seed as blinding_seed
 
 dirname = os.path.split(__file__)[0]
-lib_name = os.path.join(dirname, "like_fourier_fast_outmodel.so")
+lib_name = os.path.join(dirname, "like_fourier_fast_outmodel_1sample.so")
 lib=ctypes.cdll.LoadLibrary(lib_name)
 double = ctypes.c_double
 
@@ -245,7 +245,7 @@ class InputNuisanceParams(IterableStruct):
     @classmethod
     def fiducial(cls):
         c = cls()
-        c.bias[:] = [1.2,1.3,1.38,1.46,1.54,1.63,1.72,1.83,1.94,2.08]
+        c.bias[:] = [1.2,1.3,1.4,1.6,1.7,1.8,2.0,2.3,2.63,4.0]
         c.source_z_bias[:] = np.repeat(0.0, 10)
         c.source_z_s = 0.05
         c.lens_z_bias[:] = np.repeat(0.0, 10)
@@ -397,7 +397,6 @@ def sample_cosmology_3x2_allsys_1sample(tomo_N,MG = False):
     varied_parameters.append('eta_ia_highz')
     varied_parameters += ['bary_%d'%i for i in range(3)]
     varied_parameters += ['out_frac_%d'%i for i in range(2)]
-    varied_parameters += ['out_frac_%d'%i for i in range(2)]
     return varied_parameters
 
 
@@ -493,7 +492,6 @@ def sample_main_1sample(varied_parameters,sigma_z_shear, iterations, nwalker, nt
     #     if not pool.is_master():
     #         pool.wait()
     #         sys.exit(0)
-
 
     sampler = emcee.EnsembleSampler(nwalker, ndim, likelihood,threads=nthreads,pool=pool)
 
