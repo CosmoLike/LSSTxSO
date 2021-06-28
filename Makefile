@@ -53,6 +53,7 @@ home_datav_outext_tests:
 
 home_datav_outmodel:
 	gcc like_fourier_fast_outmodel.c -o ./like_fourier_outmodel $(opt_home) -DNOMPP
+	gcc like_fourier_fast_outmodel.c -o ./like_fourier_outmodel_1sample $(opt_home) -DNOMPP -DONESAMPLE
 
 
 home_des:
@@ -83,6 +84,7 @@ home_shared:
 
 home_shared_fast_outmodel:
 	gcc -shared -o like_fourier_outmodel.so -fPIC like_fourier_fast_outmodel.c $(opt_home)
+	gcc -shared -o like_fourier_outmodel_1sample.so -fPIC like_fourier_fast_outmodel.c $(opt_home) -DONESAMPLE
 
 home_shared_wfirstxso:
 	gcc -shared -o like_fourier_wfirstxso.so -fPIC like_fourier_wfirstxso.c $(opt_home)

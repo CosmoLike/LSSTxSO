@@ -60,5 +60,5 @@ initcmb("so_Y5".encode('utf-8'))
 sample_params = sample_cosmology_3x2_allsys_1sample(get_N_tomo_shear(),get_N_tomo_clustering())
 
 Nwalker = int(sys.argv[1])
-sample_main(sample_params,sigma_z_shear[model],sigma_z_clustering[model],8000,Nwalker,1,chain_file, blind=False, pool=MPIPool())
+sample_main_1sample(sample_params,sigma_z_shear[model],sigma_z_clustering[model],8000,Nwalker,1,chain_file, blind=False, pool=MPIPool())
 
