@@ -5,11 +5,11 @@
 #SBATCH --ntasks-per-node=94
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=1gb
-#SBATCH --time=22:30:00
+#SBATCH --time=26:00:00
 
 #SBATCH --account=cosmo
 #SBATCH --partition=standard
-#SBATCH --qos=user_qos_timeifler
+# SBATCH --qos=user_qos_timeifler
 #SBATCH --output=%A.out
 #SBATCH --error=%A.err
 
