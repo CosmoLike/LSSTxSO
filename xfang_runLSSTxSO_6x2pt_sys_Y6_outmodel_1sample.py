@@ -57,7 +57,7 @@ initprobes("6x2pt".encode('utf-8'))
 initdatainv(cov_file.encode('utf-8') ,data_file.encode('utf-8'), bary_file.encode('utf-8'))
 initcmb("so_Y5".encode('utf-8'))
 #sample_params= sample_cosmology_only()
-sample_params = sample_cosmology_3x2_allsys_1sample(get_N_tomo_shear(),get_N_tomo_clustering())
+sample_params = sample_cosmology_3x2_allsys_1sample(get_N_tomo_shear())
 
 Nwalker = int(sys.argv[1])
 sample_main_1sample(sample_params,sigma_z_shear[model],8000,Nwalker,1,chain_file, blind=False, pool=MPIPool())
