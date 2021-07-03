@@ -844,6 +844,7 @@ void save_zdistr_lenses(int zl){
 #else
   sprintf(arg3,"%s_%s_12Mpc",survey_designation[sce],argv[2]);
 #endif
+  for(i=0;i<10;i++){printf("gbias.b[%d]=%le\n",i,gbias.b[i]);}
   compute_data_vector(arg3,0.3156,0.831,0.9645,-1.,0.,0.0491685,0.6727,0.,0.,\
     gbias.b[0],gbias.b[1],gbias.b[2],gbias.b[3],gbias.b[4],\
     gbias.b[5],gbias.b[6],gbias.b[7],gbias.b[8],gbias.b[9],\
