@@ -155,3 +155,7 @@ puma_shared_fast:
 puma_shared_fast_outmodel:
 	gcc -shared -o like_fourier_fast_outmodel.so -fPIC like_fourier_fast_outmodel.c $(opt_puma)
 	gcc -shared -o like_fourier_fast_outmodel_1sample.so -fPIC like_fourier_fast_outmodel.c $(opt_puma) -DONESAMPLE
+
+
+puma_cov:
+	gcc compute_covariances_fourier.c -o ./compute_covariances_fourier $(opt_puma)
