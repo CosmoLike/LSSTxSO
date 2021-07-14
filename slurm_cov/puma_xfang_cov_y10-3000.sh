@@ -2,7 +2,7 @@
 #SBATCH --job-name=LSSTxSO_cov
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --array 4001-6000
+#SBATCH --array 3001-4000
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=1gb
 #SBATCH --time=6:00:00
