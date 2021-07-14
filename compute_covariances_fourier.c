@@ -747,21 +747,22 @@ int main(int argc, char** argv)
   int i,l,m,n,o,s,p,nl1,t,k;
   char OUTFILE[400],filename[400],arg1[400],arg2[400];
   
-  int N_scenarios=2;
-  double area_table[2]={12300.0,16500.0}; // Y1 corresponds to DESC SRD Y1, Y6 corresponds to assuming that we cover the full SO area=0.4*fsky and at a depth of 26.1 which is in a range of reasonable scenarios (see https://github.com/LSSTDESC/ObsStrat/tree/static/static )
-  double nsource_table[2]={11.0,23.0};
-  double nlens_table[2]={18.0,41.0};
+  int N_scenarios=3;
+  double area_table[3]={12300.0,16500.0,18000.}; // Y1 corresponds to DESC SRD Y1, Y6 corresponds to assuming that we cover the full SO area=0.4*fsky and at a depth of 26.1 which is in a range of reasonable scenarios (see https://github.com/LSSTDESC/ObsStrat/tree/static/static )
+  double nsource_table[3]={11.0,23.0,28.0};
+  double nlens_table[3]={18.0,41.0,48.0};
   
-  char survey_designation[2][200]={"LSSTxSO_Y1","LSSTxSO_Y6"};
+  char survey_designation[3][200]={"LSSTxSO_Y1","LSSTxSO_Y6","LSSTxSO_Y10"};
   
-  char source_zfile[2][400]={"src_LSSTY1","src_LSSTY6"};
+  char source_zfile[3][400]={"src_LSSTY1","src_LSSTY6","src_LSSTY10"};
 
 #ifdef ONESAMPLE
-  char lens_zfile[2][400]={"src_LSSTY1","src_LSSTY6"};
+  char lens_zfile[3][400]={"src_LSSTY1","src_LSSTY6","src_LSSTY10"};
   nlens_table[0] = nsource_table[0];
   nlens_table[1] = nsource_table[1];
+  nlens_table[2] = nsource_table[2];
 #else
-  char lens_zfile[2][400]={"lens_LSSTY1","lens_LSSTY6"};
+  char lens_zfile[3][400]={"lens_LSSTY1","lens_LSSTY6","lens_LSSTY10"};
 #endif
 
   int hit=atoi(argv[1]);
@@ -787,6 +788,7 @@ int main(int argc, char** argv)
 
   if(t==0) init_cmb("so_Y1");
   if(t==1) init_cmb("so_Y5");
+  if(t==2) init_cmb("so_Y5");
 
   //set l-bins for shear, ggl, clustering, clusterWL
   double logdl=(log(like.lmax)-log(like.lmin))/like.Ncl;
@@ -883,7 +885,7 @@ int main(int argc, char** argv)
       //printf("%d\n",k);
     }
   }
-
+  printf("3x2pt %d\n",k);
  // lk_lk
   sprintf(OUTFILE,"%s_lklk_cov_Ncl%d_Ntomo%d",survey.name,like.Ncl,tomo.shear_Nbin);
   for (l=0;l<tomo.clustering_Nbin; l++){
