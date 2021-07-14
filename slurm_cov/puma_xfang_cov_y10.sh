@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --job-name=LSSTxSO_cov
 #SBATCH --nodes=1
-#SBATCH --ntasks=7140
-#SBATCH --ntasks-per-node=7140
+#SBATCH --ntasks=1
+#SBATCH --array=1-7140
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=1gb
 #SBATCH --time=6:00:00
